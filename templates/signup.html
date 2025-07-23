@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AccessEDU - Sign Up</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        body, html { margin: 0; padding: 0; font-family: 'Inter', sans-serif; background-color: #fff; height: 100%; }
+        
+        .site-header {
+            background-color: #23406e;
+            position: relative;
+            padding: 12px 24px;
+        }
+        .main-container {
+            position: relative;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .language-bar {
+            background: transparent;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 0;
+            gap: 24px;
+            font-size: 1.3rem;
+            font-family: 'Inter', Arial, sans-serif;
+            font-weight: 700;
+            letter-spacing: 1px;
+            border-bottom: none;
+            border-radius: 0;
+            position: relative;
+            top: auto;
+            right: auto;
+            z-index: 2;
+            width: auto;
+            min-width: 0;
+            max-width: none;
+        }
+        .language-link {
+            color: #fff;
+            text-decoration: none;
+            cursor: pointer;
+            padding: 8px 18px;
+            border-radius: 8px;
+            transition: background 0.2s, color 0.2s;
+        }
+        .language-link.selected, .language-link:hover { background: #fff; color: #23406e; }
+
+        /* Navigation Bar */
+        .nav {
+            background: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 0;
+            box-shadow: none;
+            margin-top: 0;
+        }
+        .nav-left { display: flex; align-items: center; gap: 36px; }
+        .logo-text { font-family: 'Montserrat',Arial,sans-serif; font-weight: 900; font-size: 2rem; color: #fff; }
+        .nav-links { display: flex; gap: 20px; }
+        .nav-link { color: #fff; font-weight: 700; text-decoration: none; font-size: 1rem; }
+        .nav-right { display: flex; align-items: center; gap: 24px; }
+        .login-link { color: #24527A; font-weight: 700; text-decoration: none; }
+        .cta-btn { background: #23406e; color: #fff; border-radius: 32px; padding: 10px 24px; text-decoration: none; font-weight: 700; }
+
+        /* Signup Page Specifics */
+        .signup-wrapper { flex-grow: 1; display: flex; justify-content: center; align-items: center; background: #F9F9F9; }
+        .signup-container { width: 100%; max-width: 400px; padding: 40px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; }
+        .signup-container h1 { font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 2.5rem; color: #24527A; margin-bottom: 30px; }
+        .signup-container form { width: 100%; }
+        .input-group { margin-bottom: 20px; }
+        .input-group label { display: block; margin-bottom: 8px; font-weight: 700; color: #333; }
+        .input-group input { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; box-sizing: border-box; }
+        .signup-btn { width: 100%; background: #23406e; color: #fff; padding: 15px; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: 700; cursor: pointer; margin-bottom: 20px; }
+        .social-separator { display: flex; align-items: center; text-align: center; margin: 20px 0; }
+        .social-separator::before, .social-separator::after { content: ''; flex: 1; border-bottom: 1px solid #ccc; }
+        .social-separator:not(:empty)::before { margin-right: .25em; }
+        .social-separator:not(:empty)::after { margin-left: .25em; }
+        .social-login-btn { display: flex; align-items: center; justify-content: center; width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; background: #fff; cursor: pointer; margin-bottom: 10px; font-size: 1rem; }
+        .social-login-btn img { width: 20px; margin-right: 10px; }
+        .login-prompt { text-align: center; margin-top: 20px; }
+        .login-prompt a { color: #24527A; font-weight: 700; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <div class="language-bar" id="languageBar">
+             <span class="language-link selected" data-lang="en">EN</span>
+             <span class="language-link" data-lang="es">ES</span>
+             <span class="language-link" data-lang="fr">FR</span>
+             <span class="language-link" data-lang="zh-Hans">中文</span>
+             <span class="language-link" data-lang="ar">العربية</span>
+             <span class="language-link" data-lang="hi">हिन्दी</span>
+             <span class="language-link" data-lang="vi">Tiếng Việt</span>
+             <span class="language-link" data-lang="ko">한국어</span>
+             <span class="language-link" data-lang="fil">Filipino</span>
+             <span class="language-link" data-lang="bn">বাংলা</span>
+             <span class="language-link" data-lang="ur">اردو</span>
+        </div>
+        <div class="nav">
+            <div class="nav-left">
+                <span class="logo-text">AccessEDU</span>
+                <div class="nav-links">
+                    <a href="{{ url_for('chatbot') }}" class="nav-link">FAFSA Help</a>
+                    <a href="{{ url_for('scholarship_finder') }}" class="nav-link">Scholarships</a>
+                    <a href="{{ url_for('budget_scanner') }}" class="nav-link">Budget Planner</a>
+                    <a href="{{ url_for('learner') }}" class="nav-link">Learner</a>
+                </div>
+            </div>
+            <div class="nav-right">
+                 <a href="{{ url_for('login') }}" class="login-link">Log In</a>
+                 <a href="{{ url_for('signup') }}" class="cta-btn">Sign Up</a>
+            </div>
+        </div>
+    </header>
+    <div class="main-container">
+        <div class="signup-wrapper">
+            <div class="signup-container">
+                <h1>Create your account</h1>
+                <form action="{{ url_for('home') }}">
+                    <div class="input-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    <button type="submit" class="signup-btn">Sign Up</button>
+                </form>
+                <div class="social-separator">OR</div>
+                <a href="/login/google" class="social-login-btn">
+                    <img src="/static/images/google.png" alt="Google"> Continue with Google
+                </a>
+                <button class="social-login-btn">
+                    <img src="/static/images/microsoft.png" alt="Microsoft"> Continue with Microsoft
+                </button>
+                <button class="social-login-btn">
+                    <img src="/static/images/apple.png" alt="Apple"> Continue with Apple
+                </button>
+                <div class="login-prompt">
+                    Already have an account? <a href="{{ url_for('login') }}">Log in</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

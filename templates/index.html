@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAFSA & Financial Aid Helper</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Inclusive+Sans&family=Imprima&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+            background: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            width: 100vw;
+        }
+        .outer-container {
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+            box-sizing: border-box;
+            padding: 0;
+        }
+        .chat-container {
+            background: #F9F9F9;
+            border-radius: 0;
+            width: 100%;
+            height: 100%;
+            max-width: none;
+            max-height: none;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        .site-header {
+            background-color: #23406e;
+            position: relative;
+            padding: 12px 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+        .language-bar {
+            background: #C8D2DC;
+            display: flex;
+            align-items: center;
+            padding: 12px 24px;
+            gap: 24px;
+            border-radius: 12px;
+            font-size: 1.3rem;
+            font-family: 'Inter', Arial, sans-serif;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        .language-link {
+            color: #002F5B;
+            text-decoration: none;
+            cursor: pointer;
+            padding: 8px 18px;
+            border-radius: 8px;
+            transition: background 0.2s, color 0.2s;
+        }
+        .language-link.selected, .language-link:hover {
+            background: #002F5B;
+            color: #fff;
+        }
+        .nav {
+            position: relative;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+            z-index: 2;
+            box-sizing: border-box;
+            margin-top: 0;
+            align-self: stretch;
+        }
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 36px;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            background: rgba(255, 255, 255, 0.5);
+            padding: 10px;
+            border-radius: 12px;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        .logo:hover {
+            background: rgba(255, 255, 255, 0.7);
+        }
+        .logo-img {
+            width: 64px;
+            height: 64px;
+            object-fit: contain;
+        }
+        .logo-text {
+            font-family: 'Montserrat', 'Inclusive Sans', 'Segoe UI', Arial, sans-serif;
+            font-weight: 900;
+            font-size: 2rem;
+            color: #fff;
+            letter-spacing: 1px;
+            line-height: 1;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .nav-link {
+            color: #fff;
+            font-family: 'Inter', Arial, sans-serif;
+            font-weight: 700;
+            font-size: 1.3rem;
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.3);
+            padding: 12px 17px;
+            border-radius: 12px;
+            transition: background 0.2s;
+        }
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+        .login-link {
+            color: #24527A;
+            font-family: 'Inter', Arial, sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.5);
+            padding: 12px 24px;
+            border-radius: 32px;
+            transition: background 0.2s;
+        }
+        .login-link:hover {
+            background: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+        }
+        .cta-btn {
+            background: #23406e;
+            color: #fff;
+            font-family: 'Inter', Arial, sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 32px;
+            padding: 12px 32px;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+            box-shadow: 0 2px 12px rgba(80,120,200,0.08);
+            text-decoration: none;
+            display: inline-block;
+        }
+        .cta-btn:hover {
+            background: #3d5a8a;
+            transform: scale(1.04);
+        }
+        .header {
+            background: #F9F9F9;
+            color: #000000;
+            padding: 20px 16px 12px 16px;
+            text-align: center;
+            margin-top: 60px;
+        }
+        .header-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 10px 10px 0 10px;
+            box-sizing: border-box;
+            margin-bottom: 24px;
+        }
+        .header-title {
+            font-family: 'Montserrat', 'Inclusive Sans', 'Segoe UI', Arial, sans-serif;
+            font-size: 50px;
+            font-weight: 200;
+            line-height: 54px;
+            margin: 0 0 0 8px;
+            color: #002F5B;
+        }
+        .header-desc {
+            font-family: 'Imprima', 'Segoe UI', Arial, sans-serif;
+            font-size: 32px;
+            font-weight: 400;
+            line-height: 36px;
+            margin-bottom: 4px;
+            color: #001953;
+            text-align: center;
+        }
+        .chat-content {
+            flex: 1;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            margin-top: 0;
+        }
+        .bot-greeting {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-top: 15px;
+        }
+        .bot-avatar {
+            width: 213px;
+            height: 213px;
+            margin: 0 auto 20px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .bot-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        .greeting-and-prompts {
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .message.bot.greeting {
+            align-self: center;
+            text-align: center;
+            background: #DFE4E6;
+            font-size: 27px;
+            line-height: 1.4;
+        }
+        .sample-prompts {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 16px;
+            margin-top: 35px;
+            transition: margin-top 0.2s;
+        }
+        .sample-prompt {
+            background: #d5dfe9;
+            color: #002F5B;
+            border: 1.5px solid #546C87;
+            border-radius: 12px;
+            padding: 16px 24px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+            min-width: 220px;
+            max-width: 320px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            flex: 1 1 0;
+            white-space: normal;
+        }
+        .sample-prompt:hover {
+            background: #002F5B;
+            color: #fff;
+        }
+        .messages {
+            flex: 1;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 12px;
+            overflow-y: auto;
+            padding: 0 24px;
+        }
+        .message {
+            max-width: 85%;
+            padding: 14px 18px;
+            border-radius: 20px;
+            word-wrap: break-word;
+            line-height: 1.4;
+            font-family: 'Imprima', 'Segoe UI', Arial, sans-serif;
+            font-size: 20px;
+            font-weight: 400;
+            color: #003977;
+        }
+        .message.bot {
+            background: #DFE4E6;
+            color: #003977;
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+            line-height: 1.4;
+        }
+        .message.user {
+            background: #6b7280;
+            color: #fff;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+        .typing-indicator {
+            display: none;
+            align-self: flex-start;
+            background: #DFE4E6;
+            padding: 12px 16px;
+            border-radius: 18px;
+            border-bottom-left-radius: 4px;
+            color: #6b7280;
+            font-style: italic;
+            font-size: 0.95rem;
+            margin-left: 24px;
+            margin-right: 24px;
+            width: fit-content;
+        }
+        .input-area {
+            margin-top: 24px;
+            padding: 30px 80px 30px 30px;
+            background: #DFE4E6;
+            border-top: 1px solid #e5e7eb;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .input-field {
+            width: 100%;
+            padding: 14px 18px;
+            border: none;
+            border-radius: 10px;
+            background: #546c87;
+            font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            line-height: 21px;
+            color: #f1eded;
+            outline: none;
+            box-sizing: border-box;
+        }
+        .input-field::placeholder {
+            color: #f8f8f8;
+        }
+        .bot-icon {
+            width: 32px;
+            height: 32px;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+    <div class="outer-container">
+        <div class="chat-container">
+            <div class="site-header">
+                <div class="language-bar" id="languageBar">
+                    <span class="language-link selected" data-lang="en">EN</span>
+                    <span class="language-link" data-lang="es">ES</span>
+                    <span class="language-link" data-lang="fr">FR</span>
+                    <span class="language-link" data-lang="zh-Hans">中文</span>
+                    <span class="language-link" data-lang="ar">العربية</span>
+                    <span class="language-link" data-lang="hi">हिन्दी</span>
+                    <span class="language-link" data-lang="vi">Tiếng Việt</span>
+                    <span class="language-link" data-lang="ko">한국어</span>
+                    <span class="language-link" data-lang="fil">Filipino</span>
+                    <span class="language-link" data-lang="bn">বাংলা</span>
+                    <span class="language-link" data-lang="ur">اردو</span>
+                </div>
+                <div class="nav">
+                    <div class="nav-left">
+                        <a href="{{ url_for('home') }}" class="logo">
+                            <img src="/static/images/a3e929fd-63d2-4f73-abba-98a2528d3efb-removebg-preview.png" alt="AccessEDU Logo" class="logo-img">
+                            <span class="logo-text">AccessEDU</span>
+                        </a>
+                    </div>
+                    <div class="nav-right">
+                        <div class="nav-links">
+                            <a href="{{ url_for('chatbot') }}" class="nav-link">FAFSA Help</a>
+                            <a href="{{ url_for('scholarship_finder') }}" class="nav-link">Scholarships</a>
+                            <a href="{{ url_for('budget_scanner') }}" class="nav-link">Budget Planner</a>
+                            <a href="{{ url_for('learner') }}" class="nav-link">Learner</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="chat-content">
+                <div class="bot-greeting" id="botGreeting">
+                    <div class="bot-avatar">
+                        <img src="{{ url_for('static', filename='images/2683e09c-84df-4130-a2f7-9d4ade6fc386-removebg-preview.png') }}" alt="Bot Avatar">
+                    </div>
+                    <div class="greeting-and-prompts">
+                        <div class="message bot greeting">
+                            Hi! I’m here to help you with FAFSA,<br>
+                            scholarships, or budgeting questions,<br>
+                            ask me anything!
+                        </div>
+                        <div class="sample-prompts">
+                            <div class="sample-prompt">“Explain FAFSA to me like I’m a 10-year-old who’s never heard of it before.”</div>
+                            <div class="sample-prompt">“I’m the first in my family going to college — how do I start planning for costs and scholarships?”</div>
+                            <div class="sample-prompt">“I’m the first in my family going to college — how do I start planning for costs and scholarships?”</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="messages" id="messages">
+                </div>
+                <div class="typing-indicator" id="typingIndicator">AccessEDU is typing...</div>
+            </div>
+            <div class="input-area">
+                <input type="text" class="input-field" id="messageInput" placeholder="Type away!" onkeypress="if(event.key==='Enter'){sendMessage();}">
+            </div>
+        </div>
+    </div>
+    <script>
+        let firstMessageSent = false;
+        function addMessage(text, sender) {
+            const messagesDiv = document.getElementById('messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            if (sender === 'bot') {
+                const img = document.createElement('img');
+                img.src = "{{ url_for('static', filename='images/2683e09c-84df-4130-a2f7-9d4ade6fc386-removebg-preview.png') }}";
+                img.alt = "Bot Icon";
+                img.className = 'bot-icon';
+                messageDiv.appendChild(img);
+            }
+            // Support line breaks in text
+            const span = document.createElement('span');
+            span.innerHTML = text.replace(/\n/g, '<br>');
+            messageDiv.appendChild(span);
+            messagesDiv.appendChild(messageDiv);
+            // Scroll to the latest message
+            messageDiv.scrollIntoView({ behavior: "smooth" });
+        }
+        function showTyping() {
+            document.getElementById('typingIndicator').style.display = 'block';
+        }
+        function hideTyping() {
+            document.getElementById('typingIndicator').style.display = 'none';
+        }
+        async function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const text = input.value.trim();
+            if (!text) return;
+            if (!firstMessageSent) {
+                // Hide the greeting and avatar
+                document.getElementById('botGreeting').style.display = 'none';
+                // Add the greeting as the first bot message in the chat, translated
+                let greetingText = 'Hi! I’m here to help you with FAFSA, scholarships, or budgeting questions, ask me anything!';
+                if (currentLang !== 'en') {
+                    greetingText = await translateText(greetingText, currentLang);
+                }
+                addMessage(greetingText, 'bot');
+                firstMessageSent = true;
+            }
+            addMessage(text, 'user');
+            input.value = '';
+            showTyping();
+            fetch('/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: text })
+            })
+            .then(res => res.json())
+            .then(data => {
+                hideTyping();
+                addMessage(data.response, 'bot');
+            })
+            .catch(() => {
+                hideTyping();
+                addMessage('Sorry, there was an error processing your request.', 'bot');
+            });
+        }
+        // Language bar click handler (UI only for now)
+        const staticText = {
+            en: {
+                header: 'FAFSA & Financial Aid Helper',
+                desc: 'Get clear answers about FAFSA, financial aid deadlines, and required documents, all in plain language.',
+                greeting: `Hi! I’m here to help you with FAFSA,<br>scholarships, or budgeting questions,<br>ask me anything!`,
+                input: 'Type away!',
+                typing: 'AccessEDU is typing...',
+                prompts: [
+                    '“Explain FAFSA to me like I’m a 10-year-old who’s never heard of it before.”',
+                    '“I’m the first in my family going to college — how do I start planning for costs and scholarships?”',
+                    '“I’m the first in my family going to college — how do I start planning for costs and scholarships?”'
+                ]
+            }
+        };
+        let currentLang = 'en';
+        async function translateText(text, to_lang) {
+            const res = await fetch('/translate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text, to_lang })
+            });
+            const data = await res.json();
+            return data.translated || text;
+        }
+        async function setLanguage(lang) {
+            currentLang = lang;
+            document.querySelectorAll('.language-link').forEach(l => l.classList.remove('selected'));
+            document.querySelector(`.language-link[data-lang="${lang}"]`).classList.add('selected');
+            // No per-language margin logic, just translation
+            if (lang === 'en') {
+                document.querySelector('.header-title').textContent = staticText.en.header;
+                document.querySelector('.header-desc').textContent = staticText.en.desc;
+                document.querySelector('.message.bot.greeting').innerHTML = staticText.en.greeting;
+                document.getElementById('messageInput').placeholder = staticText.en.input;
+                document.getElementById('typingIndicator').textContent = staticText.en.typing;
+                document.querySelectorAll('.sample-prompt').forEach((el, i) => {
+                    el.textContent = staticText.en.prompts[i];
+                });
+                return;
+            }
+            // Translate all static text
+            const [header, desc, greeting, input, typing, prompt1, prompt2, prompt3] = await Promise.all([
+                translateText(staticText.en.header, lang),
+                translateText(staticText.en.desc, lang),
+                translateText('Hi! I’m here to help you with FAFSA, scholarships, or budgeting questions, ask me anything!', lang),
+                translateText(staticText.en.input, lang),
+                translateText(staticText.en.typing, lang),
+                translateText(staticText.en.prompts[0], lang),
+                translateText(staticText.en.prompts[1], lang),
+                translateText(staticText.en.prompts[2], lang)
+            ]);
+            document.querySelector('.header-title').textContent = header;
+            document.querySelector('.header-desc').textContent = desc;
+            document.querySelector('.message.bot.greeting').innerHTML = greeting.replace(/\n/g, '<br>');
+            document.getElementById('messageInput').placeholder = input;
+            document.getElementById('typingIndicator').textContent = typing;
+            document.querySelectorAll('.sample-prompt').forEach((el, i) => {
+                el.textContent = [prompt1, prompt2, prompt3][i];
+            });
+        }
+        document.querySelectorAll('.language-link').forEach(link => {
+            link.addEventListener('click', function() {
+                setLanguage(this.getAttribute('data-lang'));
+            });
+        });
+        // Sample prompt click handler
+        document.querySelectorAll('.sample-prompt').forEach(prompt => {
+            prompt.addEventListener('click', function() {
+                const text = this.textContent;
+                document.getElementById('messageInput').value = text;
+                sendMessage();
+            });
+        });
+        window.onload = function() {
+            document.getElementById('messageInput').focus();
+        };
+    </script>
+</body>
+</html> 

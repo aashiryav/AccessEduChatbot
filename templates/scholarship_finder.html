@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scholarship Finder - AccessEDU</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        body, html { margin: 0; padding: 0; font-family: 'Inter', sans-serif; background-color: #fff; height: 100%; }
+        
+        .site-header {
+            background-color: #23406e;
+            position: relative;
+            padding: 12px 24px;
+        }
+        .main-container {
+            position: relative;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .language-bar {
+            background: transparent;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 0;
+            gap: 24px;
+            font-size: 1.3rem;
+            font-family: 'Inter', Arial, sans-serif;
+            font-weight: 700;
+            letter-spacing: 1px;
+            border-bottom: none;
+            border-radius: 0;
+            position: relative;
+            top: auto;
+            right: auto;
+            z-index: 2;
+            width: auto;
+            min-width: 0;
+            max-width: none;
+        }
+        .language-link {
+            color: #fff;
+            text-decoration: none;
+            cursor: pointer;
+            padding: 8px 18px;
+            border-radius: 8px;
+            transition: background 0.2s, color 0.2s;
+        }
+        .language-link.selected, .language-link:hover { background: #fff; color: #23406e; }
+
+        /* Navigation Bar */
+        .nav {
+            background: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 0;
+            box-shadow: none;
+            margin-top: 0;
+        }
+        /* ... other nav styles ... */
+
+        /* Scholarship Finder Specifics */
+        .container { flex-grow: 1; overflow-y: auto; background: #F9F9F9; }
+        /* ... other container styles ... */
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <div class="language-bar" id="languageBar">
+             <span class="language-link selected" data-lang="en">EN</span>
+             <span class="language-link" data-lang="es">ES</span>
+             <span class="language-link" data-lang="fr">FR</span>
+             <span class="language-link" data-lang="zh-Hans">中文</span>
+             <span class="language-link" data-lang="ar">العربية</span>
+             <span class="language-link" data-lang="hi">हिन्दी</span>
+             <span class="language-link" data-lang="vi">Tiếng Việt</span>
+             <span class="language-link" data-lang="ko">한국어</span>
+             <span class="language-link" data-lang="fil">Filipino</span>
+             <span class="language-link" data-lang="bn">বাংলা</span>
+             <span class="language-link" data-lang="ur">اردو</span>
+        </div>
+        <div class="nav">
+            <!-- Navigation Bar Content -->
+        </div>
+    </header>
+    <div class="main-container">
+        <div class="container">
+            <!-- Scholarship Finder Content -->
+        </div>
+    </div>
+</body>
+</html> 

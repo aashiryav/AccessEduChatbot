@@ -1,0 +1,585 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AccessEDU - Plan for College</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', Arial, sans-serif;
+            background: #fff;
+            overflow-x: hidden;
+        }
+        .hero-bg {
+            background: url('/static/images/Flux_Dev_A_modern_softfocus_digital_illustration_of_a_universi_2.jpg') center calc(100% + 50px)/cover no-repeat;
+            width: 100vw;
+            height: 695px;
+            position: relative;
+            border-radius: 0 0 32px 32px;
+            overflow: hidden;
+            image-rendering: auto;
+            filter: none;
+        }
+        .hero-bg:after {
+            content: '';
+            position: absolute;
+            left: 0; right: 0; bottom: 0;
+            height: 220px;
+            background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, #fff 100%);
+            pointer-events: none;
+        }
+        .language-bar {
+            background: transparent;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 12px 24px;
+            position: relative;
+            z-index: 3;
+        }
+        .language-options {
+            background: rgba(200, 210, 220, 0.5);
+            display: flex;
+            align-items: center;
+            padding: 12px 24px;
+            gap: 24px;
+            border-radius: 12px;
+            font-size: 1.3rem;
+            font-family: 'Inter', Arial, sans-serif;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        .language-link {
+            color: #002F5B;
+            text-decoration: none;
+            cursor: pointer;
+            padding: 8px 18px;
+            border-radius: 8px;
+            transition: background 0.2s, color 0.2s;
+        }
+        .language-link.selected, .language-link:hover {
+            background: #002F5B;
+            color: #fff;
+        }
+        .nav {
+            position: relative;
+            top: -7px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 4px 24px 0 24px;
+            z-index: 2;
+            box-sizing: border-box;
+        }
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 36px;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            background: rgba(255, 255, 255, 0.5);
+            padding: 10px;
+            border-radius: 12px;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        .logo:hover {
+            background: rgba(255, 255, 255, 0.7);
+        }
+        .logo-img {
+            width: 64px;
+            height: 64px;
+            object-fit: contain;
+        }
+        .logo-text {
+            font-family: 'Montserrat',Arial,sans-serif;
+            font-weight: 900;
+            font-size: 2rem;
+            color: #24527A;
+            letter-spacing: 1px;
+            line-height: 1;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .nav-link {
+            color: #111e34;
+            font-family: 'Inter', Arial, sans-serif;
+            font-weight: 700;
+            font-size: 1.3rem;
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.3);
+            padding: 12px 17px;
+            border-radius: 12px;
+            transition: background 0.2s;
+        }
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+        .login-link {
+            color: #111e34;
+            background: rgba(255, 255, 255, 0.5);
+            padding: 14px 28px;
+            border-radius: 32px;
+            text-decoration: none;
+            font-family: 'Inter', Arial, sans-serif;
+            font-weight: 700;
+            font-size: 1.3rem;
+            transition: background 0.2s;
+        }
+        .login-link:hover {
+            opacity: 1;
+            text-decoration: underline;
+        }
+        .cta-btn {
+            background: rgba(255, 255, 255, 0.5);
+            color: #111e34;
+            border-radius: 32px;
+            padding: 14px 36px;
+            text-decoration: none;
+            font-family: 'Inter', Arial, sans-serif;
+            font-weight: bold;
+            font-size: 1.3rem;
+            transition: background 0.2s, color 0.2s;
+            display: inline-block;
+            text-align: center;
+        }
+        .cta-btn:hover {
+            background: #3d5a8a;
+            transform: scale(1.04);
+        }
+        .hero-words {
+            margin-top: -20px;
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+        .hero-title {
+            font-family: 'Montserrat', Arial, sans-serif;
+            font-size: 2.8rem;
+            font-weight: 900;
+            color: #23406e;
+            margin-bottom: 16px;
+        }
+        .hero-desc {
+            color: #23406e;
+            font-size: 1.25rem;
+            margin-bottom: 36px;
+            font-weight: 500;
+        }
+        .hero-btns {
+            display: flex;
+            gap: 18px;
+            justify-content: center;
+        }
+        .hero-btn-primary {
+            background: #23406e;
+            color: #fff;
+            font-family: 'Inter', Arial, sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 32px;
+            padding: 16px 38px;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+            box-shadow: 0 2px 12px rgba(80,120,200,0.08);
+            text-decoration: none;
+        }
+        .hero-btn-secondary {
+            background: #fff;
+            color: #23406e;
+            font-family: 'Inter', Arial, sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            border: 2px solid #e0e6f7;
+            border-radius: 32px;
+            padding: 16px 38px;
+            cursor: pointer;
+        }
+        .bottom-section {
+            padding: 64px 0 48px 0;
+            width: 100vw;
+            box-sizing: border-box;
+            margin-top: 30px;
+        }
+        .bottom-title {
+            text-align: center;
+            font-family: 'Montserrat', Arial, sans-serif;
+            font-size: 2rem;
+            font-weight: 800;
+            color: #23406e;
+            margin-bottom: 48px;
+        }
+        .bottom-features {
+            display: flex;
+            justify-content: center;
+            gap: 80px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .bottom-feature {
+            flex: 1 1 260px;
+            max-width: 340px;
+            text-align: center;
+        }
+        .bottom-feature-title {
+            font-family: 'Montserrat', Arial, sans-serif;
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #23406e;
+            margin-bottom: 10px;
+        }
+        .bottom-feature-desc {
+            color: #444;
+            font-size: 1.08rem;
+            margin-bottom: 18px;
+        }
+        .bottom-feature-link {
+            color: #23406e;
+            font-weight: 600;
+            text-decoration: underline;
+        }
+        .pricing-section {
+            position: relative;
+            width: 100vw;
+            background: #eff7f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 60px 20px 40px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+        .pricing-container {
+            max-width: 600px;
+            width: 100%;
+        }
+        .pricing-title {
+            font-family: 'Montserrat', Arial, sans-serif;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #23406e;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .pricing-plans {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 40px;
+            align-items: stretch;
+        }
+        .plan-card {
+            padding: 25px;
+            border-radius: 12px;
+            border: 2px solid #dbe2e6;
+            background-color: #fff;
+            width: 260px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+        }
+        .plan-card.selected {
+            border-color: #23406e;
+            box-shadow: 0 4px 15px rgba(35, 64, 110, 0.1);
+        }
+        .plan-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #111e34;
+            margin-bottom: 8px;
+        }
+        .plan-price {
+            font-size: 1.2rem;
+            color: #111e34;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+        .plan-features {
+            font-size: 0.95rem;
+            color: #555;
+            line-height: 1.5;
+            flex-grow: 1;
+        }
+        .continue-button {
+            background-color: #23406e;
+            color: #fff;
+            padding: 16px 80px;
+            border-radius: 30px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .continue-button:hover {
+            background-color: #3d5a8a;
+        }
+        .divider-image-container {
+            position: relative;
+            line-height: 0;
+            height: 400px;
+            overflow: hidden;
+        }
+        .divider-image-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 150px;
+            background: linear-gradient(to bottom, #eff7f9 30%, transparent);
+            z-index: 1;
+        }
+        .divider-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .faq-section {
+            background: linear-gradient(180deg, #f7fafd 0%, #e8f0fa 100%);
+            padding: 64px 0;
+        }
+        .faq-title {
+            text-align: center;
+            font-family: 'Montserrat', Arial, sans-serif;
+            font-size: 2.1rem;
+            font-weight: 800;
+            color: #23406e;
+            margin-bottom: 48px;
+        }
+        .faq-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .faq-category {
+            margin-bottom: 40px;
+        }
+        .faq-category:last-child {
+            margin-bottom: 0;
+        }
+        .faq-category-title {
+            font-family: 'Montserrat', Arial, sans-serif;
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: #23406e;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+        .faq-list {
+            border-top: 2px solid #e0e6f7;
+        }
+        .faq-item {
+            border-bottom: 1px solid #e0e6f7;
+        }
+        .faq-question {
+            width: 100%;
+            background: none;
+            border: none;
+            text-align: left;
+            font-family: 'Inter', Arial, sans-serif;
+            font-size: 1.13rem;
+            font-weight: 600;
+            color: #111e34;
+            padding: 18px 0;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+        }
+        .faq-question:after {
+            content: '▼';
+            font-size: 1.1rem;
+            color: #6e8efb;
+            transition: transform 0.2s;
+        }
+        .faq-item.open .faq-question:after {
+            transform: rotate(180deg);
+        }
+        .faq-answer {
+            display: none;
+            color: #23406e;
+            padding-bottom: 18px;
+            line-height: 1.5;
+        }
+        .faq-item.open .faq-answer {
+            display: block;
+        }
+        .feature-card h3 {
+            margin-top: 0;
+            color: #002F5B;
+            font-size: 1.8rem;
+        }
+        .feature-card .btn {
+            background-color: #002F5B;
+            color: white;
+            padding: 14px 24px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 15px;
+            transition: background-color 0.3s;
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="hero-bg">
+        <div class="language-bar" id="languageBar">
+            <div class="language-options">
+                <span class="language-link selected" data-lang="en">EN</span>
+                <span class="language-link" data-lang="es">ES</span>
+                <span class="language-link" data-lang="fr">FR</span>
+                <span class="language-link" data-lang="zh-Hans">中文</span>
+                <span class="language-link" data-lang="ar">العربية</span>
+                <span class="language-link" data-lang="hi">हिन्दी</span>
+                <span class="language-link" data-lang="vi">Tiếng Việt</span>
+                <span class="language-link" data-lang="ko">한국어</span>
+                <span class="language-link" data-lang="fil">Filipino</span>
+                <span class="language-link" data-lang="bn">বাংলা</span>
+                <span class="language-link" data-lang="ur">اردو</span>
+            </div>
+        </div>
+        <div class="nav">
+            <div class="nav-left">
+                <a href="{{ url_for('home') }}" class="logo">
+                    <img src="/static/images/a3e929fd-63d2-4f73-abba-98a2528d3efb-removebg-preview.png" alt="AccessEDU Logo" class="logo-img">
+                    <span class="logo-text">AccessEDU</span>
+                </a>
+                <div class="nav-links">
+                    <a href="{{ url_for('chatbot') }}" class="nav-link">FAFSA Help</a>
+                    <a href="{{ url_for('scholarship_finder') }}" class="nav-link">Scholarships</a>
+                    <a href="{{ url_for('budget_scanner') }}" class="nav-link">Budget Planner</a>
+                    <a href="{{ url_for('learner') }}" class="nav-link">Learner</a>
+                    <a href="#" class="nav-link">FAQ</a>
+                </div>
+            </div>
+            <div class="nav-right">
+                {% if user %}
+                    <span style="color: #fff; font-weight: 700; font-size: 1.1rem; margin-right: 15px;">Hello, {{ user.name }}!</span>
+                    <a href="{{ url_for('logout') }}" class="login-link">Log Out</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}" class="login-link">Log In</a>
+                    <a href="{{ url_for('signup') }}" class="cta-btn">Sign Up</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="hero-words">
+        <div class="hero-title">Plan college with confidence.</div>
+        <div class="hero-desc">The free AI tool that helps first-gen and immigrant families understand and manage college finances</div>
+        <div class="hero-btns">
+            <a href="{{ url_for('signup') }}" class="hero-btn-primary">Get Started Free</a>
+            <button class="hero-btn-secondary">Already using AccessEDU? Log in here</button>
+        </div>
+    </div>
+
+    <div class="bottom-section">
+        <div class="bottom-title">We’re here to help you feel prepared and empowered</div>
+        <div class="bottom-features">
+            <div class="bottom-feature">
+                <img src="/static/images/checkmark.png" alt="Checkmark" style="width:2.5rem;height:2.5rem;object-fit:contain;margin-bottom:18px;">
+                <div class="bottom-feature-title">Understand FAFSA easily</div>
+                <div class="bottom-feature-desc">Step-by-step guidance in plain language so you don’t miss out on aid.</div>
+                <a href="#" class="bottom-feature-link">Learn More</a>
+            </div>
+            <div class="bottom-feature">
+                <img src="/static/images/moneybag.png" alt="Money Bag" style="width:3.125rem;height:3.125rem;object-fit:contain;margin-bottom:18px;">
+                <div class="bottom-feature-title">Find scholarships that fit you</div>
+                <div class="bottom-feature-desc">Get matched with scholarships and draft essays faster.</div>
+                <a href="#" class="bottom-feature-link">Learn More</a>
+            </div>
+            <div class="bottom-feature">
+                <img src="/static/images/statsgraph.png" alt="Stats Graph" style="width:3.125rem;height:3.125rem;object-fit:contain;margin-bottom:18px;">
+                <div class="bottom-feature-title">Plan your college budget</div>
+                <div class="bottom-feature-desc">See how tuition, aid, and living costs add up — and get smart suggestions to manage them.</div>
+                <a href="#" class="bottom-feature-link">Learn More</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="pricing-section">
+        <div class="pricing-container">
+            <h2 class="pricing-title">Get started with AccessEDU</h2>
+            <div class="pricing-plans">
+                <div class="plan-card selected">
+                    <div class="plan-name">Free Plan</div>
+                    <div class="plan-price">$0</div>
+                    <div class="plan-features">includes FAFSA help, scholarship finder, and budget planner</div>
+                </div>
+                <div class="plan-card">
+                    <div class="plan-name">Pro Plan</div>
+                    <div class="plan-price">$__/month</div>
+                    <div class="plan-features">Coming soon, with extra features</div>
+                </div>
+            </div>
+            <a href="{{ url_for('signup') }}" class="continue-button">Continue</a>
+        </div>
+    </div>
+
+    <div class="divider-image-container">
+        <img src="/static/background2.jpg" alt="A diverse group of students walking on a university campus." class="divider-image">
+    </div>
+
+    <div class="faq-section">
+        <div class="faq-title">Frequently Asked Questions</div>
+        <div class="faq-container">
+            <div class="faq-category">
+                <div class="faq-category-title">APPLYING FOR AID</div>
+                <div class="faq-list">
+                    <div class="faq-item"><button class="faq-question">How do I apply for FAFSA or state aid?</button><div class="faq-answer">Start by visiting the official FAFSA® website at studentaid.gov. You'll need to create an FSA ID for yourself and one for a parent. The application is free and asks for financial information about your family. Many states use your FAFSA information to determine eligibility for state aid, but some may have a separate application. Check your state's education agency website for specific requirements.</div></div>
+                    <div class="faq-item"><button class="faq-question">What types of financial aid am I eligible for?</button><div class="faq-answer">Eligibility depends on your financial need, academic merit, and other factors. The main types are: <strong>Grants</strong> (free money, usually need-based), <strong>Scholarships</strong> (free money, usually merit-based), <strong>Work-Study</strong> (earned money from a part-time job), and <strong>Federal Loans</strong> (borrowed money you must repay). Filing the FAFSA is the first step to finding out what you're eligible for.</div></div>
+                    <div class="faq-item"><button class="faq-question">How do I know if I qualify for financial aid, and how do I apply?</button><div class="faq-answer">The only way to know for sure is to apply! Most families qualify for some form of aid. The process starts with the Free Application for Federal Student Aid (FAFSA®) at studentaid.gov. This single application determines your eligibility for federal grants, loans, and work-study, and is also used by most states and colleges to award their own aid.</div></div>
+                </div>
+            </div>
+            <div class="faq-category">
+                <div class="faq-category-title">MANAGING YOUR MONEY</div>
+                <div class="faq-list">
+                    <div class="faq-item"><button class="faq-question">How do I create a budget as a student?</button><div class="faq-answer">Begin by listing all your income sources (work, family help, financial aid). Then, track all your expenses for a month, categorizing them into needs (tuition, housing, food) and wants (entertainment, dining out). Use a simple spreadsheet or budgeting app to see where your money goes. The key is to ensure your expenses don't exceed your income. Our Budget Planner tool can help you get started!</div></div>
+                    <div class="faq-item"><button class="faq-question">How do I avoid student loan debt or manage it wisely?</button><div class="faq-answer">Minimize debt by prioritizing grants and scholarships first. If you must borrow, only take what you absolutely need and choose federal loans over private ones for better terms. Create a budget to understand your repayment obligations before you graduate. Once in repayment, consider an income-driven repayment plan to keep payments manageable.</div></div>
+                    <div class="faq-item"><button class="faq-question">How do I avoid financial scams or predatory lenders?</button><div class="faq-answer">Be cautious of anyone who guarantees you a scholarship or charges a fee for financial aid help—the FAFSA is always free. Stick to official government websites (.gov) for federal aid. For loans, exhaust your federal options first, as they have better protections and lower fixed rates than most private loans. Never share your FSA ID or personal financial information with unsolicited sources.</div></div>
+                </div>
+            </div>
+            <div class="faq-category">
+                <div class="faq-category-title">SPECIAL GROUPS & TOPICS</div>
+                <div class="faq-list">
+                    <div class="faq-item"><button class="faq-question">What resources are available for first-gen students?</button><div class="faq-answer">Many colleges have dedicated programs for first-generation students offering mentorship, academic support, and community-building events. National organizations like I'm First!, QuestBridge, and Trio provide valuable resources, scholarships, and support networks. Don't hesitate to ask your college's student affairs office what specific resources they offer.</div></div>
+                    <div class="faq-item"><button class="faq-question">Are there scholarships specifically for first-gen or immigrant students?</button><div class="faq-answer">Yes, absolutely! Many organizations and colleges offer scholarships specifically for first-generation or immigrant students to promote diversity and access to education. Use scholarship search engines and filter for "first-generation" or your specific background. Organizations like TheDream.US and the Jack Kent Cooke Foundation have excellent programs.</div></div>
+                    <div class="faq-item"><button class="faq-question">Can I receive financial aid if I’m undocumented or have DACA status?</button><div class="faq-answer">While undocumented and DACA students are not eligible for federal aid, many states and colleges offer their own financial aid. Some states allow you to file a state-specific application instead of the FAFSA. Additionally, you can apply for private scholarships—many do not have citizenship requirements. Check your state's laws and your college's financial aid office for details.</div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.faq-question').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var item = btn.parentElement;
+                item.classList.toggle('open');
+            });
+        });
+    });
+    </script>
+</body>
+</html>
