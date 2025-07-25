@@ -18,7 +18,20 @@
             height: 100%;
             overflow-x: hidden;
         }
-
+        .scholarship-header-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto 32px auto;
+        background: rgba(220, 224, 228, 0.85);
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        border: 2px solid #23406e;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 120px;
+    }
         .site-header {
             background-color: #23406e;
             position: relative;
@@ -180,9 +193,8 @@
             margin: 0;
             background: #fff;
             border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            
             overflow: hidden;
-            border: 2px solid #23406e;
         }
 
         .header {
@@ -517,10 +529,12 @@
     </header>
     <!-- Insert the new content under the blue bar -->
     <div class="container">
-        <div class="header">
+        <div class="scholarship-header-container" style="display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 120px; padding-bottom: 20px; background: #e0e2e6;">
+        <div style="text-align: center;">
             <h1>Family College Financial Planning Tool</h1>
             <p>A Professional Analysis of Your Financial Future</p>
         </div>
+    </div>
         <div class="main-content">
             <div class="input-section" style="flex: 0 0 450px; max-width: 450px;">
                 <h2 class="section-title">Financial Inputs</h2>
