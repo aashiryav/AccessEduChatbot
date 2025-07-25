@@ -1,11 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en"><head>
     <meta charset="UT8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Scholarship Finder</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Inclusive+Sans&family=Imprima&family=Inter:wght@400;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&amp;family=Inclusive+Sans&amp;family=Imprima&amp;family=Inter:wght@400;700&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
     <style>
         html, body {
             height: 100%;
@@ -372,7 +370,67 @@
         }
     }
     </style>
-</head>
+<style>
+  .vt-augment {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .vt-augment.drawer {
+    display: none;
+    width: 700px;
+    background: white;
+    border: 1px solid #e6e6e6;
+    text-align: left;
+    z-index: 102;
+    position: fixed;
+    right: 0;
+    top: 0;
+    height: 100vh;
+    box-shadow: -4px 5px 8px -3px rgba(17, 17, 17, .16);
+    animation: slideToRight 0.5s 1 forwards;
+    transform: translateX(100vw);
+  }
+  .vt-augment.drawer[opened] {
+    display: flex;
+    animation: slideFromRight 0.2s 1 forwards;
+  }
+  .vt-augment > .spinner {
+    position: absolute;
+    z-index: 199;
+    top: calc(50% - 50px);
+    left: calc(50% - 50px);
+    border: 8px solid rgba(0, 0, 0, 0.2);
+    border-left-color: white;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1.2s linear infinite;
+  }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  @keyframes slideFromRight {
+    0% {
+      transform: translateX(100vw);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
+  @keyframes slideToRight {
+    100% {
+      transform: translateX(100vw);
+      display: none;
+    }
+  }
+  @media screen and (max-width: 700px) {
+    .vt-augment.drawer {
+      width: 100%;
+    }
+  }
+</style></head>
 <body>
     <header class="site-header">
         <div class="language-bar" id="languageBar">
@@ -405,31 +463,31 @@
             </div>
         </div>
     </header>
-    <div class="scholarship-header-container" style="display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 120px; background: #e0e2e6;">
+    <div class="scholarship-header-container" style="display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 120px; padding-bottom: 20px; background: #e0e2e6;">
         <div style="text-align: center;">
-            <h1 class="scholarship-header-title" style="margin-bottom: 10px;">Personalized Scholarship Discovery Tool</h1>
+            <h1 class="scholarship-header-title">Personalized Scholarship Discovery Tool</h1>
             <p class="scholarship-header-subtitle">Find Funding Opportunities</p>
         </div>
     </div>
-    <div class="main-content" style="display: flex; justify-content: center; align-items: flex-start; gap: 40px; max-width: 1760px; margin: 0 auto;">
+    <div class="main-content" style="display: flex; justify-content: center; align-items: flex-start; gap: 40px; transform: translateY(-40px); max-width: 1760px;=">
         <div style="flex: 1; max-width: 640px;">
             <div class="card" style="padding: 32px 24px; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.08);">
-                <h2 style="font-size: 1.5rem; font-weight: 700; color: #23406e; margin-bottom: 24px; text-align: left; margin-top: -20px;">Find Your Scholarships</h2>
-                <form id="filter-form">
+                <h2 style="font-size: 1.5rem; font-weight: 700; color: #23406e; text-align: left; transform: translateY(-1.7rem);">Find Your Scholarships</h2>
+                <form id="filter-form" style="transform: translateY(-1.5rem);">
                     <div class="scholarship-form-group" style="margin-bottom: 18px;">
                         <label for="grade-level" style="font-weight: 600; color: #23406e;">Grade Level</label>
                         <select id="grade-level" class="form-select" style="margin-top: 6px;">
                             <option>High School Freshman</option>
                             <option>High School Sophomore</option>
                             <option>High School Junior</option>
-                            <option selected>High School Senior</option>
+                            <option selected="">High School Senior</option>
                             <option>Undergraduate</option>
                             <option>Graduate</option>
                         </select>
                     </div>
                     <div class="scholarship-form-group" style="margin-bottom: 18px;">
                         <label for="gpa" style="font-weight: 600; color: #23406e;">GPA (Optional)</label>
-                        <input type="text" id="gpa" placeholder="e.g., 3.8" class="form-input" style="margin-top: 6px;">
+                        <input type="text" id="gpa" placeholder="e.g., 3.8" class="form-input" style="b">
                         <div style="font-size: 0.95em; color: #888; margin-top: 2px;">Enter your GPA on a 4.0 scale</div>
                     </div>
                     <div class="scholarship-form-group" style="margin-bottom: 18px;">
@@ -451,7 +509,7 @@
                         <div style="margin-top: 6px;">
                             <label style="margin-right: 18px;"><input type="radio" name="essay" value="yes" class="form-radio"> Essay Required</label>
                             <label style="margin-right: 18px;"><input type="radio" name="essay" value="no" class="form-radio"> No Essay</label>
-                            <label><input type="radio" name="essay" value="any" checked class="form-radio"> Any</label>
+                            <label><input type="radio" name="essay" value="any" checked="" class="form-radio"> Any</label>
                         </div>
                     </div>
                     <button type="button" id="find-button" class="btn-primary" style="margin-top: 18px; width: 100%; font-size: 1.1rem;">🔍 Find Scholarships</button>
@@ -460,8 +518,8 @@
         </div>
         <div style="flex: 1.2; max-width: 800px;">
             <div class="card results-panel" style="padding: 32px 24px; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); min-height: 420px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                <div class="results-header" style="width: 100%; text-align: left; margin-bottom: 18px; display: flex; align-items: flex-start; height: 44px;">
-                    <h2 class="results-title" style="font-size: 1.5rem; font-weight: 700; color: #23406e; margin-top: -20px; display: flex; align-items: center; height: 50px;">Your Scholarship Matches</h2>
+                <div class="results-header" style="width: 100%; text-align: left; display: flex; align-items: flex-start; height: 44px;">
+                    <h2 class="results-title" style="font-size: 1.5rem; font-weight: 700; color: #23406e; flex; align-items: center; transform: translateY(-4rem); height: 10px; ">Your Scholarship Matches</h2>
                 </div>
                 <div id="scholarship-results-list" class="results-container empty-state" style="background: none; box-shadow: none; padding: 0; min-height: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;">
                     <img src="/static/grad-removebg-preview.png" alt="Scholarship Icon" style="width: 128px; height: 128px; margin-bottom: 18px; opacity: 0.5;">
@@ -471,5 +529,31 @@
             </div>
         </div>
     </div>
-</body>
-</html>
+
+<div>
+    <div class="vtResetstyles">
+    <div id="vtoverlay" class="vtoverlay vthidden w3-animate-right
+    w3-container">
+    <div class="vtmain vthidden" id="vtmain">
+      <div class="vtcontactus">
+          <a id="linktest" href="https://www.virustotal.com">
+            <img class="vtlogo-popup" style=" width: 32px;
+            height: 32px;" src="chrome-extension://efbjojhplkelaegfbieplglfidafgoka/icons/vt-logo.svg">
+          </a>
+          <a href="https://www.virustotal.com">VT4Browsers
+          </a>
+      </div>
+      <span id="vtclose"><strong>X</strong></span>
+      <div class="vttextpopup vthidden" id="statustext">
+        <div class="vtscanstatus" id="vtscanstatus"></div>
+        <div class="vtprogress vthidden" id="vtprogress"></div>
+        <br id="brfile">
+        <div class="vtscanstatus" id="vtscanfilelink"></div>
+      </div>
+      <div class="vttextpopup vthidden" id="widgettext">
+        <div id="vtwidgetError"></div>
+      </div>
+    </div>
+    </div>
+    </div>
+    <div id="vt-augment-container" class="vtzindex vt-augment drawer" style="background: rgb(49, 61, 90);"></div></div><span class="vttooltiptext vthidden">&nbsp;Click to open VirusTotal report&nbsp;<br>with VT Augment</span><style></style></body></html>
