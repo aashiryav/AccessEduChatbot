@@ -1,97 +1,475 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UT8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scholarship Finder - AccessEDU</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <title>AI Scholarship Finder</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Inclusive+Sans&family=Imprima&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Global Styles */
-        body, html { margin: 0; padding: 0; font-family: 'Inter', sans-serif; background-color: #fff; height: 100%; }
-        
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Poppins', 'Inter', 'Segoe UI', Arial, sans-serif;
+            background: #f0f2f5;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .outer-container {
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            width: 100vw;
+            box-sizing: border-box;
+            padding: 0;
+        }
         .site-header {
             background-color: #23406e;
             position: relative;
             padding: 12px 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 12px;
+            margin-bottom: 32px;
         }
-        .main-container {
+        .nav {
             position: relative;
             width: 100%;
             display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+            z-index: 2;
+            box-sizing: border-box;
+            margin-top: 0;
+            align-self: stretch;
+        }
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 36px;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            background: rgba(255, 255, 255, 0.5);
+            padding: 10px;
+            border-radius: 12px;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        .logo:hover {
+            background: rgba(255, 255, 255, 0.7);
+        }
+        .logo-img {
+            width: 64px;
+            height: 64px;
+            object-fit: contain;
+        }
+        .logo-text {
+            font-family: 'Montserrat', 'Inclusive Sans', 'Segoe UI', Arial, sans-serif;
+            font-weight: 900;
+            font-size: 2rem;
+            color: #fff;
+            letter-spacing: 1px;
+            line-height: 1;
+        }
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .nav-link {
+            color: #fff;
+            font-family: 'Inter', Arial, sans-serif;
+            font-weight: 700;
+            font-size: 1.3rem;
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.3);
+            padding: 12px 17px;
+            border-radius: 12px;
+            transition: background 0.2s;
+        }
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+        .main-content {
+            flex: 1;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 0;
+            display: flex;
+            flex-direction: row;
+            gap: 40px;
+        }
+        .card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            padding: 32px 24px;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+        }
+        .form-select, .form-input {
+            border-radius: 8px;
+            border: 1px solid #d1d5db;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            width: 100%;
+            padding: 10px 12px;
+            font-size: 1rem;
+            margin-top: 4px;
+        }
+        .form-select:focus, .form-input:focus {
+            outline: none;
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+        }
+        .btn-primary {
+            background-color: #23406e;
+            color: white;
+            border-radius: 8px;
+            padding: 12px 24px;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+            border: none;
+            margin-top: 16px;
+            width: 100%;
+            font-size: 1.1rem;
+        }
+        .btn-primary:hover {
+            background-color: #1a3057;
+        }
+        .results-panel {
+            flex: 2;
+            display: flex;
             flex-direction: column;
-            height: 100%;
+        }
+        .results-header {
+            margin-bottom: 24px;
+        }
+        .results-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #002F5B;
+        }
+        .results-container {
+            background: #fff;
+            border-radius: 12px;
+            padding: 24px;
+            min-height: 310px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+        }
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 300px;
+            color: #888;
+        }
+        .header-bar {
+            background: #23406e;
+            padding: 0 0 32px 0;
+            position: relative;
         }
         .language-bar {
-            background: transparent;
+            background: #C8D2DC;
             display: flex;
-            justify-content: flex-end;
             align-items: center;
-            padding: 0;
+            justify-content: flex-end;
+            padding: 12px 24px;
             gap: 24px;
+            border-radius: 12px;
             font-size: 1.3rem;
             font-family: 'Inter', Arial, sans-serif;
             font-weight: 700;
             letter-spacing: 1px;
-            border-bottom: none;
-            border-radius: 0;
-            position: relative;
-            top: auto;
-            right: auto;
-            z-index: 2;
-            width: auto;
-            min-width: 0;
-            max-width: none;
         }
         .language-link {
-            color: #fff;
+            color: #002F5B;
             text-decoration: none;
             cursor: pointer;
             padding: 8px 18px;
             border-radius: 8px;
             transition: background 0.2s, color 0.2s;
+            font-weight: 700;
         }
-        .language-link.selected, .language-link:hover { background: #fff; color: #23406e; }
-
-        /* Navigation Bar */
-        .nav {
-            background: transparent;
+        .language-link.selected, .language-link:hover {
+            background: #002F5B;
+            color: #fff;
+        }
+        .header-content {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 15px 0;
-            box-shadow: none;
-            margin-top: 0;
+            margin: 32px auto 0 auto;
+            max-width: 1200px;
         }
-        /* ... other nav styles ... */
-
-        /* Scholarship Finder Specifics */
-        .container { flex-grow: 1; overflow-y: auto; background: #F9F9F9; }
-        /* ... other container styles ... */
+        .logo-box {
+            display: flex;
+            align-items: center;
+            background: #AEB8C6;
+            border-radius: 16px;
+            padding: 18px 32px;
+            gap: 18px;
+        }
+        .logo-img {
+            width: 64px;
+            height: 64px;
+        }
+        .logo-text {
+            font-family: 'Montserrat', 'Inclusive Sans', 'Segoe UI', Arial, sans-serif;
+            font-weight: 900;
+            font-size: 2.2rem;
+            color: #fff;
+            letter-spacing: 1px;
+        }
+        .nav-buttons {
+            display: flex;
+            gap: 24px;
+        }
+        .nav-btn {
+            background: #AEB8C6;
+            color: #23406e;
+            font-family: 'Inter', Arial, sans-serif;
+            font-weight: 700;
+            font-size: 1.3rem;
+            border: none;
+            border-radius: 16px;
+            padding: 18px 32px;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .nav-btn:hover, .nav-btn.active {
+            background: #fff;
+            color: #23406e;
+        }
+        .scholarship-form-group {
+            margin-bottom: 10px;
+        }
+        /* Ensure both filter and results containers have the same max-width and margin */
+        .scholarship-columns {
+            display: flex;
+            gap: 40px;
+            justify-content: center;
+        }
+        .scholarship-column {
+            max-width: 700px;
+            width: 100%;
+        }
+        .scholarship-column:last-child {
+            max-width: 700px;
+            width: 100%;
+        }
+        @media (max-width: 1400px) {
+            .scholarship-column {
+                max-width: 100%;
+                width: 100%;
+            }
+            .scholarship-column:last-child {
+                max-width: 100%;
+                width: 100%;
+            }
+        }
+        @media (max-width: 900px) {
+            .scholarship-columns {
+                flex-direction: column;
+                align-items: center;
+            }
+            .scholarship-column {
+                max-width: 100%;
+                width: 100%;
+            }
+            .scholarship-column:last-child {
+                max-width: 100%;
+                width: 100%;
+            }
+        }
+    /* Add styles for the new scholarship header container */
+    .scholarship-header-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto 32px auto;
+        background: rgba(220, 224, 228, 0.85);
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        border: 2px solid #23406e;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 120px;
+    }
+    .scholarship-header {
+        /* Removed background, padding, border-radius, box-shadow, and display styles to eliminate the white rectangle */
+        text-align: center;
+        width: 100%;
+        box-sizing: border-box;
+        /* Only keep flex-direction and align-items if needed elsewhere */
+    }
+    .scholarship-header-title {
+        font-family: 'Montserrat', 'Inclusive Sans', 'Segoe UI', Arial, sans-serif;
+        font-size: 2.7em;
+        font-weight: 900;
+        color: #002F5B;
+        margin-bottom: 12px;
+        word-break: break-word;
+        line-height: 1.1;
+    }
+    .scholarship-header-subtitle {
+        font-size: 1.5em;
+        color: #23406e;
+        margin-bottom: 10px;
+        font-weight: 700;
+        word-break: break-word;
+        line-height: 1.2;
+    }
+    .scholarship-header-tagline {
+        font-size: 1.1em;
+        color: #555;
+        opacity: 0.85;
+        margin-top: 12px;
+        font-weight: 500;
+        word-break: break-word;
+        line-height: 1.2;
+    }
+    @media (max-width: 900px) {
+        .scholarship-header-container {
+            max-width: 98vw;
+            margin: 0 1vw 24px 1vw;
+            min-height: 80px;
+        }
+        .scholarship-header {
+            padding: 18px 4vw 10px 4vw;
+        }
+        .scholarship-header-title {
+            font-size: 1.3em;
+        }
+        .scholarship-header-subtitle {
+            font-size: 1em;
+        }
+        .scholarship-header-tagline {
+            font-size: 0.8em;
+        }
+    }
     </style>
 </head>
 <body>
     <header class="site-header">
         <div class="language-bar" id="languageBar">
-             <span class="language-link selected" data-lang="en">EN</span>
-             <span class="language-link" data-lang="es">ES</span>
-             <span class="language-link" data-lang="fr">FR</span>
-             <span class="language-link" data-lang="zh-Hans">中文</span>
-             <span class="language-link" data-lang="ar">العربية</span>
-             <span class="language-link" data-lang="hi">हिन्दी</span>
-             <span class="language-link" data-lang="vi">Tiếng Việt</span>
-             <span class="language-link" data-lang="ko">한국어</span>
-             <span class="language-link" data-lang="fil">Filipino</span>
-             <span class="language-link" data-lang="bn">বাংলা</span>
-             <span class="language-link" data-lang="ur">اردو</span>
+            <span class="language-link selected" data-lang="en">EN</span>
+            <span class="language-link" data-lang="es">ES</span>
+            <span class="language-link" data-lang="fr">FR</span>
+            <span class="language-link" data-lang="zh-Hans">中文</span>
+            <span class="language-link" data-lang="ar">العربية</span>
+            <span class="language-link" data-lang="hi">हिन्दी</span>
+            <span class="language-link" data-lang="vi">Tiếng Việt</span>
+            <span class="language-link" data-lang="ko">한국어</span>
+            <span class="language-link" data-lang="fil">Filipino</span>
+            <span class="language-link" data-lang="bn">বাংলা</span>
+            <span class="language-link" data-lang="ur">اردو</span>
         </div>
         <div class="nav">
-            <!-- Navigation Bar Content -->
+            <div class="nav-left">
+                <a href="/" class="logo">
+                    <img src="/static/images/a3e929fd-63d2-4f73-abba-98a2528d3efb-removebg-preview.png" alt="AccessEDU Logo" class="logo-img">
+                    <span class="logo-text">AccessEDU</span>
+                </a>
+            </div>
+            <div class="nav-right">
+                <div class="nav-links">
+                    <a href="/chatbot" class="nav-link">FAFSA Help</a>
+                    <a href="/scholarship-finder" class="nav-link">Scholarships</a>
+                    <a href="/budget-scanner" class="nav-link">Budget Planner</a>
+                    <a href="/learner" class="nav-link">Learner</a>
+                </div>
+            </div>
         </div>
     </header>
-    <div class="main-container">
-        <div class="container">
-            <!-- Scholarship Finder Content -->
+    <div class="scholarship-header-container" style="display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 120px; background: #e0e2e6;">
+        <div style="text-align: center;">
+            <h1 class="scholarship-header-title" style="margin-bottom: 10px;">Personalized Scholarship Discovery Tool</h1>
+            <p class="scholarship-header-subtitle">Find Funding Opportunities</p>
+        </div>
+    </div>
+    <div class="main-content" style="display: flex; justify-content: center; align-items: flex-start; gap: 40px; max-width: 1760px; margin: 0 auto;">
+        <div style="flex: 1; max-width: 640px;">
+            <div class="card" style="padding: 32px 24px; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.08);">
+                <h2 style="font-size: 1.5rem; font-weight: 700; color: #23406e; margin-bottom: 24px; text-align: left; margin-top: -20px;">Find Your Scholarships</h2>
+                <form id="filter-form">
+                    <div class="scholarship-form-group" style="margin-bottom: 18px;">
+                        <label for="grade-level" style="font-weight: 600; color: #23406e;">Grade Level</label>
+                        <select id="grade-level" class="form-select" style="margin-top: 6px;">
+                            <option>High School Freshman</option>
+                            <option>High School Sophomore</option>
+                            <option>High School Junior</option>
+                            <option selected>High School Senior</option>
+                            <option>Undergraduate</option>
+                            <option>Graduate</option>
+                        </select>
+                    </div>
+                    <div class="scholarship-form-group" style="margin-bottom: 18px;">
+                        <label for="gpa" style="font-weight: 600; color: #23406e;">GPA (Optional)</label>
+                        <input type="text" id="gpa" placeholder="e.g., 3.8" class="form-input" style="margin-top: 6px;">
+                        <div style="font-size: 0.95em; color: #888; margin-top: 2px;">Enter your GPA on a 4.0 scale</div>
+                    </div>
+                    <div class="scholarship-form-group" style="margin-bottom: 18px;">
+                        <label for="gender" style="font-weight: 600; color: #23406e;">Gender</label>
+                        <select id="gender" class="form-select" style="margin-top: 6px;">
+                            <option>Any</option>
+                            <option>Female</option>
+                            <option>Male</option>
+                            <option>Non-binary</option>
+                        </select>
+                    </div>
+                    <div class="scholarship-form-group" style="margin-bottom: 18px;">
+                        <label for="major" style="font-weight: 600; color: #23406e;">Intended Major (Optional)</label>
+                        <input type="text" id="major" placeholder="e.g., Computer Science" class="form-input" style="margin-top: 6px;">
+                        <div style="font-size: 0.95em; color: #888; margin-top: 2px;">Enter your field of study or leave blank for all majors</div>
+                    </div>
+                    <div class="scholarship-form-group" style="margin-bottom: 18px;">
+                        <label style="font-weight: 600; color: #23406e;">Essay Preference</label>
+                        <div style="margin-top: 6px;">
+                            <label style="margin-right: 18px;"><input type="radio" name="essay" value="yes" class="form-radio"> Essay Required</label>
+                            <label style="margin-right: 18px;"><input type="radio" name="essay" value="no" class="form-radio"> No Essay</label>
+                            <label><input type="radio" name="essay" value="any" checked class="form-radio"> Any</label>
+                        </div>
+                    </div>
+                    <button type="button" id="find-button" class="btn-primary" style="margin-top: 18px; width: 100%; font-size: 1.1rem;">🔍 Find Scholarships</button>
+                </form>
+            </div>
+        </div>
+        <div style="flex: 1.2; max-width: 800px;">
+            <div class="card results-panel" style="padding: 32px 24px; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); min-height: 420px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                <div class="results-header" style="width: 100%; text-align: left; margin-bottom: 18px; display: flex; align-items: flex-start; height: 44px;">
+                    <h2 class="results-title" style="font-size: 1.5rem; font-weight: 700; color: #23406e; margin-top: -20px; display: flex; align-items: center; height: 50px;">Your Scholarship Matches</h2>
+                </div>
+                <div id="scholarship-results-list" class="results-container empty-state" style="background: none; box-shadow: none; padding: 0; min-height: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <img src="/static/grad-removebg-preview.png" alt="Scholarship Icon" style="width: 128px; height: 128px; margin-bottom: 18px; opacity: 0.5;">
+                    <div style="font-size: 1.2rem; font-weight: 600; color: #23406e; margin-bottom: 10px; text-align: center;">Ready to find scholarships?</div>
+                    <div style="font-size: 1rem; color: #555; text-align: center; max-width: 340px;">Fill out the form on the left to discover scholarships that match your profile. Our AI will analyze thousands of opportunities to find the best matches for you.</div>
+                </div>
+            </div>
         </div>
     </div>
 </body>
-</html> 
+</html>

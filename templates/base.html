@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}AccessEDU - Scholarship Finder{% endblock %}</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <!-- Header -->
+    <div class="site-header">
+        <div class="language-bar" id="languageBar">
+            <span class="language-link selected" data-lang="en">EN</span>
+            <span class="language-link" data-lang="es">ES</span>
+            <span class="language-link" data-lang="fr">FR</span>
+            <span class="language-link" data-lang="zh-Hans">中文</span>
+            <span class="language-link" data-lang="ar">العربية</span>
+            <span class="language-link" data-lang="hi">हिन्दी</span>
+            <span class="language-link" data-lang="vi">Tiếng Việt</span>
+            <span class="language-link" data-lang="ko">한국어</span>
+            <span class="language-link" data-lang="fil">Filipino</span>
+            <span class="language-link" data-lang="bn">বাংলা</span>
+            <span class="language-link" data-lang="ur">اردو</span>
+        </div>
+        <div class="nav">
+            <div class="nav-left">
+                <a href="{{ url_for('home') }}" class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <span class="logo-text">AccessEDU</span>
+                </a>
+            </div>
+            <div class="nav-right">
+                <div class="nav-links">
+                    <a href="#" class="nav-link">FAFSA Help</a>
+                    <a href="{{ url_for('scholarship_finder') }}" class="nav-link active">Scholarships</a>
+                    <a href="#" class="nav-link">Budget Planner</a>
+                    <a href="#" class="nav-link">Learner</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; 2025 AccessEDU. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>
