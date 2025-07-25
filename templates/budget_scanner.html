@@ -1,1311 +1,1028 @@
 <!DOCTYPE html>
-
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Budget Scanner - AccessEDU</title>
-
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Inter:wght@400;700&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Inter:wght@400;700&display=swap"
+        rel="stylesheet">
     <style>
-
-        body, html {
-
+        body,
+        html {
             margin: 0;
-
             padding: 0;
-
             font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
-
             background-color: #F9F9F9;
-
             color: #002F5B;
-
             height: 100%;
-
             overflow-x: hidden;
-
         }
 
         .site-header {
-
             background-color: #23406e;
-
             position: relative;
-
             padding: 12px 24px;
-
             display: flex;
-
             flex-direction: column;
-
             align-items: flex-end;
-
             gap: 12px;
-
             margin-bottom: 32px;
-
         }
 
         .language-bar {
-
             background: #C8D2DC;
-
             display: flex;
-
             align-items: center;
-
             padding: 12px 24px;
-
             gap: 24px;
-
             border-radius: 12px;
-
             font-size: 1.3rem;
-
             font-family: 'Inter', Arial, sans-serif;
-
             font-weight: 700;
-
             letter-spacing: 1px;
-
         }
 
         .language-link {
-
             color: #002F5B;
-
             text-decoration: none;
-
             cursor: pointer;
-
             padding: 8px 18px;
-
             border-radius: 8px;
-
             transition: background 0.2s, color 0.2s;
-
         }
 
-        .language-link.selected, .language-link:hover {
-
+        .language-link.selected,
+        .language-link:hover {
             background: #002F5B;
-
             color: #fff;
-
         }
 
         .nav {
-
             position: relative;
-
             width: 100%;
-
             display: flex;
-
             align-items: center;
-
             justify-content: space-between;
-
             padding: 12px 0;
-
             z-index: 2;
-
             box-sizing: border-box;
-
             margin-top: 0;
-
             align-self: stretch;
-
         }
 
         .nav-left {
-
             display: flex;
-
             align-items: center;
-
             gap: 36px;
-
         }
 
         .logo {
-
             display: flex;
-
             align-items: center;
-
             gap: 18px;
-
             background: rgba(255, 255, 255, 0.5);
-
             padding: 10px;
-
             border-radius: 12px;
-
             text-decoration: none;
-
             transition: background 0.2s;
-
         }
 
         .logo:hover {
-
             background: rgba(255, 255, 255, 0.7);
-
         }
 
         .logo-img {
-
             width: 64px;
-
             height: 64px;
-
             object-fit: contain;
-
         }
 
         .logo-text {
-
             font-family: 'Montserrat', 'Inclusive Sans', 'Segoe UI', Arial, sans-serif;
-
             font-weight: 900;
-
             font-size: 2rem;
-
             color: #fff;
-
             letter-spacing: 1px;
-
             line-height: 1;
-
         }
 
         .nav-links {
-
             display: flex;
-
             align-items: center;
-
             gap: 15px;
-
         }
 
         .nav-link {
-
             color: #fff;
-
             font-family: 'Inter', Arial, sans-serif;
-
             font-weight: 700;
-
             font-size: 1.3rem;
-
             text-decoration: none;
-
             background: rgba(255, 255, 255, 0.3);
-
             padding: 12px 17px;
-
             border-radius: 12px;
-
             transition: background 0.2s;
-
         }
 
         .nav-link:hover {
-
             background: rgba(255, 255, 255, 0.5);
-
         }
 
         .nav-right {
-
             display: flex;
-
             align-items: center;
-
             gap: 24px;
-
         }
 
         .login-link {
-
             color: #24527A;
-
             font-family: 'Inter', Arial, sans-serif;
-
             font-weight: 700;
-
             font-size: 1.1rem;
-
             text-decoration: none;
-
             background: rgba(255, 255, 255, 0.5);
-
             padding: 12px 24px;
-
             border-radius: 32px;
-
             transition: background 0.2s;
-
         }
 
         .login-link:hover {
-
             background: rgba(255, 255, 255, 0.7);
-
             text-decoration: none;
-
         }
 
         .cta-btn {
-
             background: #23406e;
-
             color: #fff;
-
             font-family: 'Inter', Arial, sans-serif;
-
             font-weight: 700;
-
             font-size: 1.1rem;
-
             border: none;
-
             border-radius: 32px;
-
             padding: 12px 32px;
-
             cursor: pointer;
-
             transition: background 0.2s, transform 0.2s;
-
-            box-shadow: 0 2px 12px rgba(80,120,200,0.08);
-
+            box-shadow: 0 2px 12px rgba(80, 120, 200, 0.08);
             text-decoration: none;
-
             display: inline-block;
-
         }
 
         .cta-btn:hover {
-
             background: #3d5a8a;
-
             transform: scale(1.04);
-
         }
 
         /* --- Budget Planner Content --- */
-
         .container {
-
             width: 100%;
-
             max-width: none;
-
-            margin: 10px 0 0 0;
-
+            margin: 0;
             background: #fff;
-
             border-radius: 15px;
-
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             overflow: hidden;
-
             border: 2px solid #23406e;
-
         }
 
         .header {
-
             background: #DFE4E6;
-
             color: #002F5B;
-
             padding: 30px 40px;
-
             text-align: center;
-
             border-radius: 15px 15px 0 0;
-
             border-bottom: 2px solid #23406e;
-
         }
 
         .header h1 {
-
             font-family: 'Montserrat', 'Inclusive Sans', 'Segoe UI', Arial, sans-serif;
-
             font-size: 2.5em;
-
             margin-bottom: 10px;
-
             color: #002F5B;
-
         }
 
         .header p {
-
             font-size: 1.2em;
-
             opacity: 0.9;
-
             color: #002F5B;
-
         }
 
         .main-content {
-
             display: flex;
-
             flex-direction: row;
-
             gap: 30px;
-
             padding: 30px;
-
         }
 
         .input-section {
-
             background: #DFE4E6;
-
             padding: 25px;
-
             border-radius: 10px;
-
             border: 2px solid #23406e;
-
             height: fit-content;
-
         }
 
         .results-area {
-
             display: flex;
-
             flex-direction: column;
-
             gap: 30px;
-
-            flex: 1; /* Allow this area to grow */
-
+            flex: 1 1 0;
+            min-width: 0;
         }
 
         .comparison-section {
-
-            display: grid;
-
-            grid-template-columns: 1fr 1fr;
-
+            display: flex;
+            flex-direction: row;
             gap: 30px;
-
+            width: 100%;
         }
 
         .comparison-card {
-
             background: #fff;
-
             padding: 25px;
-
             border-radius: 10px;
-
             border: 2px solid #23406e;
-
             display: flex;
-
             flex-direction: column;
-
+            flex: 1 1 0;
+            min-width: 0;
+            max-width: 100%;
         }
 
-        .before-college { border-top: 5px solid #27ae60; }
+        .before-college {
+            border-top: 5px solid #23406e;
+        }
 
-        .after-college { border-top: 5px solid #e74c3c; }
+        .after-college {
+            border-top: 5px solid #23406e;
+        }
 
         .section-title {
-
             color: #002F5B;
-
             font-size: 1.5em;
-
             margin-bottom: 20px;
-
             padding-bottom: 10px;
-
             border-bottom: 3px solid #24527A;
-
             font-family: 'Montserrat', 'Inclusive Sans', 'Segoe UI', Arial, sans-serif;
-
         }
 
-        .input-group { margin-bottom: 20px; }
+        .input-group {
+            margin-bottom: 20px;
+        }
 
         .input-group h3 {
-
             color: #002F5B;
-
             margin-bottom: 15px;
-
             font-size: 1.1em;
-
             font-family: 'Montserrat', 'Inclusive Sans', 'Segoe UI', Arial, sans-serif;
-
         }
 
         .input-row {
-
             display: flex;
-
             justify-content: space-between;
-
             align-items: center;
-
             margin-bottom: 10px;
-
             padding: 10px;
-
             background: #fff;
-
             border-radius: 5px;
-
             border: 1px solid #ddd;
-
         }
 
         .input-row label {
-
             flex-basis: 60%;
-
             color: #002F5B;
-
             font-weight: 500;
-
         }
 
         .input-controls {
-
             display: flex;
-
             align-items: center;
-
             gap: 8px;
-
         }
 
-        .input-row input, .input-row select {
-
+        .input-row input,
+        .input-row select {
             width: 100px;
-
             padding: 8px 12px;
-
             border: 2px solid #ddd;
-
             border-radius: 5px;
-
             font-size: 14px;
-
             text-align: right;
-
             font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
-
         }
 
         .period-select {
-
             width: 80px !important;
-
             text-align: center !important;
-
             font-size: 12px;
-
             padding: 6px 4px !important;
-
         }
 
         .calculate-btn {
-
             width: 100%;
-
             padding: 15px;
-
             background: #23406e;
-
             color: white;
-
             border: none;
-
             border-radius: 8px;
-
             font-size: 1.2em;
-
             font-weight: bold;
-
             cursor: pointer;
-
             transition: all 0.2s;
-
             margin-top: 20px;
-
-            font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
-
+            font-family: 'Inter', '  UI', Arial, sans-serif;
         }
 
         .calculate-btn:hover {
-
             background: #24527A;
-
             transform: translateY(-2px);
-
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
         .result-item {
-
             display: flex;
-
             justify-content: space-between;
-
             padding: 10px 0;
-
             border-bottom: 1px solid #eee;
-
             font-size: 1em;
-
         }
 
-        .result-item:last-child { border-bottom: none; }
+        .result-item:last-child {
+            border-bottom: none;
+        }
 
         .result-total {
-
             font-weight: bold;
-
             font-size: 1.1em;
-
             margin-top: 10px;
-
             padding-top: 10px;
-
             border-top: 2px solid #24527A;
-
         }
 
-        .result-total.total-before { color: #002F5B; }
+        .result-total.total-before {
+            color: #002F5B;
+        }
 
-        .result-total.total-after { color: #002F5B; }
+        .result-total.total-after {
+            color: #002F5B;
+        }
 
         .pie-chart-container {
-
             margin-top: 20px;
-
             height: 280px;
-
             position: relative;
-
-            max-width: 100%; /* Changed for better scaling */
-
+            max-width: 50%;
             margin-left: auto;
-
             margin-right: auto;
-
         }
 
         .additional-analyses {
-
             padding: 30px;
-
             background: #DFE4E6;
-
             border-radius: 10px;
-
             margin: 0 30px 30px 30px;
-
             border: 2px solid #23406e;
+        }
 
+        .analysis-grid>.analysis-card:first-child {
+            /* span the whole grid row so its edges match the card beneath */
+            grid-column: 1 / -1;
+        }
+
+        .analysis-grid>.analysis-card:first-child .chart-container-large {
+            /* horizontally center the doughnut chart inside the card */
+            margin-left: auto !important;
+            margin-right: auto !important;
+            max-width: 500px;
+            /* optional: keeps it from stretching too wide */
         }
 
         .analysis-grid {
-
             display: grid;
-
             grid-template-columns: 2fr 1fr;
-
             gap: 30px;
-
             margin-bottom: 30px;
-
         }
 
         .analysis-card {
-
             background: #fff;
-
             padding: 25px;
-
             border-radius: 10px;
-
             border: 2px solid #23406e;
+        }
 
+        #expense-category-comparison-card {
+            /* full‑width so it lines up with the two pie‑chart cards above */
+            flex: 1 1 100%;
+            margin: 32px 0 0 0 !important;
+            /* remove side auto‑margins */
+        }
+
+        #expense-category-comparison-card .chart-container-large {
+            /* give the bar chart more vertical real‑estate */
+            height: 450px;
+            /* was 300px */
+            max-width: 100%;
+            /* ensure it stretches edge‑to‑edge */
         }
 
         .analysis-card h3 {
-
             color: #002F5B;
-
             margin-bottom: 20px;
-
             font-size: 1.3em;
-
             text-align: center;
-
             font-family: 'Montserrat', 'Inclusive Sans', 'Segoe UI', Arial, sans-serif;
-
         }
 
         .chart-container-large {
-
             width: 100%;
-
             max-width: 100%;
-
-            height: 400px; /* Increased height for better visibility */
-
+            height: 300px;
             margin-left: 0;
-
             margin-right: 0;
-
         }
 
         .timeline-table {
-
             width: 100%;
-
             border-collapse: collapse;
-
             margin-bottom: 20px;
-
         }
 
-        .timeline-table th, .timeline-table td {
-
+        .timeline-table th,
+        .timeline-table td {
             border: 1px solid #ddd;
-
             padding: 10px;
-
             text-align: right;
-
             font-size: 0.9em;
-
         }
 
-        .timeline-table th { background: #f1f3f4; text-align: center; }
+        .timeline-table th {
+            background: #f1f3f4;
+            text-align: center;
+        }
 
         .tip-item {
-
             margin-bottom: 12px;
-
             padding: 12px;
-
             background: #DFE4E6;
-
             border-radius: 5px;
-
             border-left: 4px solid #24527A;
-
             line-height: 1.6;
-
         }
 
         @media (max-width: 1400px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
 
-            .main-content { flex-direction: column; } /* Changed to column for stacking */
-
-            .analysis-grid { grid-template-columns: 1fr; }
-
-            .comparison-section { grid-template-columns: 1fr; } /* Stack pie charts on smaller screens */
-
+            .analysis-grid {
+                grid-template-columns: 1fr;
+            }
         }
-
     </style>
-
 </head>
 
 <body>
-
     <header class="site-header">
-
         <div class="language-bar" id="languageBar">
-
             <span class="language-link selected" data-lang="en">EN</span>
-
             <span class="language-link" data-lang="es">ES</span>
-
             <span class="language-link" data-lang="fr">FR</span>
-
             <span class="language-link" data-lang="zh-Hans">中文</span>
-
             <span class="language-link" data-lang="ar">العربية</span>
-
             <span class="language-link" data-lang="hi">हिन्दी</span>
-
             <span class="language-link" data-lang="vi">Tiếng Việt</span>
-
             <span class="language-link" data-lang="ko">한국어</span>
-
             <span class="language-link" data-lang="fil">Filipino</span>
-
             <span class="language-link" data-lang="bn">বাংলা</span>
-
             <span class="language-link" data-lang="ur">اردو</span>
-
         </div>
-
         <div class="nav">
-
             <div class="nav-left">
-
                 <a href="{{ url_for('home') }}" class="logo">
-
-                    <img src="/static/images/a3e929fd-63d2-4f73-abba-98a2528d3efb-removebg-preview.png" alt="AccessEDU Logo" class="logo-img">
-
+                    <img src="/static/images/a3e929fd-63d2-4f73-abba-98a2528d3efb-removebg-preview.png"
+                        alt="AccessEDU Logo" class="logo-img">
                     <span class="logo-text">AccessEDU</span>
-
                 </a>
-
             </div>
-
             <div class="nav-right">
-
                 <div class="nav-links">
-
                     <a href="{{ url_for('chatbot') }}" class="nav-link">FAFSA Help</a>
-
                     <a href="{{ url_for('scholarship_finder') }}" class="nav-link">Scholarships</a>
-
                     <a href="{{ url_for('budget_scanner') }}" class="nav-link">Budget Planner</a>
-
                     <a href="{{ url_for('learner') }}" class="nav-link">Learner</a>
-
                 </div>
-
             </div>
-
         </div>
-
     </header>
-
-    
-
+    <!-- Insert the new content under the blue bar -->
     <div class="container">
-        <div class="header" style="margin-top: -50px;">
+        <div class="header">
             <h1>Family College Financial Planning Tool</h1>
             <p>A Professional Analysis of Your Financial Future</p>
         </div>
-
         <div class="main-content">
-
             <div class="input-section" style="flex: 0 0 450px; max-width: 450px;">
-
                 <h2 class="section-title">Financial Inputs</h2>
-
-                <div class="input-group"><h3>💵 Family Income</h3><div class="input-row"><label>Annual Household Income:</label><div class="input-controls"><input type="number" id="income" value="75000"></div></div></div>
-
-                <div class="input-group"><h3>🏠 Student Housing</h3><div class="input-row"><label>Where will your child live?</label><select id="housingType" onchange="toggleHousingCosts()"><option value="home">At Home</option><option value="campus" selected>On Campus</option><option value="off-campus">Off Campus</option></select></div><div class="input-row" id="housingCostRow"><label>Student Housing Cost:</label><div class="input-controls"><input type="number" id="housingCost" value="12000"><select class="period-select" id="housingPeriod"><option value="yearly">Yearly</option><option value="monthly">Monthly</option></select></div></div></div>
-
-                <div class="input-group"><h3>🎓 College Expenses</h3><div class="input-row"><label>Tuition & Fees:</label><div class="input-controls"><input type="number" id="tuition" value="28000"><select class="period-select" id="tuitionPeriod"><option value="yearly">Yearly</option><option value="monthly">Monthly</option></select></div></div><div class="input-row"><label>Scholarships/Grants:</label><div class="input-controls"><input type="number" id="scholarships" value="6000"><select class="period-select" id="scholarshipsPeriod"><option value="yearly">Yearly</option><option value="monthly">Monthly</option></select></div></div><div class="input-row"><label>Student Food & Meals:</label><div class="input-controls"><input type="number" id="food" value="4000"><select class="period-select" id="foodPeriod"><option value="yearly">Yearly</option><option value="monthly">Monthly</option></select></div></div><div class="input-row"><label>Student Transportation:</label><div class="input-controls"><input type="number" id="transport" value="2000"><select class="period-select" id="transportPeriod"><option value="yearly">Yearly</option><option value="monthly">Monthly</option></select></div></div><div class="input-row"><label>Textbooks & Supplies:</label><div class="input-controls"><input type="number" id="books" value="1500"><select class="period-select" id="booksPeriod"><option value="yearly">Yearly</option><option value="monthly">Monthly</option></select></div></div><div class="input-row"><label>Student Personal:</label><div class="input-controls"><input type="number" id="personal" value="2500"><select class="period-select" id="personalPeriod"><option value="yearly">Yearly</option><option value="monthly">Monthly</option></select></div></div></div>
-
-                <div class="input-group"><h3>🏡 Current Family Expenses</h3><div class="input-row"><label>Housing/Rent/Mortgage:</label><div class="input-controls"><input type="number" id="familyHousing" value="1500"><select class="period-select" id="familyHousingPeriod"><option value="yearly">Yearly</option><option value="monthly" selected>Monthly</option></select></div></div><div class="input-row"><label>Family Food & Groceries:</label><div class="input-controls"><input type="number" id="familyFood" value="600"><select class="period-select" id="familyFoodPeriod"><option value="yearly">Yearly</option><option value="monthly" selected>Monthly</option></select></div></div><div class="input-row"><label>Utilities & Bills:</label><div class="input-controls"><input type="number" id="utilities" value="300"><select class="period-select" id="utilitiesPeriod"><option value="yearly">Yearly</option><option value="monthly" selected>Monthly</option></select></div></div><div class="input-row"><label>Family Transportation:</label><div class="input-controls"><input type="number" id="familyTransport" value="500"><select class="period-select" id="familyTransportPeriod"><option value="yearly">Yearly</option><option value="monthly" selected>Monthly</option></select></div></div><div class="input-row"><label>Insurance:</label><div class="input-controls"><input type="number" id="insurance" value="400"><select class="period-select" id="insurancePeriod"><option value="yearly">Yearly</option><option value="monthly" selected>Monthly</option></select></div></div><div class="input-row"><label>Vacations & Entertainment:</label><div class="input-controls"><input type="number" id="vacation" value="5000"><select class="period-select" id="vacationPeriod"><option value="yearly">Yearly</option><option value="monthly">Monthly</option></select></div></div><div class="input-row"><label>Other Family Expenses:</label><div class="input-controls"><input type="number" id="otherFamily" value="250"><select class="period-select" id="otherFamilyPeriod"><option value="yearly">Yearly</option><option value="monthly" selected>Monthly</option></select></div></div></div>
-
+                <!-- Input fields are collapsed for brevity, but are identical to the previous version -->
+                <div class="input-group">
+                    <h3>💵 Family Income</h3>
+                    <div class="input-row"><label for="income">Annual Household Income:</label>
+                        <div class="input-controls"><input type="number" id="income" value="75000"></div>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <h3>🏠 Student Housing</h3>
+                    <div class="input-row"><label>Where will your child live?</label><select id="housingType"
+                            onchange="toggleHousingCosts()">
+                            <option value="home">At Home</option>
+                            <option value="campus" selected>On Campus</option>
+                            <option value="off-campus">Off Campus</option>
+                        </select></div>
+                    <div class="input-row" id="housingCostRow"><label>Student Housing Cost:</label>
+                        <div class="input-controls"><input type="number" id="housingCost" value="12000"><select
+                                class="period-select" id="housingPeriod">
+                                <option value="yearly">Yearly</option>
+                                <option value="monthly">Monthly</option>
+                            </select></div>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <h3>🎓 College Expenses</h3>
+                    <div class="input-row"><label>Tuition & Fees:</label>
+                        <div class="input-controls"><input type="number" id="tuition" value="28000"><select
+                                class="period-select" id="tuitionPeriod">
+                                <option value="yearly">Yearly</option>
+                                <option value="monthly">Monthly</option>
+                            </select></div>
+                    </div>
+                    <div class="input-row"><label>Scholarships/Grants:</label>
+                        <div class="input-controls"><input type="number" id="scholarships" value="6000"><select
+                                class="period-select" id="scholarshipsPeriod">
+                                <option value="yearly">Yearly</option>
+                                <option value="monthly">Monthly</option>
+                            </select></div>
+                    </div>
+                    <div class="input-row"><label>Student Food & Meals:</label>
+                        <div class="input-controls"><input type="number" id="food" value="4000"><select
+                                class="period-select" id="foodPeriod">
+                                <option value="yearly">Yearly</option>
+                                <option value="monthly">Monthly</option>
+                            </select></div>
+                    </div>
+                    <div class="input-row"><label for="transport">Student Transportation:</label>
+                        <div class="input-controls"><input type="number" id="transport" value="2000"><select
+                                class="period-select" id="transportPeriod">
+                                <option value="yearly">Yearly</option>
+                                <option value="monthly">Monthly</option>
+                            </select></div>
+                    </div>
+                    <div class="input-row"><label>Textbooks & Supplies:</label>
+                        <div class="input-controls"><input type="number" id="books" value="1500"><select
+                                class="period-select" id="booksPeriod">
+                                <option value="yearly">Yearly</option>
+                                <option value="monthly">Monthly</option>
+                            </select></div>
+                    </div>
+                    <div class="input-row"><label>Student Personal:</label>
+                        <div class="input-controls"><input type="number" id="personal" value="2500"><select
+                                class="period-select" id="personalPeriod">
+                                <option value="yearly">Yearly</option>
+                                <option value="monthly">Monthly</option>
+                            </select></div>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <h3>🏡 Current Family Expenses</h3>
+                    <div class="input-row"><label>Housing/Rent/Mortgage:</label>
+                        <div class="input-controls"><input type="number" id="familyHousing" value="1500"><select
+                                class="period-select" id="familyHousingPeriod">
+                                <option value="yearly">Yearly</option>
+                                <option value="monthly" selected>Monthly</option>
+                            </select></div>
+                    </div>
+                    <div class="input-row"><label>Family Food & Groceries:</label>
+                        <div class="input-controls"><input type="number" id="familyFood" value="600"><select
+                                class="period-select" id="familyFoodPeriod">
+                                <option value="yearly">Yearly</option>
+                                <option value="monthly" selected>Monthly</option>
+                            </select></div>
+                    </div>
+                    <div class="input-row"><label>Utilities & Bills:</label>
+                        <div class="input-controls"><input type="number" id="utilities" value="300"><select
+                                class="period-select" id="utilitiesPeriod">
+                                <option value="yearly">Yearly</option>
+                                <option value="monthly" selected>Monthly</option>
+                            </select></div>
+                    </div>
+                    <div class="input-row"><label>Family Transportation:</label>
+                        <div class="input-controls"><input type="number" id="familyTransport" value="500"><select
+                                class="period-select" id="familyTransportPeriod">
+                                <option value="yearly">Yearly</option>
+                                <option value="monthly" selected>Monthly</option>
+                            </select></div>
+                    </div>
+                    <div class="input-row"><label>Insurance:</label>
+                        <div class="input-controls"><input type="number" id="insurance" value="400"><select
+                                class="period-select" id="insurancePeriod">
+                                <option value="yearly">Yearly</option>
+                                <option value="monthly" selected>Monthly</option>
+                            </select></div>
+                    </div>
+                    <div class="input-row"><label>Vacations & Entertainment:</label>
+                        <div class="input-controls"><input type="number" id="vacation" value="5000"><select
+                                class="period-select" id="vacationPeriod">
+                                <option value="yearly">Yearly</option>
+                                <option value="monthly">Monthly</option>
+                            </select></div>
+                    </div>
+                    <div class="input-row"><label for="otherFamily">Other Family Expenses:</label>
+                        <div class="input-controls"><input type="number" id="otherFamily" value="250"><select
+                                class="period-select" id="otherFamilyPeriod">
+                                <option value="yearly">Yearly</option>
+                                <option value="monthly" selected>Monthly</option>
+                            </select></div>
+                    </div>
+                </div>
                 <button class="calculate-btn" onclick="calculateFamilyFinances()">Run Full Analysis</button>
-
             </div>
-
-            
-
-            <!-- The results area now takes up the remaining space -->
-
             <div class="results-area">
-
                 <div class="comparison-section">
-
                     <div class="comparison-card before-college">
-
                         <h2 class="section-title">Before College</h2>
-
                         <div id="beforeResults"></div>
-
                         <div class="pie-chart-container">
-
                             <canvas id="beforePieChart"></canvas>
-
                         </div>
-
                     </div>
-
                     <div class="comparison-card after-college">
-
                         <h2 class="section-title">After College</h2>
-
                         <div id="afterResults"></div>
-
                         <div class="pie-chart-container">
-
                             <canvas id="afterPieChart"></canvas>
-
                         </div>
-
                     </div>
-
                 </div>
-
-            </div>
-
-        </div>
-
-        
-
-        <!-- This is now the ONLY category comparison chart, in the correct location -->
-
-        <div class="analysis-card" id="expense-category-comparison-card" style="margin: 0 30px 30px 30px;">
-
-            <h3>Expense Category Comparison (Before vs. After)</h3>
-
-            <div class="chart-container-large">
-
-                <canvas id="categoryComparisonChart"></canvas>
-
-            </div>
-
-        </div>
-
-
-        <div class="additional-analyses">
-
-            <div class="analysis-grid">
-
-                <div class="analysis-card">
-
-                    <h3>College Cost Breakdown</h3>
-
-                    <div class="chart-container-large" style="height: 300px;">
-
-                        <canvas id="costIncreaseChart"></canvas>
-
+                <div class="analysis-card" id="expense-category-comparison-card">
+                    <h3>Expense Category Comparison (Before vs. After)</h3>
+                    <div class="chart-container-large">
+                        <canvas id="categoryComparisonChart"></canvas>
                     </div>
-
                 </div>
-
-                <div class="analysis-card">
-
-                    <h3>Personalized Savings & Action Plan</h3>
-
-                    <div id="savingsTips"></div>
-
-                </div>
-
             </div>
-
-            <div class="analysis-card">
-
-                <h3>4-Year Financial Projection (Table & Graph)</h3>
-
-                <div id="timelineTableContainer"></div>
-
-                <div class="chart-container-large" style="height: 250px;">
-
-                    <canvas id="projectionLineChart"></canvas>
-
-                </div>
-
-            </div>
-
         </div>
-
     </div>
+    <div class="additional-analyses">
+        <div class="analysis-grid">
+            <div class="analysis-card">
+                <h3>College Cost Breakdown</h3>
+                <div class="chart-container-large">
+                    <canvas id="costIncreaseChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="analysis-card">
+            <h3>4-Year Financial Projection (Table & Graph)</h3>
+            <div id="timelineTableContainer"></div>
+            <div class="chart-container-large" style="height: 250px;">
+                <canvas id="projectionLineChart"></canvas>
+            </div>
+        </div>
+        <div class="analysis-card">
+            <h3>Personalized Savings & Action Plan</h3>
+            <div id="savingsTips"></div>
+        </div>
+    </div>
+    </div>
+    </div>
+    <!-- Insert Chart.js CDN before the custom script -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+/* ───────────────────────────────────────────────────────────── */
 
+            /* GLOBALS & COLOUR PALETTES */
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            /* Chart‑instance handles so we can destroy/redraw */
+            let beforePieChart, afterPieChart, categoryComparisonChart,
+                projectionLineChart, costIncreaseChart;
 
-<script>
+            /* colour palettes for the charts */
+            const familyColors = [
+                '#1f77b4', '#2ca02c', '#17becf', '#8c564b',
+                '#9467bd', '#7f7f7f', '#aec7e8'
+            ];
 
-// --- Global Chart Variables ---
+            const collegeColors = [
+                '#e6550d', '#fd8d3c', '#fdae6b', '#fdd0a2',
+                '#c49c94', '#fb6a4a'
+            ];
 
-let beforePieChart, afterPieChart, categoryComparisonChart, projectionLineChart, costIncreaseChart;
+            /* Additional chart configuration options can be defined here */
 
+            /* ───────────────────────────────────────────────────────────── */
 
-// --- Color Palettes ---
+            /* UTILITY FUNCTIONS */
 
-const familyColors = [
-
-    '#6C3483', '#BB8FCE', '#154360', '#5DADE2', '#283747', '#F4F6F7',
-
-    '#85929E', '#F1948A', '#922B21', '#FADBD8', '#F7CAC9', '#D2B4DE',
-
-    '#A569BD', '#F5EEF8', '#212F3D', '#D5DBDB'
-
-];
-
-const collegeColors = [
-
-    '#76448A', '#D6DBDF', '#2E4053', '#85C1E9', '#F9E79F', '#F5B7B1',
-
-    '#F1948A', '#F7CAC9', '#A569BD', '#F4F6F7', '#85929E', '#212F3D',
-
-    '#BB8FCE', '#154360', '#FADBD8', '#D2B4DE', '#283747', '#F5EEF8',
-
-    '#922B21', '#6C3483'
-
-];
-
-
-// --- Utility Functions ---
-
-function toggleHousingCosts() {
-
-    document.getElementById('housingCostRow').style.display = document.getElementById('housingType').value === 'home' ? 'none' : 'flex';
-
+            /* toggle family‑vs‑student housing row visibility */
+            function toggleHousingCosts() {
+                document.getElementById('housingCostRow').style.display =
+                document.getElementById('housingType').value === 'home' ? 'none' : 'flex';
 }
 
-
-function convertToYearly(value, period) {
-
+            /* convert monthly ↔ yearly */
+            function convertToYearly(value, period) {
     const numValue = parseFloat(value) || 0;
-
-    return period === 'monthly' ? numValue * 12 : numValue;
-
+            return period === 'monthly' ? numValue * 12 : numValue;
 }
 
-
-// --- Main Calculation Function ---
-
-function calculateFamilyFinances() {
-
-    // Get all input values
-
-    const income = convertToYearly(document.getElementById('income').value, 'yearly');
-
-    const housingType = document.getElementById('housingType').value;
-
-    const housingCost = convertToYearly(document.getElementById('housingCost').value, document.getElementById('housingPeriod').value);
-
-    const tuition = convertToYearly(document.getElementById('tuition').value, document.getElementById('tuitionPeriod').value);
-
-    const scholarships = convertToYearly(document.getElementById('scholarships').value, document.getElementById('scholarshipsPeriod').value);
-
-    const food = convertToYearly(document.getElementById('food').value, document.getElementById('foodPeriod').value);
-
-    const transport = convertToYearly(document.getElementById('transport').value, document.getElementById('transportPeriod').value);
-
-    const books = convertToYearly(document.getElementById('books').value, document.getElementById('booksPeriod').value);
-
-    const personal = convertToYearly(document.getElementById('personal').value, document.getElementById('personalPeriod').value);
-
-    const familyHousing = convertToYearly(document.getElementById('familyHousing').value, document.getElementById('familyHousingPeriod').value);
-
-    const familyFood = convertToYearly(document.getElementById('familyFood').value, document.getElementById('familyFoodPeriod').value);
-
-    const utilities = convertToYearly(document.getElementById('utilities').value, document.getElementById('utilitiesPeriod').value);
-
-    const familyTransport = convertToYearly(document.getElementById('familyTransport').value, document.getElementById('familyTransportPeriod').value);
-
-    const insurance = convertToYearly(document.getElementById('insurance').value, document.getElementById('insurancePeriod').value);
-
-    const vacation = convertToYearly(document.getElementById('vacation').value, document.getElementById('vacationPeriod').value);
-
-    const otherFamily = convertToYearly(document.getElementById('otherFamily').value, document.getElementById('otherFamilyPeriod').value);
-
-
-    // --- Structure Data for Analysis ---
-
-    const beforeExpenses = { "Housing": familyHousing, "Food": familyFood, "Utilities": utilities, "Transport": familyTransport, "Insurance": insurance, "Vacation": vacation, "Other": otherFamily };
-
-    const totalBefore = Object.values(beforeExpenses).reduce((a, b) => a + b, 0);
-
-    const surplusBefore = income - totalBefore;
-
-
-    const netTuition = Math.max(0, tuition - scholarships);
-
-    const studentHousing = housingType === 'home' ? 0 : housingCost;
-
-    const collegeSpecificCosts = { "Net Tuition": netTuition, "Student Housing": studentHousing, "Student Food": food, "Student Transport": transport, "Books & Supplies": books, "Student Personal": personal };
-
-
-    const afterSharedExpenses = { "Housing": familyHousing, "Food": familyFood, "Utilities": utilities, "Transport": familyTransport, "Insurance": insurance, "Vacation": vacation * 0.7, "Other": otherFamily };
-
-    const afterExpenses = { ...afterSharedExpenses, ...collegeSpecificCosts };
-
-    const totalAfter = Object.values(afterExpenses).reduce((a, b) => a + b, 0);
-
-    const surplusAfter = income - totalAfter;
-
-
-    // --- Update UI & Charts ---
-
-    displayResults('before', beforeExpenses, totalBefore, surplusBefore);
-
-    displayResults('after', { "Family Expenses": Object.values(afterSharedExpenses).reduce((a,b) => a+b, 0), ...collegeSpecificCosts }, totalAfter, surplusAfter);
-
-    createPieCharts(beforeExpenses, afterExpenses, Object.keys(collegeSpecificCosts));
-
-
-    createAdvancedCategoryComparisonChart(beforeExpenses, afterSharedExpenses, collegeSpecificCosts);
-
-    updateTimelineAndProjectionChart(income, totalAfter);
-
-    createCostIncreaseChart(collegeSpecificCosts);
-
-    generateSavingsTips(totalAfter - totalBefore, scholarships, housingType);
-
+            /* create N lighter→darker shades of a single hue (HSL) */
+            function generateShades(hue, count, sat = 70, lightStart = 35, lightEnd = 80) {
+    const step = (lightEnd - lightStart) / Math.max(1, count - 1);
+            return Array.from({length: count },
+        (_, i) => `hsl(${hue}, ${sat}%, ${lightStart + i * step}%)`);
 }
 
+            /* ───────────────────────────────────────────────────────────── */
 
-// --- UI Display Functions ---
+            /* MAIN CALCULATION PIPELINE */
 
-function displayResults(period, expenses, total, surplus) {
+            function calculateFamilyFinances() {
 
-    const resultsDiv = document.getElementById(period + 'Results');
+    /* ------------ INPUT GATHERING ------------ */
+    const income           = convertToYearly(document.getElementById('income').value,           'yearly');
+            const housingType      = document.getElementById('housingType').value;
+            const housingCost      = convertToYearly(document.getElementById('housingCost').value,      document.getElementById('housingPeriod').value);
+            const tuition          = convertToYearly(document.getElementById('tuition').value,          document.getElementById('tuitionPeriod').value);
+            const scholarships     = convertToYearly(document.getElementById('scholarships').value,     document.getElementById('scholarshipsPeriod').value);
+            const food             = convertToYearly(document.getElementById('food').value,             document.getElementById('foodPeriod').value);
+            const transport        = convertToYearly(document.getElementById('transport').value,        document.getElementById('transportPeriod').value);
+            const books            = convertToYearly(document.getElementById('books').value,            document.getElementById('booksPeriod').value);
+            const personal         = convertToYearly(document.getElementById('personal').value,         document.getElementById('personalPeriod').value);
 
-    const expenseItems = Object.entries(expenses).filter(([_, value]) => value > 0).map(([key, value]) => `<div class="result-item"><span>${key}:</span><span>$${value.toLocaleString()}</span></div>`).join('');
+            const familyHousing    = convertToYearly(document.getElementById('familyHousing').value,    document.getElementById('familyHousingPeriod').value);
+            const familyFood       = convertToYearly(document.getElementById('familyFood').value,       document.getElementById('familyFoodPeriod').value);
+            const utilities        = convertToYearly(document.getElementById('utilities').value,        document.getElementById('utilitiesPeriod').value);
+            const familyTransport  = convertToYearly(document.getElementById('familyTransport').value,  document.getElementById('familyTransportPeriod').value);
+            const insurance        = convertToYearly(document.getElementById('insurance').value,        document.getElementById('insurancePeriod').value);
+            const vacation         = convertToYearly(document.getElementById('vacation').value,         document.getElementById('vacationPeriod').value);
+            const otherFamily      = convertToYearly(document.getElementById('otherFamily').value,      document.getElementById('otherFamilyPeriod').value);
 
-    resultsDiv.innerHTML = `${expenseItems}<div class="result-item result-total"><span>Total Annual Expenses:</span><span style='color:#002F5B;'>$${total.toLocaleString()}</span></div><div class="result-item result-total"><span style='color:#002F5B;'>${surplus >= 0 ? 'Remaining Budget:' : 'Budget Shortfall:'}</span><span style='color:#002F5B;'>$${Math.abs(surplus).toLocaleString()}</span></div>`;
+            /* ------------ BEFORE COLLEGE ------------ */
+            const beforeExpenses  = {
+                Housing   : familyHousing,
+            Food      : familyFood,
+            Utilities : utilities,
+            Transport : familyTransport,
+            Insurance : insurance,
+            Vacation  : vacation,
+            Other     : otherFamily
+    };
+    const totalBefore   = Object.values(beforeExpenses).reduce((a, b) => a + b, 0);
+            const surplusBefore = income - totalBefore;
 
+            /* ------------ AFTER COLLEGE ------------ */
+            const netTuition      = Math.max(0, tuition - scholarships);
+            const studentHousing  = housingType === 'home' ? 0 : housingCost;
+
+            const collegeSpecificCosts = {
+                'Net Tuition'      : netTuition,
+            'Student Housing'  : studentHousing,
+            'Student Food'     : food,
+            'Student Transport': transport,
+            'Books & Supplies' : books,
+            'Student Personal' : personal
+    };
+
+            /* shared costs (with a small vacation trim) */
+            const afterSharedExpenses = {
+                Housing   : familyHousing,
+            Food      : familyFood,
+            Utilities : utilities,
+            Transport : familyTransport,
+            Insurance : insurance,
+            Vacation  : vacation * 0.7,
+            Other     : otherFamily
+    };
+
+            const afterExpenses = {...afterSharedExpenses, ...collegeSpecificCosts };
+    const totalAfter    = Object.values(afterExpenses).reduce((a, b) => a + b, 0);
+            const surplusAfter  = income - totalAfter;
+
+            /* ------------ UPDATE UI + CHARTS ------------ */
+            displayResults('before', beforeExpenses, totalBefore, surplusBefore);
+            displayResults('after',
+            {'Family Expenses': Object.values(afterSharedExpenses).reduce((a, b) => a + b, 0),
+          ...collegeSpecificCosts },
+            totalAfter, surplusAfter);
+
+            createPieCharts(beforeExpenses, afterExpenses, Object.keys(collegeSpecificCosts));
+            createAdvancedCategoryComparisonChart(beforeExpenses, afterSharedExpenses, collegeSpecificCosts);
+            updateTimelineAndProjectionChart(income, totalAfter);
+            createCostIncreaseChart(collegeSpecificCosts);
+            generateSavingsTips(totalAfter - totalBefore, scholarships, housingType);
 }
 
+            /* ───────────────────────────────────────────────────────────── */
 
-function createPieCharts(beforeData, afterData, collegeExpenseKeys) {
+            /* RESULT CARD + PIE CHARTS */
 
-    // Before Pie Chart
+            /* print the numbers inside each result card */
+            function displayResults(period, expenses, total, surplus) {
+    const resultsDiv   = document.getElementById(period + 'Results');
+            const expenseItems = Object.entries(expenses)
+        .filter(([_, v]) => v > 0)
+        .map(([k, v]) => `<div class="result-item"><span>${k}:</span><span>$${v.toLocaleString()}</span></div>`)
+            .join('');
 
-    if (beforePieChart) beforePieChart.destroy();
-
-    beforePieChart = new Chart(document.getElementById('beforePieChart').getContext('2d'), {
-
-        type: 'doughnut',
-
-        data: {
-
-            labels: Object.keys(beforeData),
-
-            datasets: [{ data: Object.values(beforeData), backgroundColor: familyColors, borderWidth: 2, borderColor: '#fff' }]
-
-        },
-
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
-
-    });
-
-
-    // After Pie Chart (with restored color logic)
-
-    if (afterPieChart) afterPieChart.destroy();
-
-    const afterLabels = Object.keys(afterData);
-
-    const afterValues = Object.values(afterData);
-
-    const afterColors = afterLabels.map(label => {
-
-        if (collegeExpenseKeys.includes(label)) {
-
-            return collegeColors[collegeExpenseKeys.indexOf(label) % collegeColors.length];
-
-        } else {
-
-            return familyColors[Object.keys(beforeData).indexOf(label) % familyColors.length];
-
-        }
-
-    });
-
-    afterPieChart = new Chart(document.getElementById('afterPieChart').getContext('2d'), {
-
-        type: 'doughnut',
-
-        data: {
-
-            labels: afterLabels,
-
-            datasets: [{ data: afterValues, backgroundColor: afterColors, borderWidth: 2, borderColor: '#fff' }]
-
-        },
-
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
-
-    });
-
+            resultsDiv.innerHTML =
+            `${expenseItems}
+            <div class="result-item result-total"><span>Total Annual Expenses:</span><span style='color:#002F5B;'>$${total.toLocaleString()}</span></div>
+            <div class="result-item result-total"><span style='color:#002F5B;'>${surplus >= 0 ? 'Remaining Budget:' : 'Budget Shortfall:'}</span><span style='color:#002F5B;'>$${Math.abs(surplus).toLocaleString()}</span></div>`;
 }
 
+            /* colour‑coded doughnut charts */
+            function createPieCharts(beforeData, afterData, collegeExpenseKeys) {
 
-// --- ADVANCED CHART FUNCTIONS ---
+    /* BEFORE COLLEGE – coherent blue palette */
+    const beforeLabels = Object.keys(beforeData);
+            const beforeColors = generateShades(210, beforeLabels.length);  // blues
 
-function createAdvancedCategoryComparisonChart(beforeData, afterSharedData, newData) {
+            if (beforePieChart) beforePieChart.destroy();
+            beforePieChart = new Chart(
+            document.getElementById('beforePieChart').getContext('2d'),
+            {
+                type : 'doughnut',
+            data : {labels: beforeLabels,
+            datasets: [{data: Object.values(beforeData),
+            backgroundColor: beforeColors,
+                                  borderWidth: 2, borderColor: '#fff' }] },
+            options : {responsive: true, maintainAspectRatio: false,
+            plugins: {legend: {display: false } } }
+        });
+
+            /* AFTER COLLEGE – old costs = light blues, new costs = oranges */
+            const afterLabels   = Object.keys(afterData);
+    const sharedLabels  = afterLabels.filter(l => !collegeExpenseKeys.includes(l));
+            const sharedColors  = generateShades(210, sharedLabels.length, 70, 50, 85);   // light blues
+            const newColors     = generateShades(25, collegeExpenseKeys.length);          // oranges
+
+    const afterColors = afterLabels.map(l =>
+            collegeExpenseKeys.includes(l)
+            ? newColors[collegeExpenseKeys.indexOf(l)]
+            : sharedColors[sharedLabels.indexOf(l)]
+            );
+
+            if (afterPieChart) afterPieChart.destroy();
+            afterPieChart = new Chart(
+            document.getElementById('afterPieChart').getContext('2d'),
+            {
+                type : 'doughnut',
+            data : {labels: afterLabels,
+            datasets: [{data: Object.values(afterData),
+            backgroundColor: afterColors,
+                                  borderWidth: 2, borderColor: '#fff' }] },
+            options : {responsive: true, maintainAspectRatio: false,
+            plugins: {legend: {display: false } } }
+        });
+}
+
+            /* ───────────────────────────────────────────────────────────── */
+
+            /* ADVANCED CHARTS */
+
+            /* side‑by‑side bar chart (before vs after) */
+            function createAdvancedCategoryComparisonChart(beforeData, afterSharedData, newData) {
 
     if (categoryComparisonChart) categoryComparisonChart.destroy();
 
-
+    // Set up data for chart
     const sharedLabels = Object.keys(beforeData);
-
-    const newLabels = Object.keys(newData).filter(key => newData[key] > 0); // Only show new costs if they exist
-
-    const allLabels = [...sharedLabels, ...newLabels];
-
+    const newLabels    = Object.keys(newData).filter(k => newData[k] > 0);
+            const allLabels    = [...sharedLabels, ...newLabels];
 
     const beforeValues = [...Object.values(beforeData), ...newLabels.map(() => 0)];
+    const afterValues  = [...Object.values(afterSharedData), ...newLabels.map(k => newData[k])];
 
-    const afterValues = [...Object.values(afterSharedData), ...newLabels.map(key => newData[key])];
-
-
-    categoryComparisonChart = new Chart(document.getElementById('categoryComparisonChart').getContext('2d'), {
-
-        type: 'bar',
-
-        data: {
-
-            labels: allLabels,
-
-            datasets: [
-
-                { label: 'Before College', data: beforeValues, backgroundColor: '#27ae60', borderRadius: 4 },
-
-                { label: 'After College', data: afterValues, backgroundColor: '#e74c3c', borderRadius: 4 }
-
+            categoryComparisonChart = new Chart(
+            document.getElementById('categoryComparisonChart').getContext('2d'),
+            {
+                type : 'bar',
+            data : {
+                labels   : allLabels,
+            datasets : [
+            {label: 'Before College', data: beforeValues, backgroundColor: '#27ae60', borderRadius: 4 },
+            {label: 'After College',  data: afterValues,  backgroundColor: '#e74c3c', borderRadius: 4 }
             ]
-
-        },
-
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top' } }, scales: { y: { beginAtZero: true, ticks: { callback: value => '$' + (value/1000) + 'k' } } } }
-
-    });
-
+            },
+            options : {
+                responsive: true, maintainAspectRatio: false,
+            plugins: {legend: {position: 'top' } },
+            scales:  {y: {beginAtZero: true,
+            ticks: {callback: v => '$' + (v / 1000) + 'k' } } }
+            }
+        });
 }
 
+            /* four‑year projection line chart + HTML table */
+            function updateTimelineAndProjectionChart(income, totalAfter) {
 
-function updateTimelineAndProjectionChart(income, totalAfter) {
+    /* ---- table ---- */
+    const labels       = ['Year 1', 'Year 2', 'Year 3', 'Year 4'];
+    const incomeData   = labels.map((_, i) => Math.round(income     * Math.pow(1.02, i)));
+    const expenseData  = labels.map((_, i) => Math.round(totalAfter * Math.pow(1.03, i)));
+    const surplusData  = incomeData.map((inc, i) => inc - expenseData[i]);
 
-    // Update Table
-
-    let tableHTML = `<table class="timeline-table"><tr><th>Year</th><th>Projected Income</th><th>Projected Expenses</th><th>Projected Surplus/Shortfall</th></tr>`;
-
-    const labels = ['Year 1', 'Year 2', 'Year 3', 'Year 4'];
-
-    const incomeData = labels.map((_, i) => Math.round(income * Math.pow(1.02, i)));
-
-    const expenseData = labels.map((_, i) => Math.round(totalAfter * Math.pow(1.03, i)));
-
-    const surplusData = incomeData.map((inc, i) => inc - expenseData[i]);
-
-
-    for (let i = 0; i < labels.length; i++) {
-
-        tableHTML += `<tr><td>${labels[i]}</td><td>$${incomeData[i].toLocaleString()}</td><td>$${expenseData[i].toLocaleString()}</td><td style="color:#002F5B;">$${surplusData[i].toLocaleString()}</td></tr>`;
-
+            let tableHTML = `<table class="timeline-table">
+                <tr><th>Year</th><th>Projected Income</th><th>Projected Expenses</th><th>Projected Surplus/Shortfall</th></tr>`;
+                for (let i = 0; i < labels.length; i++) {
+                    tableHTML += `<tr><td>${labels[i]}</td>
+                          <td>$${incomeData[i].toLocaleString()}</td>
+                          <td>$${expenseData[i].toLocaleString()}</td>
+                          <td style="color:#002F5B;">$${surplusData[i].toLocaleString()}</td></tr>`;
     }
+                tableHTML += `</table>`;
+            document.getElementById('timelineTableContainer').innerHTML = tableHTML;
 
-    tableHTML += `</table>`;
-
-    document.getElementById('timelineTableContainer').innerHTML = tableHTML;
-
-
-    // Update Chart
-
-    if (projectionLineChart) projectionLineChart.destroy();
-
-    projectionLineChart = new Chart(document.getElementById('projectionLineChart').getContext('2d'), {
-
-        type: 'line',
-
-        data: {
-
-            labels: labels,
-
-            datasets: [
-
-                { label: 'Income', data: incomeData, borderColor: '#27ae60', backgroundColor: '#27ae6020', fill: true, tension: 0.3 },
-
-                { label: 'Expenses', data: expenseData, borderColor: '#e74c3c', backgroundColor: '#e74c3c20', fill: true, tension: 0.3 },
-
-                { label: 'Surplus/Shortfall', data: surplusData, borderColor: '#3498db', backgroundColor: '#3498db20', fill: true, tension: 0.3 }
-
+            /* ---- line chart ---- */
+            if (projectionLineChart) projectionLineChart.destroy();
+            projectionLineChart = new Chart(
+            document.getElementById('projectionLineChart').getContext('2d'),
+            {
+                type : 'line',
+            data : {
+                labels   : labels,
+            datasets : [
+            {label: 'Income',  data: incomeData,  borderColor: '#27ae60', backgroundColor: '#27ae6020', fill: true, tension: 0.3 },
+            {label: 'Expenses',data: expenseData, borderColor: '#e74c3c', backgroundColor: '#e74c3c20', fill: true, tension: 0.3 },
+            {label: 'Surplus/Shortfall', data: surplusData, borderColor: '#3498db', backgroundColor: '#3498db20', fill: true, tension: 0.3 }
             ]
-
-        },
-
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top' } }, scales: { y: { beginAtZero: false, ticks: { callback: value => '$' + (value/1000) + 'k' } } } }
-
-    });
-
+            },
+            options : {
+                responsive: true, maintainAspectRatio: false,
+            plugins: {legend: {position: 'top' } },
+            scales:  {y: {beginAtZero: false,
+            ticks: {callback: v => '$' + (v / 1000) + 'k' } } }
+            }
+        });
 }
 
-
-function createCostIncreaseChart(collegeCosts) {
+            /* doughnut chart of *only* new college costs */
+            function createCostIncreaseChart(collegeCosts) {
 
     if (costIncreaseChart) costIncreaseChart.destroy();
 
-    const filteredCosts = Object.fromEntries(Object.entries(collegeCosts).filter(([_, v]) => v > 0));
+    const filtered = Object.fromEntries(Object.entries(collegeCosts).filter(([_, v]) => v > 0));
 
-    costIncreaseChart = new Chart(document.getElementById('costIncreaseChart').getContext('2d'), {
-
-        type: 'doughnut',
-
-        data: {
-
-            labels: Object.keys(filteredCosts),
-
-            datasets: [{ data: Object.values(filteredCosts), backgroundColor: collegeColors, borderWidth: 3, borderColor: '#fff' }]
-
-        },
-
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top' } } }
-
-    });
-
+            costIncreaseChart = new Chart(
+            document.getElementById('costIncreaseChart').getContext('2d'),
+            {
+                type : 'doughnut',
+            data : {
+                labels   : Object.keys(filtered),
+            datasets : [{data: Object.values(filtered),
+            backgroundColor: collegeColors,
+                              borderWidth: 3, borderColor: '#fff' }]
+            },
+            options : {responsive: true, maintainAspectRatio: false,
+            plugins: {legend: {position: 'top' } } }
+        });
 }
 
+            /* ───────────────────────────────────────────────────────────── */
 
-function generateSavingsTips(costIncrease, scholarships, housingType) {
+            /* SAVINGS‑TIPS GENERATION */
 
-    let tips = [];
+            function generateSavingsTips(costIncrease, scholarships, housingType) {
 
-    const monthlyIncrease = costIncrease / 12;
+    const tips    = [];
+            const monthly = costIncrease / 12;
 
-    tips.push(`<div class="tip-item"><strong>Bottom Line:</strong> Your annual expenses will increase by <strong>$${costIncrease.toLocaleString()}</strong>, or about <strong>$${monthlyIncrease.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}/month</strong>.</div>`);
+            tips.push(`<div class="tip-item"><strong>Bottom Line:</strong> Your annual expenses will increase by <strong>$${costIncrease.toLocaleString()}</strong>, or about <strong>$${monthly.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}/month</strong>.</div>`);
 
-    if (monthlyIncrease > 0) tips.push(`<div class="tip-item"><strong>Savings Goal:</strong> To cover this increase, you'll need to save or find an additional $${monthlyIncrease.toLocaleString()}/month. Over 4 years, that's a total of <strong>$${(costIncrease * 4).toLocaleString()}</strong>.</div>`);
+    if (monthly > 0)
+            tips.push(`<div class="tip-item"><strong>Savings Goal:</strong> To cover this increase, you'll need to save or find an additional $${monthly.toLocaleString()}/month. Over 4 years, that's a total of <strong>$${(costIncrease * 4).toLocaleString()}</strong>.</div>`);
 
-    if (scholarships < 10000) tips.push(`<div class="tip-item"><strong>Scholarship Hunter:</strong> You have $${scholarships.toLocaleString()} in aid. Aggressively applying for more scholarships is the #1 way to reduce costs. Every extra $1,000 in scholarships per year saves you $4,000 over four years.</div>`);
+            if (scholarships < 10000) {
+                tips.push(`<div class="tip-item"><strong>Scholarship Hunter:</strong> You have ${scholarships.toLocaleString()} in aid. Aggressively applying for more scholarships is the #1 way to reduce costs. Every extra $1,000 in scholarships per year saves you $4,000 over four years.</div>`);
+            }
 
-    if (housingType !== 'home') tips.push(`<div class="tip-item"><strong>Housing Hack:</strong> Living off-campus or at home can be a massive money-saver. Compare the total cost of room & board vs. commuting from home.</div>`);
+            if (housingType !== 'home')
+            tips.push(`<div class="tip-item"><strong>Housing Hack:</strong> Living off-campus or at home can be a massive money-saver. Compare the total cost of room & board vs. commuting from home.</div>`);
 
-    tips.push(`<div class="tip-item"><strong>Student Contribution:</strong> A part-time job for your child earning just $150/week ($7,800/year) could cover a significant portion of this increase.</div>`);
-
-    tips.push(`<div class="tip-item"><strong>Tax Credits:</strong> Don't forget the American Opportunity Tax Credit, which can be worth up to $2,500 per year.</div>`);
+            tips.push(`<div class="tip-item"><strong>Student Contribution:</strong> A part-time job for your child earning just $150/week ($7,800/year) could cover a significant portion of this increase.</div>`);
+            tips.push(`<div class="tip-item"><strong>Tax Credits:</strong> Don't forget the American Opportunity Tax Credit, which can be worth up to $2,500 per year.</div>`);
 
     document.getElementById('savingsTips').innerHTML = tips.join('');
-
 }
 
+/* ───────────────────────────────────────────────────────────── */
 
-// --- Initial Load ---
+/* INITIAL LOAD */
 
-window.onload = function() {
-
+window.onload = () => {
     toggleHousingCosts();
-
     calculateFamilyFinances();
-
 };
 
-</script>
-
-</body>
-
-</html>
+/* ───────────────────────────────────────────────────────────── */
+    </script>
