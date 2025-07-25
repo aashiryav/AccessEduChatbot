@@ -1,3 +1,5 @@
+
+<!DOCTYPE html>
 <html lang="en"><head>
     <meta charset="UT8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,6 +18,7 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+             
         }
         .outer-container {
             box-shadow: 0 8px 32px rgba(0,0,0,0.3);
@@ -476,7 +479,7 @@
                 <form id="filter-form" style="transform: translateY(-1.5rem);">
                     <div class="scholarship-form-group" style="margin-bottom: 18px;">
                         <label for="grade-level" style="font-weight: 600; color: #23406e;">Grade Level</label>
-                        <select id="grade-level" class="form-select" style="margin-top: 6px;">
+                        <select id="grade-level" class="form-select" style="margin-top: 6px;"> 
                             <option>High School Freshman</option>
                             <option>High School Sophomore</option>
                             <option>High School Junior</option>
@@ -505,11 +508,17 @@
                         <div style="font-size: 0.95em; color: #888; margin-top: 2px;">Enter your field of study or leave blank for all majors</div>
                     </div>
                     <div class="scholarship-form-group" style="margin-bottom: 18px;">
-                        <label style="font-weight: 600; color: #23406e;">Essay Preference</label>
+                        <label for="essay-yes" style="font-weight: 600; color: #23406e;">Essay Preference</label>
                         <div style="margin-top: 6px;">
-                            <label style="margin-right: 18px;"><input type="radio" name="essay" value="yes" class="form-radio"> Essay Required</label>
-                            <label style="margin-right: 18px;"><input type="radio" name="essay" value="no" class="form-radio"> No Essay</label>
-                            <label><input type="radio" name="essay" value="any" checked="" class="form-radio"> Any</label>
+                            <label for="essay-yes" style="margin-right: 18px;">
+                                <input type="radio" id="essay-yes" name="essay" value="yes" class="form-radio"> Essay Required
+                            </label>
+                            <label for="essay-no" style="margin-right: 18px;">
+                                <input type="radio" id="essay-no" name="essay" value="no" class="form-radio"> No Essay
+                            </label>
+                            <label for="essay-any">
+                                <input type="radio" id="essay-any" name="essay" value="any" checked="" class="form-radio"> Any
+                            </label>
                         </div>
                     </div>
                     <button type="button" id="find-button" class="btn-primary" style="margin-top: 18px; width: 100%; font-size: 1.1rem;">🔍 Find Scholarships</button>
