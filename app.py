@@ -471,7 +471,7 @@ def resources():
 
 @app.route('/learner')
 def learner():
-    return redirect(url_for('learning'))
+    return redirect(url_for('learner.html'))
 
 @app.route('/chatbot')
 def chatbot():
