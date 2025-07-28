@@ -1,19 +1,936 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Learner Module</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', Arial, sans-serif; background: #f9f9f9; color: #23406e; margin: 0; padding: 0; }
-        .container { max-width: 700px; margin: 60px auto; background: #fff; border-radius: 12px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); padding: 40px; text-align: center; }
-        h1 { font-size: 2.5rem; color: #23406e; margin-bottom: 18px; }
-        p { font-size: 1.2rem; color: #23406e; }
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+            background-color: #F9F9F9;
+            color: #002F5B;
+            height: 100%;
+            overflow-x: hidden;
+        }
+
+        .scholarship-header-container {
+            width: 100%;
+            max-width: 1200px;
+            padding: 38px 24px;
+            background: rgba(220, 224, 228, 0.85);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            border: 2px solid #23406e;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-sizing: border-box;
+            margin: 0 auto;
+        }
+        
+        .header-content {
+            text-align: center;
+            max-width: 800px;
+        }
+        
+        .header-content h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.5rem;
+            color: #23406e;
+            margin: 0 0 16px 0;
+            line-height: 1.2;
+        }
+        
+        .header-content p {
+            font-size: 1.2rem;
+            color: #4A5568;
+            margin: 0;
+            line-height: 1.5;
+        }
+        
+        /* Split Screen Layout */
+        .learner-container {
+            display: flex;
+            gap: 30px;
+            padding: 20px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .side-panel {
+            flex: 0 0 300px;
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 2px solid #23406e;
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+
+        .main-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        /* Progress Bars */
+        .progress-overview {
+            margin-bottom: 30px;
+        }
+
+        .progress-overview h2 {
+            color: #23406e;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .module-progress {
+            margin-bottom: 15px;
+        }
+
+        .module-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+
+        .module-name {
+            color: #23406e;
+            font-weight: 600;
+        }
+
+        .progress-percent {
+            color: #666;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #23406e;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        /* Badges in Side Panel */
+        .earned-badges h3 {
+            color: #23406e;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            text-align: center;
+            padding-top: 20px;
+            border-top: 2px solid #e9ecef;
+        }
+
+        .badges-list-full {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .badge-item {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 12px;
+            border: 1px solid #e9ecef;
+            transition: all 0.2s ease;
+        }
+
+        .badge-item:hover {
+            background: #e3f2fd;
+            border-color: #23406e;
+            transform: translateX(5px);
+        }
+
+        .badge-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 6px;
+        }
+
+        .badge-icon {
+            font-size: 1.4rem;
+        }
+
+        .badge-title {
+            color: #23406e;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .badge-description {
+            color: #666;
+            font-size: 0.85rem;
+            margin: 0;
+            padding-left: 34px;
+        }
+
+        /* Module Selection and Learning Content Styling */
+        .module-header {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 2px solid #23406e;
+            margin-bottom: 30px;
+        }
+
+        .module-header h1 {
+            color: #23406e;
+            margin-bottom: 25px;
+            font-size: 2rem;
+            text-align: center;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+        }
+
+        .module-selector {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .styled-select {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #23406e;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            color: #23406e;
+            background: white;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .styled-select:hover, .styled-select:focus {
+            border-color: #3d5a8a;
+            box-shadow: 0 0 0 3px rgba(35, 64, 110, 0.1);
+            outline: none;
+        }
+
+        .styled-button {
+            padding: 15px 30px;
+            background: #23406e;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Inter', sans-serif;
+            min-width: 180px;
+        }
+
+        .styled-button:hover {
+            background: #3d5a8a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(35, 64, 110, 0.2);
+        }
+
+        /* Flashcard Styling */
+        .flashcard {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 2px solid #23406e;
+            margin: 30px 0;
+        }
+
+        .flashcard h2 {
+            color: #23406e;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            text-align: center;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+        }
+
+        .flashcard h3 {
+            color: #23406e;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+        }
+
+        .info-box {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 1px solid #e9ecef;
+        }
+
+        .info-box:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-box strong {
+            color: #23406e;
+            font-weight: 600;
+        }
+
+        /* Navigation Buttons */
+        .nav-btns {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .nav-btns form {
+            flex: 1;
+            max-width: 200px;
+        }
+
+        .nav-btns button {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #23406e;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Inter', sans-serif;
+            background: white;
+            color: #23406e;
+        }
+
+        .nav-btns button:hover:not([disabled]) {
+            background: #23406e;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(35, 64, 110, 0.2);
+        }
+
+        .nav-btns button[disabled] {
+            opacity: 0.5;
+            cursor: not-allowed;
+            border-color: #ccc;
+            color: #666;
+        }
+
+        /* Quiz Section */
+        .quiz-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 2px solid #23406e;
+            margin: 30px 0;
+        }
+
+        .quiz-section h2 {
+            color: #23406e;
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            text-align: center;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+        }
+
+        .quiz-section p {
+            font-size: 1.2rem;
+            color: #23406e;
+            margin-bottom: 20px;
+        }
+
+        .quiz-section div {
+            margin: 15px 0;
+        }
+
+        .quiz-section label {
+            margin-left: 10px;
+            color: #333;
+            font-size: 1.1rem;
+        }
+
+        .quiz-section button {
+            margin-top: 20px;
+            width: 100%;
+            max-width: 300px;
+            padding: 15px 30px;
+            background: #23406e;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .quiz-section button:hover {
+            background: #3d5a8a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(35, 64, 110, 0.2);
+        }
+
+        /* Feedback Styling */
+        .feedback-correct, .feedback-incorrect {
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            line-height: 1.5;
+        }
+
+        .feedback-correct {
+            background: #e3f2fd;
+            border: 2px solid #23406e;
+            color: #23406e;
+        }
+
+        .feedback-incorrect {
+            background: #fee2e2;
+            border: 2px solid #dc2626;
+            color: #dc2626;
+        }
+
+        /* Badge Unlock Animation */
+        @keyframes badgeUnlock {
+            0% { transform: scale(0.5); opacity: 0; }
+            50% { transform: scale(1.2); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .badge-unlocked {
+            animation: badgeUnlock 0.5s ease-out forwards;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #23406e;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 1000;
+            animation: slideIn 0.3s ease-out forwards;
+        }
+
+        @keyframes slideIn {
+            0% { transform: translateX(100%); opacity: 0; }
+            100% { transform: translateX(0); opacity: 1; }
+        }
+        .site-header {
+            background-color: #23406e;
+            position: relative;
+            padding: 12px 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+        .language-bar {
+            background: #C8D2DC;
+            display: flex;
+            align-items: center;
+            padding: 12px 24px;
+            gap: 24px;
+            border-radius: 12px;
+            font-size: 1.3rem;
+            font-family: 'Inter', Arial, sans-serif;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        .language-link {
+            color: #002F5B;
+            text-decoration: none;
+            cursor: pointer;
+            padding: 8px 18px;
+            border-radius: 8px;
+            transition: background 0.2s, color 0.2s;
+        }
+        .language-link.selected,
+        .language-link:hover {
+            background: #002F5B;
+            color: #fff;
+        }
+        .nav {
+            position: relative;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+            z-index: 2;
+            box-sizing: border-box;
+            margin-top: 0;
+            align-self: stretch;
+        }
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 36px;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            background: rgba(255, 255, 255, 0.5);
+            padding: 10px;
+            border-radius: 12px;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        .logo:hover {
+            background: rgba(255, 255, 255, 0.7);
+        }
+        .logo-img {
+            width: 64px;
+            height: 64px;
+            object-fit: contain;
+        }
+        .logo-text {
+            font-family: 'Montserrat', 'Inclusive Sans', 'Segoe UI', Arial, sans-serif;
+            font-weight: 900;
+            font-size: 2rem;
+            color: #fff;
+            letter-spacing: 1px;
+            line-height: 1;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .nav-link {
+            color: #fff;
+            font-family: 'Inter', Arial, sans-serif;
+            font-weight: 700;
+            font-size: 1.3rem;
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.3);
+            padding: 12px 17px;
+            border-radius: 12px;
+            transition: background 0.2s;
+        }
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+        .login-link {
+            color: #24527A;
+            font-family: 'Inter', Arial, sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.5);
+            padding: 12px 24px;
+            border-radius: 32px;
+            transition: background 0.2s;
+        }
+        .login-link:hover {
+            background: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+        }
+        .cta-btn {
+            background: #23406e;
+            color: #fff;
+            font-family: 'Inter', Arial, sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 32px;
+            padding: 12px 32px;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+            box-shadow: 0 2px 12px rgba(80, 120, 200, 0.08);
+            text-decoration: none;
+            display: inline-block;
+        }
+        .cta-btn:hover {
+            background: #3d5a8a;
+            transform: scale(1.04);
+        }
+
+        /* Info Panels Styles */
+        .info-panels {
+            margin: 20px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .panel {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 2px solid #23406e;
+        }
+
+        .panel h2 {
+            color: #23406e;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        /* Badges Grid */
+        .badges-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 10px;
+        }
+
+        .badge {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            transition: transform 0.2s;
+        }
+
+        .badge:hover {
+            transform: translateY(-5px);
+        }
+
+        .badge-icon {
+            font-size: 2rem;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .badge h3 {
+            color: #23406e;
+            margin: 10px 0;
+            font-size: 1.1rem;
+        }
+
+        .badge p {
+            color: #666;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        /* Facts Carousel */
+        .facts-carousel {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .fact-card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .fact-card p {
+            color: #23406e;
+            font-style: italic;
+            margin: 0 0 10px 0;
+        }
+
+        .fact-card cite {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Aid Types Grid */
+        .aid-types-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .aid-type {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .aid-type h3 {
+            color: #23406e;
+            margin: 0 0 10px 0;
+        }
+
+        .aid-type-meta {
+            color: #666;
+            font-size: 0.9rem;
+            font-style: italic;
+            margin: 0 0 10px 0;
+        }
+
+        .aid-type p {
+            color: #333;
+            margin: 0;
+            line-height: 1.4;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Learner Module</h1>
-        <p>This is a placeholder for the Learner module. Content coming soon.</p>
-    </div>
+    <header class="site-header">
+        <div class="language-bar" id="languageBar">
+            <span class="language-link selected" data-lang="en">EN</span>
+            <span class="language-link" data-lang="es">ES</span>
+            <span class="language-link" data-lang="fr">FR</span>
+            <span class="language-link" data-lang="zh-Hans">中文</span>
+            <span class="language-link" data-lang="ar">العربية</span>
+            <span class="language-link" data-lang="hi">हिन्दी</span>
+            <span class="language-link" data-lang="vi">Tiếng Việt</span>
+            <span class="language-link" data-lang="ko">한국어</span>
+            <span class="language-link" data-lang="fil">Filipino</span>
+            <span class="language-link" data-lang="bn">বাংলা</span>
+            <span class="language-link" data-lang="ur">اردو</span>
+        </div>
+        <div class="nav">
+            <div class="nav-left">
+                <a href="{{ url_for('home') }}" class="logo">
+                    <img src="{{ url_for('static', filename='images/a3e929fd-63d2-4f73-abba-98a2528d3efb-removebg-preview.png') }}" alt="AccessEDU Logo" class="logo-img">
+                    <span class="logo-text">AccessEDU</span>
+                </a>
+            </div>
+            <div class="nav-right">
+                <div class="nav-links">
+                    <a href="{{ url_for('chatbot') }}" class="nav-link">FAFSA Help</a>
+                    <a href="{{ url_for('scholarship_finder') }}" class="nav-link">Scholarships</a>
+                    <a href="{{ url_for('budget_scanner') }}" class="nav-link">Budget Planner</a>
+                    <a href="{{ url_for('learner') }}" class="nav-link selected">Learner</a>
+                </div>
+            </div>
+        </div>
+    </header>
+</head>
+<body>
+
+    <!-- Only the fixed nav bar and language bar at the top remain, all links are accessible. -->
+    <main>
+        <div class="scholarship-header-container">
+            <div class="header-content">
+                <h1>College Financial Literacy Hub</h1>
+                <p>Learn the Essentials to Manage College Costs</p>
+            </div>
+        </div>
+        <div class="learner-container">
+            <!-- Left Side Panel -->
+            <div class="side-panel">
+                <div class="progress-overview">
+                    <h2>Learning Progress</h2>
+                    {% for module, progress in module_progress.items() %}
+                    <div class="module-progress">
+                        <div class="module-info">
+                            <span class="module-name">{{ module }}</span>
+                            <span class="progress-percent">{{ (progress / vocab[module]|length * 100)|round }}%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" data-width="{{ (progress / vocab[module]|length * 100)|round }}"></div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="earned-badges">
+                    <h3>🏆 Your Learning Journey</h3>
+                    <div class="badges-list-full">
+                        <div class="badge-item">
+                            <div class="badge-header">
+                                <span class="badge-icon">🔰</span>
+                                <span class="badge-title">Aid Apprentice</span>
+                            </div>
+                            <p class="badge-description">Completed your first learning module!</p>
+                        </div>
+                        <div class="badge-item">
+                            <div class="badge-header">
+                                <span class="badge-icon">📄</span>
+                                <span class="badge-title">FAFSA Filer</span>
+                            </div>
+                            <p class="badge-description">Mastered the FAFSA concepts.</p>
+                        </div>
+                        <div class="badge-item">
+                            <div class="badge-header">
+                                <span class="badge-icon">🧮</span>
+                                <span class="badge-title">Aid Analyst</span>
+                            </div>
+                            <p class="badge-description">Used the Net Price Calculator.</p>
+                        </div>
+                        <div class="badge-item">
+                            <div class="badge-header">
+                                <span class="badge-icon">🧭</span>
+                                <span class="badge-title">Resource Explorer</span>
+                            </div>
+                            <p class="badge-description">Visited the Resource Hub.</p>
+                        </div>
+                        <div class="badge-item">
+                            <div class="badge-header">
+                                <span class="badge-icon">💡</span>
+                                <span class="badge-title">Scholarship Seeker</span>
+                            </div>
+                            <p class="badge-description">Learned about different aid types.</p>
+                        </div>
+                        <div class="badge-item">
+                            <div class="badge-header">
+                                <span class="badge-icon">🧠</span>
+                                <span class="badge-title">Knowledge Knight</span>
+                            </div>
+                            <p class="badge-description">Completed all learning modules!</p>
+                        </div>
+                        <div class="badge-item">
+                            <div class="badge-header">
+                                <span class="badge-icon">👑</span>
+                                <span class="badge-title">Financial Aid Guru</span>
+                            </div>
+                            <p class="badge-description">Earned all available badges!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side Content -->
+            <div class="main-content">
+                <div class="info-panels">
+
+                <div class="panel facts-panel">
+                    <h2>💫 Aid Facts</h2>
+                    <div class="facts-carousel">
+                        {% for fact in [
+                            {"fact": "Over 85% of full-time undergraduate students receive some form of financial aid. You are not alone in needing help to pay for college!", "source": "NCES"},
+                            {"fact": "Filing the FAFSA is completely free. If a website asks you to pay to file the FAFSA, it's a scam. Always use the official studentaid.gov site.", "source": "Federal Student Aid"},
+                            {"fact": "Many colleges use the CSS Profile application in addition to the FAFSA to award their own institutional grants and scholarships. Check if your colleges require it!", "source": "College Board"},
+                            {"fact": "You have to fill out the FAFSA every year you are in college to remain eligible for federal and state aid.", "source": "Federal Student Aid"},
+                            {"fact": "Students who complete the FAFSA are far more likely to enroll in and complete college. It's one of the most important steps in your journey!", "source": "NCES"}
+                        ] %}
+                            <div class="fact-card">
+                                <p>"{{ fact.fact }}"</p>
+                                <cite>- {{ fact.source }}</cite>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="panel aid-types-panel">
+                    <h2>💰 Types of Aid</h2>
+                    <div class="aid-types-grid">
+                        <div class="aid-type">
+                            <h3>📝 Grants</h3>
+                            <p class="aid-type-meta">Gift Aid (Free Money) - No Repayment Required</p>
+                            <p>Grants are typically awarded based on financial need. They are the best form of aid because they do not need to be repaid. The Federal Pell Grant is a common example.</p>
+                        </div>
+                        <div class="aid-type">
+                            <h3>🎓 Scholarships</h3>
+                            <p class="aid-type-meta">Gift Aid (Free Money) - No Repayment Required</p>
+                            <p>Scholarships are usually awarded based on merit, such as academic achievement, athletic talent, or community service. You can find them from colleges, companies, and non-profits.</p>
+                        </div>
+                        <div class="aid-type">
+                            <h3>💼 Federal Work-Study</h3>
+                            <p class="aid-type-meta">Self-Help Aid - Earned, not repaid</p>
+                            <p>A need-based program that provides part-time jobs for students. You earn a paycheck to help cover expenses. Money earned here isn't counted against you on next year's FAFSA.</p>
+                        </div>
+                        <div class="aid-type">
+                            <h3>🏦 Federal Student Loans</h3>
+                            <p class="aid-type-meta">Self-Help Aid - Must be repaid with interest</p>
+                            <p>Borrowed money that you must repay with interest. Federal loans have better benefits and lower fixed interest rates than private loans. Subsidized loans are best, as the government pays the interest while you're in school.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="module-header">
+                <h1>📚 Learning Journey</h1>
+                <form method="post" class="module-select-form">
+                    <input type="hidden" name="action" value="select_module">
+                    <div class="module-selector">
+                        <select name="module" id="module" class="styled-select">
+                            {% for mod in modules_list %}
+                                <option value="{{ mod }}" {% if mod == module_name %}selected{% endif %}>{{ mod }}</option>
+                            {% endfor %}
+                        </select>
+                        <button type="submit" class="styled-button">Start Learning</button>
+                    </div>
+                </form>
+            </div>
+            <h2>{{ module_name }} ({{ card_index + 1 }}/{{ vocab[module_name]|length }})</h2>
+            <div class="flashcard">
+                <h3>{{ card.term }}</h3>
+                <div class="info-box"><strong>Definition:</strong> {{ card.definition }}</div>
+                <div class="info-box"><strong>💡 Pro Tip:</strong> <em>{{ card.example }}</em></div>
+            </div>
+            <div class="nav-btns">
+                <form method="post">
+                    <input type="hidden" name="action" value="previous">
+                    <button type="submit" {% if card_index == 0 %}disabled{% endif %}>← Previous</button>
+                </form>
+                <form method="post">
+                    <input type="hidden" name="action" value="next">
+                    <button type="submit" {% if card_index == vocab[module_name]|length - 1 %}disabled{% endif %}>Next →</button>
+                </form>
+                <form method="post">
+                    <input type="hidden" name="action" value="test_understanding">
+                    <button type="submit">Test My Understanding</button>
+                </form>
+            </div>
+            {% if quiz_html %}
+                <div class="quiz-section">
+                    <h2>📝 Test Your Knowledge</h2>
+                    <p><strong>{{ quiz_html.q }}</strong></p>
+                    <form method='post'>
+                        <input type='hidden' name='action' value='submit_quiz'>
+                        <input type='hidden' name='module' value='{{ quiz_html.module_name }}'>
+                        <input type='hidden' name='card_index' value='{{ quiz_html.card_index }}'>
+                        {% for i in range(quiz_html.options|length) %}
+                            <div><input type='radio' name='selected' value='{{ i }}' id='opt_{{ i }}' required><label for='opt_{{ i }}'>{{ quiz_html.options[i] }}</label></div>
+                        {% endfor %}
+                        <button type='submit'>Submit</button>
+                    </form>
+                </div>
+            {% endif %}
+            {% if feedback %}
+                {% if feedback.type == 'correct' %}
+                    <div class="feedback-correct"><strong>Correct!</strong> {{ feedback.explanation }}</div>
+                {% elif feedback.type == 'incorrect' %}
+                    <div class="feedback-incorrect"><strong>Not quite.</strong> The correct answer was: <strong>{{ feedback.correct }}</strong>.<br><strong>Why?</strong> {{ feedback.explanation }}</div>
+                {% endif %}
+            {% endif %}
+        </div>
+    </main>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.progress-fill').forEach(function(el) {
+                const width = el.getAttribute('data-width');
+                if (width) {
+                    el.style.width = width + '%';
+                }
+            });
+        });
+    </script>
 </body>
 </html>

@@ -8,9 +8,16 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Azure OpenAI configuration
-AZURE_OPENAI_ENDPOINT = os.environ.get("AZURE_OPENAI_ENDPOINT_BSMP24", "https://bsmp24.openai.azure.com/")
-AZURE_OPENAI_API_KEY = os.environ.get("AZURE_OPENAI_API_KEY_BSMP24")
-AZURE_OPENAI_DEPLOYMENT = os.environ.get("AZURE_OPENAI_DEPLOYMENT", "gpt-35-turbo")
+AZURE_OPENAI_ENDPOINT = "https://bsmp2023.openai.azure.com/"  # Chat API
+AZURE_OPENAI_API_KEY = "7b7711c1bcd94b4899aaa1d796c4f7ae"  # Chat API
+AZURE_OPENAI_DEPLOYMENT = "gpt-35-turbo"
+
+# BSMP24 (alternate chat or translation API)
+AZURE_OPENAI_ENDPOINT_BSMP24 = "https://bsmp24.openai.azure.com/"
+AZURE_OPENAI_API_KEY_BSMP24 = "eae439b382754a94a30bb3db8f9ada07"
+
+# Translation API
+TRANSLATION_API_KEY = "50xBq9y2s08yVpghkmopLEevF6FNsXksvmKOuayRxyhpUfbnAZyJJQQJ99BAACHYHv6XJ3w3AAAAACOG0O6p"
 
 # Initialize Azure OpenAI client only if credentials are available
 openai_client = None

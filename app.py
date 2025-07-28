@@ -19,6 +19,7 @@ app.config.from_mapping(
     SESSION_COOKIE_SAMESITE='Lax',
 )
 
+
 # OAuth 2 client setup
 oauth = OAuth(app)
 oauth.register(
@@ -46,9 +47,16 @@ SYSTEM_PROMPT = (
 )
 
 # Your Azure OpenAI details
-AZURE_OPENAI_ENDPOINT = "https://bsmp2023.openai.azure.com/"
-AZURE_OPENAI_API_KEY = "7b7711c1bcd94b4899aaa1d796c4f7ae"
-AZURE_OPENAI_API_VERSION = "2023-05-15"
+AZURE_OPENAI_ENDPOINT = "https://bsmp2023.openai.azure.com/"  # Chat API
+AZURE_OPENAI_API_KEY = "7b7711c1bcd94b4899aaa1d796c4f7ae"  # Chat API
+AZURE_OPENAI_DEPLOYMENT = "gpt-35-turbo"
+
+# BSMP24 (alternate chat or translation API)
+AZURE_OPENAI_ENDPOINT_BSMP24 = "https://bsmp24.openai.azure.com/"
+AZURE_OPENAI_API_KEY_BSMP24 = "eae439b382754a94a30bb3db8f9ada07"
+
+# Translation API
+TRANSLATION_API_KEY = "50xBq9y2s08yVpghkmopLEevF6FNsXksvmKOuayRxyhpUfbnAZyJJQQJ99BAACHYHv6XJ3w3AAAAACOG0O6p"
 
 # Function to call Azure OpenAI API
 def azure_openai_response(prompt):
@@ -128,21 +136,10 @@ def logout():
 def login():
     return render_template('login.html')
 
-# --- Data Structures for Learner Module ---
-# Remove all BADGES, VOCAB, AID_FACTS, AID_TYPES, CUSTOM_CSS, and all learner-related helpers and routes.
-# --- END LEARNER MODULE DATA ---
 
-# --- Session Initialization (merge with existing before_request if needed) ---
-@app.before_request
-def init_session():
-    # Remove all learner-related session initialization
-    pass
-
-# --- Badge Check Helper ---
-# Remove all badge check helper functions
-
-# --- /learning Route ---
-# Remove all /learning route logic
+# --- Import and register Learner Module ---
+from learner_module import register_learner_route
+register_learner_route(app)
 
 # --- /calculator Route ---
 @app.route('/calculator', methods=['GET', 'POST'])
@@ -177,73 +174,7 @@ def calculator():
             result += "</div>"
         except ValueError:
             result = '<p style="color:red;">Please enter valid numbers.</p>'
-
-    html = f"""
-    <div style='padding: 2rem;'>
-        <h1>🧮 Net Price Calculator</h1>
-        <div>
-        <p>Estimate your out-of-pocket costs.</p>
-        <form method="post">
-            <label>COA: <input type="number" name="coa" required></label>
-            <label>SAI: <input type="number" name="sai" required></label>
-            <label>Grants: <input type="number" name="grants" required></label>
-            <label>Scholarships: <input type="number" name="scholarships" required></label>
-            <button type="submit">Calculate</button>
-        </form>
-        {result}
-        </div>
-    </div>
-    """
-    return render_template_string(html)
-
-# --- /types Route ---
-@app.route('/types', methods=['GET'])
-def types():
-    aid_html = '<div><h1>💡 Types of Aid</h1><ul>'
-    aid_html += '<li>Grants: Free money, usually need-based, does not need to be repaid.</li>'
-    aid_html += '<li>Scholarships: Free money, usually merit-based, does not need to be repaid.</li>'
-    aid_html += '<li>Federal Work-Study: Earned money from a part-time job.</li>'
-    aid_html += '<li>Federal Loans: Borrowed money you must repay with interest.</li>'
-    aid_html += '</ul></div>'
-    return render_template_string(aid_html)
-
-# --- /resources Route ---
-@app.route('/resources', methods=['GET'])
-def resources():
-    resources_html = ''
-    categories = {
-        "Official Sites": [
-            {"name": "StudentAid.gov", "url": "https://studentaid.gov", "desc": "File FAFSA, manage loans."},
-            {"name": "CSS Profile", "url": "https://cssprofile.collegeboard.org", "desc": "For institutional aid."}
-        ],
-        "Scholarship Searches": [
-            {"name": "Fastweb", "url": "https://www.fastweb.com", "desc": "Free matching service."},
-            {"name": "Scholarships.com", "url": "https://www.scholarships.com", "desc": "Thousands of opportunities."}
-        ],
-        "Loan Info": [
-            {"name": "Loan Forgiveness", "url": "https://studentaid.gov/manage-loans/forgiveness-cancellation", "desc": "PSLF and more."}
-        ],
-        "Scam Avoidance": [
-            {"name": "FSA Scam Warnings", "url": "https://studentaid.gov/understand-aid/eligibility/requirements/avoid-scams", "desc": "Spot and report scams."}
-        ]
-    }
-    for cat, items in categories.items():
-        resources_html += f'<h3>{cat}</h3>'
-        for item in items:
-            resources_html += f'<div style="background:#f0f0f0;padding:10px;margin-bottom:8px;border-radius:6px;"><a href="{item["url"]}" target="_blank">{item["name"]}</a>: {item["desc"]}</div>'
-    html = f"""
-    <div style='padding: 2rem;'>
-        <h1>🧭 Resource Hub</h1>
-        <div>
-        <p>Trusted links for further help.</p>
-        {resources_html}
-        </div>
-    </div>
-    """
-    return render_template_string(html)
 # --- END LEARNER MODULE ---
-
-# Remove the /learner route entirely.
 
 @app.route('/chatbot')
 def chatbot():
@@ -291,4 +222,4 @@ def find_scholarships():
     return jsonify({'results': answer})
 
 if __name__ == "__main__":
-    app.run(debug=True, port=8000)
+    app.run(debug=True, port=54321)
