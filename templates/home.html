@@ -570,9 +570,82 @@
                 </div>
             </div>
         </div>
+
+    <!-- Data Privacy Section -->
+    <div style="background: linear-gradient(90deg, #e8f0fa 0%, #f7fafd 100%); padding: 48px 0 40px 0; width: 100vw; box-sizing: border-box; margin-top: 0;">
+        <div style="max-width: 900px; margin: 0 auto; background: #fff; border-radius: 18px; box-shadow: 0 2px 12px #23406e22; padding: 38px 32px 32px 32px;">
+            <h2 style="color: #23406e; font-family: 'Montserrat', Arial, sans-serif; font-size: 2rem; font-weight: 800; margin-bottom: 18px; letter-spacing: 1px;">Your Data, Safely Protected</h2>
+            <div style="font-size: 1.15rem; color: #23406e; margin-bottom: 18px; font-weight: 500;">At AccessEDU, keeping your information secure is our top priority.<br>We use:</div>
+            <ul style="font-size: 1.08rem; color: #23406e; margin-bottom: 18px; padding-left: 1.5em;">
+                <li style="margin-bottom: 10px;">End-to-end encryption to protect your personal data and financial details.</li>
+                <li style="margin-bottom: 10px;">Secure servers to store your data safely.</li>
+                <li style="margin-bottom: 10px;">Strict privacy policies so your data is never shared without your consent.</li>
+            </ul>
+            <div style="font-size: 1.08rem; color: #23406e; margin-bottom: 18px;">Your email, financial information, and everything you enter stay confidential and protected — always.</div>
+            <a href="#" id="privacyPolicyLink" style="font-size: 1.08rem; color: #24527A; font-weight: 700; text-decoration: underline;">Read our full Privacy Policy</a>
+            <!-- Privacy Policy Modal -->
+            <div id="privacyPolicyModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(35,64,110,0.18); z-index:9999; align-items:center; justify-content:center;">
+                <div style="background:#fff; border-radius:18px; max-width:600px; width:95vw; margin:40px auto; box-shadow:0 4px 32px #23406e33; padding:28px 32px 22px 32px; position:relative;">
+                    <button id="closePrivacyModal" style="position:absolute; top:18px; right:18px; background:none; border:none; font-size:1.7rem; color:#23406e; cursor:pointer; font-weight:700;">&times;</button>
+                    <h2 style="color:#23406e; font-family:'Montserrat',Arial,sans-serif; font-size:1.52rem; font-weight:800; margin-bottom:18px; letter-spacing:1px;">AccessEDU Privacy Policy</h2>
+                    <div style="color:#23406e; font-size:1.03rem; margin-bottom:18px; font-weight:500;">Effective Date: July 28, 2025</div>
+                    <div style="color:#23406e; font-size:1.03rem; margin-bottom:18px;">At AccessEDU, we value your trust. This Privacy Policy explains what data we collect, how we use it, how we keep it safe, and your choices.</div>
+                    <div style="color:#23406e; font-size:1.03rem; font-weight:700; margin-bottom:8px;">What We Collect</div>
+                    <ul style="color:#23406e; font-size:1.03rem; margin-bottom:18px; padding-left:1.5em;">
+                        <li>Contact information: Email address, name</li>
+                        <li>Financial details: Income, expenses, scholarship and aid data you enter</li>
+                        <li>Demographic data: Information you choose to share for scholarship matching</li>
+                        <li>Technical data: Browser type, IP address, and device information for site performance and security</li>
+                    </ul>
+                    <div style="color:#23406e; font-size:1.03rem; font-weight:700; margin-bottom:8px;">How We Use Your Data</div>
+                    <ul style="color:#23406e; font-size:1.03rem; margin-bottom:18px; padding-left:1.5em;">
+                        <li>Help you plan for college costs and find scholarships</li>
+                        <li>Provide chatbot answers and personalized financial guidance</li>
+                        <li>Improve and develop AccessEDU features</li>
+                        <li>Communicate important updates or new tools</li>
+                    </ul>
+                    <div style="color:#23406e; font-size:1.03rem; margin-bottom:10px;">We do not sell your personal data to third parties.</div>
+                    <div style="color:#23406e; font-size:1.03rem; font-weight:700; margin-bottom:8px;">How We Protect Your Data</div>
+                    <ul style="color:#23406e; font-size:1.03rem; margin-bottom:18px; padding-left:1.5em;">
+                        <li>All data is encrypted in transit and at rest</li>
+                        <li>Stored on secure servers with strict access controls</li>
+                        <li>Regular security audits to maintain protection</li>
+                    </ul>
+                    <div style="color:#23406e; font-size:1.03rem; font-weight:700; margin-bottom:8px;">Language and Accessibility</div>
+                    <div style="color:#23406e; font-size:1.03rem; margin-bottom:18px;">Our tools support translations in the top 10 most commonly spoken languages worldwide. We strive for accuracy, but translations may occasionally differ.</div>
+                    <div style="color:#23406e; font-size:1.03rem; font-weight:700; margin-bottom:8px;">Your Choices</div>
+                    <ul style="color:#23406e; font-size:1.03rem; margin-bottom:18px; padding-left:1.5em;">
+                        <li>Update or delete your data anytime by logging in</li>
+                        <li>Opt out of non-essential emails in your settings</li>
+                    </ul>
+                    <div style="color:#23406e; font-size:1.03rem; font-weight:700; margin-bottom:8px;">Contact Us</div>
+                    <div style="color:#23406e; font-size:1.03rem; margin-bottom:18px;">If you have questions or concerns about your privacy, please contact us at: <a href="mailto:privacy@accessedu.ai" style="color:#24527A; text-decoration:underline;">privacy@accessedu.ai</a></div>
+                    <div style="color:#23406e; font-size:1.03rem;">Please note: This policy may change over time. Significant updates will be communicated by email or on our website.</div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
+    // Privacy Policy Modal logic
+    document.addEventListener('DOMContentLoaded', function() {
+        var privacyLink = document.getElementById('privacyPolicyLink');
+        var privacyModal = document.getElementById('privacyPolicyModal');
+        var closeBtn = document.getElementById('closePrivacyModal');
+        if (privacyLink && privacyModal && closeBtn) {
+            privacyLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                privacyModal.style.display = 'flex';
+            });
+            closeBtn.addEventListener('click', function() {
+                privacyModal.style.display = 'none';
+            });
+            privacyModal.addEventListener('click', function(e) {
+                if (e.target === privacyModal) privacyModal.style.display = 'none';
+            });
+        }
+    });
+    // FAQ expand/collapse logic
     document.addEventListener('DOMContentLoaded', function() {
         document.querySelectorAll('.faq-question').forEach(function(btn) {
             btn.addEventListener('click', function() {
@@ -580,6 +653,152 @@
                 item.classList.toggle('open');
             });
         });
+    });
+
+    // --- Language Translation Logic (Reusable) ---
+    let currentLang = 'en';
+    // Try to restore language from localStorage or hidden input
+    function getInitialLang() {
+        const stored = localStorage.getItem('selectedLang');
+        if (stored) return stored;
+        return 'en';
+    }
+    currentLang = getInitialLang();
+
+    async function translateText(text, to_lang = 'es') {
+        if (!text || !text.trim()) return text;
+        try {
+            const res = await fetch('/translate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text, to_lang })
+            });
+            const data = await res.json();
+            return data.translated || text;
+        } catch {
+            return text;
+        }
+    }
+
+    // Only translate text nodes, not HTML structure, to preserve interactivity
+    async function translateAllUI(to_lang) {
+        // Only skip language bar and logo text
+        const skipClasses = ['language-link', 'logo-text'];
+        function isSkippable(n) {
+            return skipClasses.some(cls => n.classList && n.classList.contains(cls));
+        }
+
+        // Always translate nav-link features (even if not direct text node)
+        async function translateNavLinks(lang) {
+            const navFeatures = [
+                'FAFSA Help',
+                'Scholarships',
+                'Budget Planner',
+                'Learner',
+                'FAQ'
+            ];
+            const navEls = document.querySelectorAll('.nav-link');
+            for (let el of navEls) {
+                let txt = el.textContent.trim();
+                if (navFeatures.includes(txt)) {
+                    el.textContent = await translateText(txt, lang);
+                }
+            }
+        }
+        // Helper: Recursively translate only text nodes
+        async function translateNode(node) {
+            if (isSkippable(node)) return;
+            if (node.nodeType === 3 && node.textContent.trim()) {
+                node.textContent = await translateText(node.textContent, to_lang);
+            } else if (node.nodeType === 1) {
+                // Translate button textContent (for nav buttons)
+                if (node.tagName === 'BUTTON' && node.childNodes.length === 1 && node.childNodes[0].nodeType === 3 && node.textContent.trim()) {
+                    node.textContent = await translateText(node.textContent, to_lang);
+                    return;
+                }
+                // Don't translate input, textarea, select values here
+                if (["INPUT", "TEXTAREA", "SELECT"].includes(node.tagName)) {
+                    if (node.placeholder) node.placeholder = await translateText(node.placeholder, to_lang);
+                    if (node.value && node.type !== 'hidden') node.value = await translateText(node.value, to_lang);
+                    return;
+                }
+                // Don't translate <option> in language bar
+                if (node.tagName === 'OPTION' && node.parentElement && node.parentElement.classList.contains('language-bar')) return;
+                for (let child of node.childNodes) {
+                    await translateNode(child);
+                }
+            }
+        }
+        // Traverse all elements in the document, not just body children
+        const allElements = document.querySelectorAll('body, body *');
+        for (let el of allElements) {
+            for (let node of el.childNodes) {
+                if (node.nodeType === 3 && node.textContent.trim()) {
+                    if (!isSkippable(el)) {
+                        node.textContent = await translateText(node.textContent, to_lang);
+                    }
+                } else if (node.nodeType === 1) {
+                    await translateNode(node);
+                }
+            }
+        }
+        // Force translate nav-link features
+        await translateNavLinks(to_lang);
+        await translateDynamicContent(to_lang);
+    }
+
+    async function translateDynamicContent(to_lang) {
+        // Only translate text nodes in FAQ answers/questions
+        function isTextNode(n) { return n.nodeType === 3 && n.textContent.trim(); }
+        async function translateTextNodesIn(el) {
+            for (let node of el.childNodes) {
+                if (isTextNode(node)) {
+                    node.textContent = await translateText(node.textContent, to_lang);
+                } else if (node.nodeType === 1) {
+                    if (["INPUT", "TEXTAREA", "SELECT", "BUTTON"].includes(node.tagName)) {
+                        if (node.placeholder) node.placeholder = await translateText(node.placeholder, to_lang);
+                        if (node.value && node.type !== 'hidden') node.value = await translateText(node.value, to_lang);
+                        continue;
+                    }
+                    for (let child of node.childNodes) {
+                        await translateTextNodesIn(child);
+                    }
+                }
+            }
+        }
+        // FAQ
+        document.querySelectorAll('.faq-question, .faq-answer, .faq-category-title').forEach(async div => {
+            await translateTextNodesIn(div);
+        });
+    }
+
+    function initTranslationBar() {
+        document.querySelectorAll('.language-link').forEach(link => {
+            link.addEventListener('click', async function() {
+                document.querySelectorAll('.language-link').forEach(l => l.classList.remove('selected'));
+                this.classList.add('selected');
+                const lang = this.getAttribute('data-lang');
+                currentLang = lang;
+                localStorage.setItem('selectedLang', lang);
+                if (lang === 'en') {
+                    window.location.reload();
+                } else {
+                    await translateAllUI(lang);
+                }
+            });
+        });
+    }
+
+    // Initialize translation bar on page load
+    window.addEventListener('DOMContentLoaded', function() {
+        initTranslationBar();
+        if (currentLang && currentLang !== 'en') {
+            document.querySelectorAll('.language-link').forEach(l => {
+                if (l.getAttribute('data-lang') === currentLang) l.classList.add('selected');
+                else l.classList.remove('selected');
+            });
+            translateAllUI(currentLang);
+        }
     });
     </script>
 </body>

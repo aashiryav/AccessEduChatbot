@@ -469,7 +469,7 @@
     </header>
     <div class="scholarship-header-container" style="display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 120px; padding-bottom: 20px; background: #e0e2e6;">
                     <div style="text-align: center; max-width: 800px;">
-                <h1 style="font-family: 'Montserrat', sans-serif; font-size: 2.5rem; color: #23406e; margin: 0 0 16px 0; line-height: 1.2; white-space: nowrap;">Personalized Scholarship Discovery Tool</h1>
+<h1 id="scholarship-title" style="font-family: 'Montserrat', sans-serif; font-size: 2.5rem; color: #23406e; margin: 10px 0 16px 0; line-height: 1.2; white-space: nowrap; text-align: center;">Personalized Scholarship Discovery Tool</h1>
                 <p style="font-size: 1.2rem; color: #4A5568; margin: 0; line-height: 1.5;">Find Funding Opportunities</p>
             </div>
     </div>
@@ -479,64 +479,346 @@
             <div class="card" style="padding: 32px 24px; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.08);">
                 <h2 style="font-size: 1.5rem; font-weight: 700; color: #23406e; text-align: left; transform: translateY(-1.7rem);">Find Your Scholarships</h2>
                 <form id="filter-form" style="transform: translateY(-1.5rem);">
-                    <div class="scholarship-form-group" style="margin-bottom: 18px;">
-                        <label for="grade-level" style="font-weight: 600; color: #23406e;">Grade Level</label>
-                        <select id="grade-level" class="form-select" style="margin-top: 6px;">
-                            <option>High School Freshman</option>
-                            <option>High School Sophomore</option>
-                            <option>High School Junior</option>
-                            <option selected="">High School Senior</option>
-                            <option>Undergraduate</option>
-                            <option>Graduate</option>
-                        </select>
-                    </div>
-                    <div class="scholarship-form-group" style="margin-bottom: 18px;">
-                        <label for="gpa" style="font-weight: 600; color: #23406e;">GPA (Optional)</label>
-                        <input type="text" id="gpa" placeholder="e.g., 3.8" class="form-input">
-                        <div style="font-size: 0.95em; color: #888; margin-top: 2px;">Enter your GPA on a 4.0 scale</div>
-                    </div>
-                    <div class="scholarship-form-group" style="margin-bottom: 18px;">
-                        <label for="gender" style="font-weight: 600; color: #23406e;">Gender</label>
-                        <select id="gender" class="form-select" style="margin-top: 6px;">
-                            <option>Any</option>
-                            <option>Female</option>
-                            <option>Male</option>
-                            <option>Non-binary</option>
-                        </select>
-                    </div>
-                    <div class="scholarship-form-group" style="margin-bottom: 18px;">
-                        <label for="major" style="font-weight: 600; color: #23406e;">Intended Major (Optional)</label>
-                        <input type="text" id="major" placeholder="e.g., Computer Science" class="form-input" style="margin-top: 6px;">
-                        <div style="font-size: 0.95em; color: #888; margin-top: 2px;">Enter your field of study or leave blank for all majors</div>
-                    </div>
-                    <div class="scholarship-form-group" style="margin-bottom: 18px;">
-                        <label for="essay-yes" style="font-weight: 600; color: #23406e;">Essay Preference</label>
-                        <div style="margin-top: 6px;">
-                            <label for="essay-yes" style="margin-right: 18px;">
-                                <input type="radio" id="essay-yes" name="essay" value="yes" class="form-radio"> Essay Required
-                            </label>
-                            <label for="essay-no" style="margin-right: 18px;">
-                                <input type="radio" id="essay-no" name="essay" value="no" class="form-radio"> No Essay
-                            </label>
-                            <label for="essay-any">
-                                <input type="radio" id="essay-any" name="essay" value="any" checked="" class="form-radio"> Any
-                            </label>
+                    <div style="max-width:340px;width:100%;display:flex;flex-direction:column;gap:18px;padding-right:20px;">
+                        <div class="scholarship-form-group">
+                        <div class="scholarship-form-group">
+                            <label for="location" style="font-weight: 600; color: #23406e;">Location (State or Country)</label>
+                            <input type="text" id="location" placeholder="e.g., California or United States" class="form-input" style="margin-top: 6px; width:100%;">
+                            <div style="font-size: 0.95em; color: #888; margin-top: 2px;">Enter your state or country for location-based scholarships</div>
+                        </div>
+                            <label for="grade-level" style="font-weight: 600; color: #23406e;">Grade Level</label>
+                            <select id="grade-level" class="form-select" style="margin-top: 6px; width:100%;">
+                                <option>High School Freshman</option>
+                                <option>High School Sophomore</option>
+                                <option>High School Junior</option>
+                                <option selected="">High School Senior</option>
+                                <option>Undergraduate</option>
+                                <option>Graduate</option>
+                            </select>
+                        </div>
+                        <div class="scholarship-form-group">
+                            <label for="gpa" style="font-weight: 600; color: #23406e;">GPA (Optional)</label>
+                            <input type="text" id="gpa" placeholder="e.g., 3.8" class="form-input" style="width:100%;">
+                            <div style="font-size: 0.95em; color: #888; margin-top: 2px;">Enter your GPA on a 4.0 scale</div>
+                        </div>
+                        <div class="scholarship-form-group">
+                            <label for="gender" style="font-weight: 600; color: #23406e;">Gender</label>
+                            <select id="gender" class="form-select" style="margin-top: 6px; width:100%;">
+                                <option>Any</option>
+                                <option>Female</option>
+                                <option>Male</option>
+                                <option>Non-binary</option>
+                            </select>
+                        </div>
+                        <div class="scholarship-form-group">
+                            <label for="major" style="font-weight: 600; color: #23406e;">Intended Major (Optional)</label>
+                            <input type="text" id="major" placeholder="e.g., Computer Science" class="form-input" style="margin-top: 6px; width:100%;">
+                            <div style="font-size: 0.95em; color: #888; margin-top: 2px;">Enter your field of study or leave blank for all majors</div>
+                        </div>
+                        <div class="scholarship-form-group">
+                            <label for="demographic" style="font-weight: 600; color: #23406e;">Demographic Group (Optional)</label>
+                            <select id="demographic" class="form-select" style="margin-top: 6px; width:100%;">
+                                <option value="">Any</option>
+                                <option value="African American">African American</option>
+                                <option value="Hispanic/Latino">Hispanic/Latino</option>
+                                <option value="Asian">Asian</option>
+                                <option value="Native American">Native American</option>
+                                <option value="Pacific Islander">Pacific Islander</option>
+                                <option value="LGBTQ+">LGBTQ+</option>
+                                <option value="Female">Female</option>
+                                <option value="Male">Male</option>
+                                <option value="Non-binary">Non-binary</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="scholarship-form-group">
+                            <label for="first-gen" style="font-weight: 600; color: #23406e;">Are you a first-generation college student?</label>
+                            <select id="first-gen" class="form-select" style="margin-top: 6px; width:100%;">
+                                <option value="">Prefer not to say</option>
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                            </select>
+                        </div>
+                        <div class="scholarship-form-group">
+                            <label for="essay-yes" style="font-weight: 600; color: #23406e;">Essay Preference</label>
+                            <div style="margin-top: 6px; display: flex; flex-direction: row; gap: 18px; align-items: center; white-space: nowrap;">
+                                <label for="essay-yes" style="margin: 0 18px 0 0; display: flex; align-items: center;">
+                                    <input type="radio" id="essay-yes" name="essay" value="yes" class="form-radio" style="margin-right: 6px;"> Essay Required
+                                </label>
+                                <label for="essay-no" style="margin: 0 18px 0 0; display: flex; align-items: center;">
+                                    <input type="radio" id="essay-no" name="essay" value="no" class="form-radio" style="margin-right: 6px;"> No Essay
+                                </label>
+                                <label for="essay-any" style="margin: 0; display: flex; align-items: center;">
+                                    <input type="radio" id="essay-any" name="essay" value="any" checked class="form-radio" style="margin-right: 6px;"> Any
+                                </label>
+                            </div>
                         </div>
                     </div>
                     <button type="button" id="find-button" class="btn-primary" style="margin-top: 18px; width: 100%; font-size: 1.1rem;">🔍 Find Scholarships</button>
+                    <div class="scholarship-form-group" style="margin-top: 10px;">
+                        <label for="sort-by" style="font-weight: 600; color: #23406e;">Sort Results By</label>
+                        <select id="sort-by" class="form-select" style="margin-top: 6px; width:100%;">
+                            <option value="relevance">Best Match</option>
+                            <option value="amount">Amount (High to Low)</option>
+                            <option value="deadline">Deadline (Soonest)</option>
+                            <option value="demographic">Demographic Match</option>
+                        </select>
+                    </div>
                 </form>
             </div>
         </div>
         <div style="flex: 1.2; max-width: 640px;">
-        <div class="card results-panel" style="padding: 140px 24px; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); min-height: 420px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <div class="card results-panel" style="padding: 40px 24px; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); min-height: 1085px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start;">
             <div class="results-header" style="width: 100%; text-align: left; display: flex; align-items: flex-start; height: 44px;">
-                <h2 class="results-title" style="font-size: 1.5rem; font-weight: 700; color: #23406e; flex: 1; align-items: center; transform: translateY(-10.7rem); height: 10px;">Your Scholarship Matches</h2>
+                <h2 class="results-title" style="font-size: 1.5rem; font-weight: 700; color: #23406e; flex: 1; align-items: center; margin-top: -20px;">Your Scholarship Matches</h2>
             </div>
-            <div id="scholarship-results-list" class="results-container empty-state" style="background: none; box-shadow: none; padding: 0; min-height: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+            <div id="scholarship-results-list" class="results-container empty-state" style="background: none; box-shadow: none; padding: 0; min-height: 0; display: flex; flex-direction: column; align-items: center; justify-content: flex-start;">
                 <img src="/static/grad-removebg-preview.png" alt="Scholarship Icon" style="width: 128px; height: 128px; margin-bottom: 18px; opacity: 0.5;">
                 <div style="font-size: 1.2rem; font-weight: 600; color: #23406e; margin-bottom: 10px; text-align: center;">Ready to find scholarships?</div>
                 <div style="font-size: 1rem; color: #555; text-align: center; max-width: 340px;">Fill out the form on the left to discover scholarships that match your profile. Our AI will analyze thousands of opportunities to find the best matches for you.</div>
+                <style>
+                #scholarship-results-list { margin-top: -40px !important; }
+                </style>
             </div>
         </div>
     </div>
+<script>
+// --- Title Wrapping Logic for Non-English ---
+function updateScholarshipTitleWrap(lang) {
+    const title = document.getElementById('scholarship-title');
+    if (!title) return;
+    if (lang === 'en') {
+        title.style.whiteSpace = 'nowrap';
+        title.style.wordBreak = '';
+        title.style.overflowWrap = '';
+        title.style.paddingTop = '';
+    } else {
+        title.style.whiteSpace = 'normal';
+        title.style.wordBreak = 'break-word';
+        title.style.overflowWrap = 'break-word';
+        title.style.paddingTop = '10px';
+    }
+}
+// --- Language Translation Logic (Reusable) ---
+let currentLang = 'en';
+function getInitialLang() {
+    const stored = localStorage.getItem('selectedLang');
+    if (stored) return stored;
+    return 'en';
+}
+currentLang = getInitialLang();
+
+async function translateText(text, to_lang = 'es') {
+    if (!text || !text.trim()) return text;
+    try {
+        const res = await fetch('/translate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text, to_lang })
+        });
+        const data = await res.json();
+        return data.translated || text;
+    } catch {
+        return text;
+    }
+}
+
+async function translateAllUI(to_lang) {
+    // Only skip language bar and logo text
+    const skipClasses = ['language-link', 'logo-text'];
+    function isSkippable(n) {
+        return skipClasses.some(cls => n.classList && n.classList.contains(cls));
+    }
+    // Always translate nav-link features (even if not direct text node)
+    async function translateNavLinks(lang) {
+        const navFeatures = [
+            'FAFSA Help',
+            'Scholarships',
+            'Budget Planner',
+            'Learner',
+            'FAQ'
+        ];
+        const navEls = document.querySelectorAll('.nav-link');
+        for (let el of navEls) {
+            let txt = el.textContent.trim();
+            if (navFeatures.includes(txt)) {
+                el.textContent = await translateText(txt, lang);
+            }
+        }
+    }
+    // Helper: Recursively translate only text nodes
+    async function translateNode(node) {
+        if (isSkippable(node)) return;
+        if (node.nodeType === 3 && node.textContent.trim()) {
+            node.textContent = await translateText(node.textContent, to_lang);
+        } else if (node.nodeType === 1) {
+            // Translate button textContent (for nav buttons)
+            if (node.tagName === 'BUTTON' && node.childNodes.length === 1 && node.childNodes[0].nodeType === 3 && node.textContent.trim()) {
+                node.textContent = await translateText(node.textContent, to_lang);
+                return;
+            }
+            // Don't translate input, textarea, select values here
+            if (["INPUT", "TEXTAREA", "SELECT"].includes(node.tagName)) {
+                if (node.placeholder) node.placeholder = await translateText(node.placeholder, to_lang);
+                if (node.value && node.type !== 'hidden') node.value = await translateText(node.value, to_lang);
+                return;
+            }
+            // Don't translate <option> in language bar
+            if (node.tagName === 'OPTION' && node.parentElement && node.parentElement.classList.contains('language-bar')) return;
+            for (let child of node.childNodes) {
+                await translateNode(child);
+            }
+        }
+    }
+    // Traverse all elements in the document, not just body children
+    const allElements = document.querySelectorAll('body, body *');
+    for (let el of allElements) {
+        for (let node of el.childNodes) {
+            if (node.nodeType === 3 && node.textContent.trim()) {
+                if (!isSkippable(el)) {
+                    node.textContent = await translateText(node.textContent, to_lang);
+                }
+            } else if (node.nodeType === 1) {
+                await translateNode(node);
+            }
+        }
+    }
+    // Force translate nav-link features
+    await translateNavLinks(to_lang);
+    await translateDynamicContent(to_lang);
+
+    // --- Translate selected value of grade and gender dropdowns ---
+    const gradeSelect = document.getElementById('grade-level');
+    if (gradeSelect) {
+        const selectedOption = gradeSelect.options[gradeSelect.selectedIndex];
+        if (selectedOption) {
+            selectedOption.textContent = await translateText(selectedOption.textContent, to_lang);
+        }
+    }
+    const genderSelect = document.getElementById('gender');
+    if (genderSelect) {
+        const selectedOption = genderSelect.options[genderSelect.selectedIndex];
+        if (selectedOption) {
+            selectedOption.textContent = await translateText(selectedOption.textContent, to_lang);
+        }
+    }
+
+    // --- Translate all 'yearly' and 'monthly' options in all selects ---
+    document.querySelectorAll('select').forEach(sel => {
+        Array.from(sel.options).forEach(async opt => {
+            if (opt.value && (opt.value.toLowerCase() === 'yearly' || opt.value.toLowerCase() === 'monthly')) {
+                opt.textContent = await translateText(opt.textContent, to_lang);
+            }
+        });
+    });
+}
+
+async function translateDynamicContent(to_lang) {
+    // Only translate text nodes in results and form labels
+    function isTextNode(n) { return n.nodeType === 3 && n.textContent.trim(); }
+    async function translateTextNodesIn(el) {
+        for (let node of el.childNodes) {
+            if (isTextNode(node)) {
+                node.textContent = await translateText(node.textContent, to_lang);
+            } else if (node.nodeType === 1) {
+                if (["INPUT", "TEXTAREA", "SELECT", "BUTTON"].includes(node.tagName)) {
+                    if (node.placeholder) node.placeholder = await translateText(node.placeholder, to_lang);
+                    if (node.value && node.type !== 'hidden') node.value = await translateText(node.value, to_lang);
+                    continue;
+                }
+                for (let child of node.childNodes) {
+                    await translateTextNodesIn(child);
+                }
+            }
+        }
+    }
+    // Results panel and form
+    document.querySelectorAll('.results-title, .results-header, .results-container, label, .scholarship-header-title, .scholarship-header-subtitle, .scholarship-header-tagline').forEach(async div => {
+        await translateTextNodesIn(div);
+    });
+}
+
+function initTranslationBar() {
+    let isTranslating = false;
+    document.querySelectorAll('.language-link').forEach(link => {
+        link.addEventListener('click', async function() {
+            if (isTranslating) return;
+            isTranslating = true;
+            // Disable all language links during translation
+            document.querySelectorAll('.language-link').forEach(l => l.style.pointerEvents = 'none');
+            document.querySelectorAll('.language-link').forEach(l => l.classList.remove('selected'));
+            this.classList.add('selected');
+            const lang = this.getAttribute('data-lang');
+            currentLang = lang;
+            localStorage.setItem('selectedLang', lang);
+            updateScholarshipTitleWrap(lang);
+            if (lang === 'en') {
+                window.location.reload();
+            } else {
+                await translateAllUI(lang);
+            }
+            // Re-enable language links after translation
+            document.querySelectorAll('.language-link').forEach(l => l.style.pointerEvents = '');
+            isTranslating = false;
+        });
+    });
+}
+
+window.addEventListener('DOMContentLoaded', function() {
+    initTranslationBar();
+    updateScholarshipTitleWrap(currentLang);
+    if (currentLang && currentLang !== 'en') {
+        document.querySelectorAll('.language-link').forEach(l => {
+            if (l.getAttribute('data-lang') === currentLang) l.classList.add('selected');
+            else l.classList.remove('selected');
+        });
+        translateAllUI(currentLang);
+    }
+});
+// Scholarship Finder JS
+document.getElementById('find-button').onclick = async function() {
+    const major = document.getElementById('major').value;
+    const gpa = document.getElementById('gpa').value;
+    const grade_level = document.getElementById('grade-level').value;
+    const essay = document.querySelector('input[name="essay"]:checked').value;
+    const demographic = document.getElementById('demographic').value;
+    const first_gen = document.getElementById('first-gen').value;
+    const location = document.getElementById('location').value;
+    const sort_by = document.getElementById('sort-by').value;
+    const resultsList = document.getElementById('scholarship-results-list');
+    const lang = currentLang || 'en';
+    resultsList.innerHTML = '<div style="color:#23406e;font-weight:600;font-size:1.2rem;">Searching for scholarships...</div>';
+    try {
+        const response = await fetch('/find-scholarships', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ major, gpa, grade_level, essay, demographic, first_gen, location, sort_by, lang })
+        });
+        const data = await response.json();
+        if (data.results) {
+            // Convert markdown-style list to HTML
+            let html = data.results
+                .replace(/\n- /g, '<li>')
+                .replace(/^- /, '<li>')
+                .replace(/\n/g, '<br>')
+                .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank">$1</a>');
+            html = '<ul style="padding-left: 1.2em; list-style-type: disc;">' + html + '</ul>';
+            resultsList.classList.remove('empty-state');
+            resultsList.innerHTML = html;
+            // Add spacing between each result
+            setTimeout(() => {
+                const lis = document.querySelectorAll('#scholarship-results-list ul li');
+                lis.forEach(li => {
+                    li.style.marginBottom = '22px';
+                    li.style.lineHeight = '1.6';
+                });
+            }, 10);
+        } else {
+            resultsList.innerHTML = '<div style="color:red;">No scholarships found.</div>';
+        }
+    } catch (e) {
+        resultsList.innerHTML = '<div style="color:red;">Error finding scholarships.</div>';
+    }
+};
+</script>
 </body>

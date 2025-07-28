@@ -422,50 +422,47 @@ def register_learner_route(app):
                 explanation = quiz.get('explanation', '')
                 if selected == correct:
                     feedback = {'type': 'correct', 'explanation': explanation}
-                    
-                    # Update progress for the module
+                    # Update progress for the module ONLY if not already counted for this term/quiz
                     if 'module_progress' not in session:
                         session['module_progress'] = {module: 0 for module in VOCAB.keys()}
-                    
-                    session['module_progress'][module_name] = min(
-                        session['module_progress'][module_name] + 1,
-                        len(VOCAB[module_name])
-                    )
-
+                    # Only increment if this term's quiz hasn't been marked as completed (use a per-term/quiz completion tracker if needed)
+                    if 'quiz_completed' not in session:
+                        session['quiz_completed'] = {}
+                    key = f"{module_name}:{term_index}:{quiz_index}"
+                    if not session['quiz_completed'].get(key, False):
+                        session['module_progress'][module_name] = min(
+                            session['module_progress'][module_name] + 1,
+                            len(VOCAB[module_name])
+                        )
+                        session['quiz_completed'][key] = True
                     # Initialize earned badges if not in session
                     if 'earned_badges' not in session:
                         session['earned_badges'] = []
-
                     # Check for badge unlocks
                     total_modules = len(VOCAB.keys())
                     total_progress = sum(session['module_progress'].values())
                     total_possible = sum(len(module) for module in VOCAB.values())
-                    
                     # Aid Apprentice - First correct answer
                     if 'Aid Apprentice' not in session['earned_badges']:
                         session['earned_badges'].append('Aid Apprentice')
-                    
                     # Knowledge Knight - Complete all modules
                     if total_progress >= total_possible and 'Knowledge Knight' not in session['earned_badges']:
                         session['earned_badges'].append('Knowledge Knight')
-                    
                     # FAFSA Filer - Complete FAFSA module
                     if module_name == '📄 The FAFSA Deep Dive' and session['module_progress'][module_name] >= len(VOCAB[module_name]):
                         if 'FAFSA Filer' not in session['earned_badges']:
                             session['earned_badges'].append('FAFSA Filer')
-                    
                     # Financial Aid Guru - Earn all other badges
                     if len(session['earned_badges']) >= len(BADGES) - 1 and 'Financial Aid Guru' not in session['earned_badges']:
                         session['earned_badges'].append('Financial Aid Guru')
-
+                    # Move to next quiz question or finish quiz
+                    if quiz_index + 1 < len(term.get('quiz', [])):
+                        session['learner_quiz_index'] += 1
+                    else:
+                        session['learner_quiz_index'] = None  # End quiz mode
                 else:
                     feedback = {'type': 'incorrect', 'explanation': explanation, 'correct': quiz.get('options', [''])[correct] if correct != -1 else ''}
-                
-                # Move to next quiz question or finish quiz
-                if quiz_index + 1 < len(term.get('quiz', [])):
-                    session['learner_quiz_index'] += 1
-                else:
-                    session['learner_quiz_index'] = None  # End quiz mode
+                    # Do NOT advance quiz index; user must retry the same question
 
             # Refresh state after POST
             module_name = session['learner_module']

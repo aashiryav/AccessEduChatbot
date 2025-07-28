@@ -1,4 +1,7 @@
 
+
+
+
 import os
 import requests
 from flask import Flask, request, jsonify, render_template, url_for, session, redirect, render_template_string
@@ -43,7 +46,8 @@ SYSTEM_PROMPT = (
     "If asked, you can also suggest ways to find educational videos in multiple languages and point to common FAQs. "
     "Always use plain, friendly, and supportive language, as if you’re guiding someone who feels overwhelmed. "
     "If a question is unrelated to college financial planning, politely explain that you can only help with FAFSA, scholarships, budgeting, and related financial topics. "
-    "Your mission is to empower every family to feel confident navigating college costs, no matter their background or language."
+    "Your mission is to empower every family to feel confident navigating college costs, no matter their background or language. "
+    "Always keep your replies concise and to the point, unless the user asks for more detail."
 )
 
 # Your Azure OpenAI details
@@ -197,7 +201,32 @@ def signup():
 def chat():
     data = request.get_json()
     user_input = data.get('message', '')
+    lang = data.get('lang', 'en')
     answer = azure_openai_response(user_input)
+    # If language is not English, translate the answer
+    if lang and lang != 'en':
+        # Use the same translation logic as /translate
+        try:
+            path = '/translate'
+            constructed_url = TRANSLATION_ENDPOINT + path
+            params = {
+                'api-version': '3.0',
+                'to': [lang]
+            }
+            headers = {
+                'Ocp-Apim-Subscription-Key': TRANSLATION_API_KEY,
+                'Ocp-Apim-Subscription-Region': TRANSLATION_REGION,
+                'Content-type': 'application/json',
+                'X-ClientTraceId': str(uuid.uuid4())
+            }
+            body = [{ 'text': answer }]
+            response = requests.post(constructed_url, params=params, headers=headers, json=body)
+            response.raise_for_status()
+            result = response.json()
+            translated = result[0]['translations'][0]['text']
+            answer = translated
+        except Exception as e:
+            answer = f"[Error translating: {e}]\n{answer}"
     return jsonify({'response': answer})
 
 @app.route('/find-scholarships', methods=['POST'])
@@ -220,6 +249,33 @@ def find_scholarships():
     )
     answer = azure_openai_response(prompt)
     return jsonify({'results': answer})
+
+@app.route('/api/mini-advisor', methods=['POST'])
+def mini_advisor():
+    data = request.get_json()
+    user_message = data.get('message', '').strip()
+    if not user_message:
+        return jsonify({'reply': "Please enter a question for financial advice."}), 400
+    # Use a focused system prompt for financial advice
+    mini_system_prompt = (
+        "You are AdvisorBot, a friendly and practical financial advisor for college-bound families. "
+        "Give concise, actionable advice about budgeting, saving, college costs, scholarships, and financial planning. "
+        "If the question is not about personal or family finances, politely say you can only help with financial advice."
+    )
+    try:
+        response = openai_client.chat.completions.create(
+            model=AZURE_OPENAI_DEPLOYMENT,
+            messages=[
+                {"role": "system", "content": mini_system_prompt},
+                {"role": "user", "content": user_message}
+            ],
+            max_tokens=256,
+            temperature=0.6
+        )
+        reply = response.choices[0].message.content.strip()
+        return jsonify({'reply': reply})
+    except Exception as e:
+        return jsonify({'reply': f"Sorry, I couldn't get a response right now. ({e})"}), 500
 
 if __name__ == "__main__":
     app.run(debug=True, port=54321)

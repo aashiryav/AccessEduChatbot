@@ -40,10 +40,14 @@
         
         .header-content h1 {
             font-family: 'Montserrat', sans-serif;
-            font-size: 2.5rem;
             color: #23406e;
             margin: 0 0 16px 0;
             line-height: 1.2;
+            word-break: break-word;
+            overflow-wrap: break-word;
+            text-align: center;
+            /* Remove white-space and max-width to allow wrapping */
+            font-size: clamp(1.5rem, 5vw, 2.5rem);
         }
         
         .header-content p {
@@ -762,55 +766,43 @@
                 <div class="earned-badges">
                     <h3>🏆 Your Learning Journey</h3>
                     <div class="badges-list-full">
-                        <div class="badge-item">
-                            <div class="badge-header">
-                                <span class="badge-icon">🔰</span>
-                                <span class="badge-title">Aid Apprentice</span>
-                            </div>
-                            <p class="badge-description">Completed your first learning module!</p>
-                        </div>
-                        <div class="badge-item">
-                            <div class="badge-header">
-                                <span class="badge-icon">📄</span>
-                                <span class="badge-title">FAFSA Filer</span>
-                            </div>
-                            <p class="badge-description">Mastered the FAFSA concepts.</p>
-                        </div>
-                        <div class="badge-item">
-                            <div class="badge-header">
-                                <span class="badge-icon">🧮</span>
-                                <span class="badge-title">Aid Analyst</span>
-                            </div>
-                            <p class="badge-description">Used the Net Price Calculator.</p>
-                        </div>
-                        <div class="badge-item">
-                            <div class="badge-header">
-                                <span class="badge-icon">🧭</span>
-                                <span class="badge-title">Resource Explorer</span>
-                            </div>
-                            <p class="badge-description">Visited the Resource Hub.</p>
-                        </div>
-                        <div class="badge-item">
-                            <div class="badge-header">
-                                <span class="badge-icon">💡</span>
-                                <span class="badge-title">Scholarship Seeker</span>
-                            </div>
-                            <p class="badge-description">Learned about different aid types.</p>
-                        </div>
-                        <div class="badge-item">
-                            <div class="badge-header">
-                                <span class="badge-icon">🧠</span>
-                                <span class="badge-title">Knowledge Knight</span>
-                            </div>
-                            <p class="badge-description">Completed all learning modules!</p>
-                        </div>
-                        <div class="badge-item">
-                            <div class="badge-header">
-                                <span class="badge-icon">👑</span>
-                                <span class="badge-title">Financial Aid Guru</span>
-                            </div>
-                            <p class="badge-description">Earned all available badges!</p>
-                        </div>
+{# --- BADGE LOGIC --- #}
+{# BADGES: Define all badges here, and use only variables passed from backend for earned status #}
+<div class="badge-item">
+    <div class="badge-header" style="opacity: {{ 1.0 if aid_apprentice_earned else 0.3 }}">
+        <span class="badge-icon">🔰</span>
+        <span class="badge-title">Aid Apprentice</span>
+    </div>
+    <p class="badge-description" style="opacity: {{ 1.0 if aid_apprentice_earned else 0.3 }}">Completed your first learning module!</p>
+</div>
+<div class="badge-item">
+    <div class="badge-header" style="opacity: {{ 1.0 if knowledge_knight_earned else 0.3 }}">
+        <span class="badge-icon">🧠</span>
+        <span class="badge-title">Knowledge Knight</span>
+    </div>
+    <p class="badge-description" style="opacity: {{ 1.0 if knowledge_knight_earned else 0.3 }}">Completed all learning modules!</p>
+</div>
+<div class="badge-item">
+    <div class="badge-header" style="opacity: {{ 1.0 if quiz_master_earned else 0.3 }}">
+        <span class="badge-icon">🏅</span>
+        <span class="badge-title">Quiz Master</span>
+    </div>
+    <p class="badge-description" style="opacity: {{ 1.0 if quiz_master_earned else 0.3 }}">Answered all quiz questions correctly in a module!</p>
+</div>
+<div class="badge-item">
+    <div class="badge-header" style="opacity: {{ 1.0 if flashcard_finisher_earned else 0.3 }}">
+        <span class="badge-icon">📚</span>
+        <span class="badge-title">Flashcard Finisher</span>
+    </div>
+    <p class="badge-description" style="opacity: {{ 1.0 if flashcard_finisher_earned else 0.3 }}">Viewed every flashcard in a module!</p>
+</div>
+<div class="badge-item">
+    <div class="badge-header" style="opacity: {{ 1.0 if first_try_star_earned else 0.3 }}">
+        <span class="badge-icon">⭐</span>
+        <span class="badge-title">First Try Star</span>
+    </div>
+    <p class="badge-description" style="opacity: {{ 1.0 if first_try_star_earned else 0.3 }}">Got a quiz question right on the first try!</p>
+</div>
                     </div>
                 </div>
             </div>
@@ -868,8 +860,9 @@
                 <h1>📚 Learning Journey</h1>
                 <form method="post" class="module-select-form">
                     <input type="hidden" name="action" value="select_module">
+                    <input type="hidden" name="selected_lang" id="selectedLangInput" value="en">
                     <div class="module-selector">
-                        <select name="module" id="module" class="styled-select">
+                        <select name="module" id="module" class="styled-select module-dropdown">
                             {% for mod in modules_list %}
                                 <option value="{{ mod }}" {% if mod == module_name %}selected{% endif %}>{{ mod }}</option>
                             {% endfor %}
@@ -878,7 +871,7 @@
                     </div>
                 </form>
             </div>
-            <h2>{{ module_name }} ({{ card_index + 1 }}/{{ vocab[module_name]|length }})</h2>
+            <h2>{{ module_name }}</h2>
             <div class="flashcard">
                 <h3>{{ card.term }}</h3>
                 <div class="info-box"><strong>Definition:</strong> {{ card.definition }}</div>
@@ -887,18 +880,33 @@
             <div class="nav-btns">
                 <form method="post">
                     <input type="hidden" name="action" value="previous">
-                    <button type="submit" {% if card_index == 0 %}disabled{% endif %}>← Previous</button>
+                    <button type="submit" {% if card_index == 0 or vocab[module_name]|length == 1 %}disabled{% endif %}>← Previous</button>
                 </form>
                 <form method="post">
                     <input type="hidden" name="action" value="next">
-                    <button type="submit" {% if card_index == vocab[module_name]|length - 1 %}disabled{% endif %}>Next →</button>
+                    <button type="submit" {% if card_index == vocab[module_name]|length - 1 or vocab[module_name]|length == 1 %}disabled{% endif %}>Next →</button>
                 </form>
                 <form method="post">
                     <input type="hidden" name="action" value="test_understanding">
                     <button type="submit">Test My Understanding</button>
                 </form>
             </div>
-            {% if quiz_html %}
+            {% if feedback and feedback.type == 'incorrect' and quiz_html %}
+                <div class="feedback-incorrect"><strong>Not quite.</strong> The correct answer was: <strong>{{ feedback.correct }}</strong>.<br><strong>Why?</strong> {{ feedback.explanation }}</div>
+                <div class="quiz-section">
+                    <h2>📝 Try Again</h2>
+                    <p><strong>{{ quiz_html.q }}</strong></p>
+                    <form method='post'>
+                        <input type='hidden' name='action' value='submit_quiz'>
+                        <input type='hidden' name='module' value='{{ quiz_html.module_name }}'>
+                        <input type='hidden' name='card_index' value='{{ quiz_html.card_index }}'>
+                        {% for i in range(quiz_html.options|length) %}
+                            <div><input type='radio' name='selected' value='{{ i }}' id='opt_retry_{{ i }}' required><label for='opt_retry_{{ i }}'>{{ quiz_html.options[i] }}</label></div>
+                        {% endfor %}
+                        <button type='submit'>Submit</button>
+                    </form>
+                </div>
+            {% elif quiz_html %}
                 <div class="quiz-section">
                     <h2>📝 Test Your Knowledge</h2>
                     <p><strong>{{ quiz_html.q }}</strong></p>
@@ -913,16 +921,13 @@
                     </form>
                 </div>
             {% endif %}
-            {% if feedback %}
-                {% if feedback.type == 'correct' %}
-                    <div class="feedback-correct"><strong>Correct!</strong> {{ feedback.explanation }}</div>
-                {% elif feedback.type == 'incorrect' %}
-                    <div class="feedback-incorrect"><strong>Not quite.</strong> The correct answer was: <strong>{{ feedback.correct }}</strong>.<br><strong>Why?</strong> {{ feedback.explanation }}</div>
-                {% endif %}
+            {% if feedback and feedback.type == 'correct' %}
+                <div class="feedback-correct"><strong>Correct!</strong> {{ feedback.explanation }}</div>
             {% endif %}
         </div>
     </main>
     <script>
+        // Progress bar fill logic
         document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('.progress-fill').forEach(function(el) {
                 const width = el.getAttribute('data-width');
@@ -930,6 +935,192 @@
                     el.style.width = width + '%';
                 }
             });
+        });
+
+        // --- Language Translation Logic (Reusable) ---
+        let currentLang = 'en';
+        // Try to restore language from localStorage or hidden input
+        function getInitialLang() {
+            const stored = localStorage.getItem('selectedLang');
+            if (stored) return stored;
+            const input = document.getElementById('selectedLangInput');
+            if (input && input.value) return input.value;
+            return 'en';
+        }
+        currentLang = getInitialLang();
+
+        async function translateText(text, to_lang = 'es') {
+            if (!text || !text.trim()) return text;
+            try {
+                const res = await fetch('/translate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text, to_lang })
+                });
+                const data = await res.json();
+                return data.translated || text;
+            } catch {
+                return text;
+            }
+        }
+
+        // Only translate text nodes, not HTML structure, to preserve quiz interactivity
+        async function translateAllUI(to_lang) {
+            // Only skip language bar and logo text
+            const skipClasses = ['language-link', 'logo-text'];
+            function isSkippable(n) {
+                return skipClasses.some(cls => n.classList && n.classList.contains(cls));
+            }
+
+            // Always translate nav-link features (even if not direct text node)
+            async function translateNavLinks(lang) {
+                const navFeatures = [
+                    'FAFSA Help',
+                    'Scholarships',
+                    'Budget Planner',
+                    'Learner',
+                    'FAQ'
+                ];
+                const navEls = document.querySelectorAll('.nav-link');
+                for (let el of navEls) {
+                    // Only translate if the text matches one of the features (ignoring whitespace)
+                    let txt = el.textContent.trim();
+                    if (navFeatures.includes(txt)) {
+                        el.textContent = await translateText(txt, lang);
+                    }
+                }
+            }
+
+            // Translate all dropdown <option> elements (except language bar)
+            async function translateDropdownOptions(lang) {
+                // Exclude options in language bar
+                // Only translate module dropdown and any other relevant selects
+                const moduleSelects = document.querySelectorAll('select.module-dropdown');
+                for (let sel of moduleSelects) {
+                    for (let opt of sel.options) {
+                        if (opt.textContent && opt.textContent.trim()) {
+                            opt.textContent = await translateText(opt.textContent, lang);
+                        }
+                    }
+                }
+            }
+
+            // Helper: Recursively translate only text nodes
+            async function translateNode(node) {
+                if (isSkippable(node)) return;
+                if (node.nodeType === 3 && node.textContent.trim()) {
+                    node.textContent = await translateText(node.textContent, to_lang);
+                } else if (node.nodeType === 1) {
+                    // Translate button textContent (for nav buttons)
+                    if (node.tagName === 'BUTTON' && node.childNodes.length === 1 && node.childNodes[0].nodeType === 3 && node.textContent.trim()) {
+                        node.textContent = await translateText(node.textContent, to_lang);
+                        return;
+                    }
+                    // Don't translate input, textarea, select values here
+                    if (['INPUT', 'TEXTAREA', 'SELECT'].includes(node.tagName)) {
+                        if (node.placeholder) node.placeholder = await translateText(node.placeholder, to_lang);
+                        if (node.value && node.type !== 'hidden') node.value = await translateText(node.value, to_lang);
+                        return;
+                    }
+                    // Don't translate <option> in language bar
+                    if (node.tagName === 'OPTION' && node.parentElement && node.parentElement.classList.contains('language-bar')) return;
+                    for (let child of node.childNodes) {
+                        await translateNode(child);
+                    }
+                }
+            }
+            // Traverse all elements in the document, not just body children
+            const allElements = document.querySelectorAll('body, body *');
+            for (let el of allElements) {
+                for (let node of el.childNodes) {
+                    if (node.nodeType === 3 && node.textContent.trim()) {
+                        if (!isSkippable(el)) {
+                            node.textContent = await translateText(node.textContent, to_lang);
+                        }
+                    } else if (node.nodeType === 1) {
+                        await translateNode(node);
+                    }
+                }
+            }
+            // Force translate nav-link features
+            await translateNavLinks(to_lang);
+            // Translate dropdowns (module selector, etc)
+            await translateDropdownOptions(to_lang);
+            await translateDynamicContent(to_lang);
+        }
+
+        async function translateDynamicContent(to_lang) {
+            // Only translate text nodes in feedback and quiz sections, not HTML structure
+            function isTextNode(n) { return n.nodeType === 3 && n.textContent.trim(); }
+            async function translateTextNodesIn(el) {
+                for (let node of el.childNodes) {
+                    if (isTextNode(node)) {
+                        node.textContent = await translateText(node.textContent, to_lang);
+                    } else if (node.nodeType === 1) {
+                        // Don't translate input, textarea, select, button values here
+                        if (['INPUT', 'TEXTAREA', 'SELECT', 'BUTTON'].includes(node.tagName)) {
+                            if (node.placeholder) node.placeholder = await translateText(node.placeholder, to_lang);
+                            if (node.value && node.type !== 'hidden') node.value = await translateText(node.value, to_lang);
+                            continue;
+                        }
+                        for (let child of node.childNodes) {
+                            await translateTextNodesIn(child);
+                        }
+                    }
+                }
+            }
+            // Feedback
+            document.querySelectorAll('.feedback-correct, .feedback-incorrect').forEach(async div => {
+                await translateTextNodesIn(div);
+            });
+            // Quiz section
+            document.querySelectorAll('.quiz-section').forEach(async div => {
+                await translateTextNodesIn(div);
+            });
+        }
+
+        function initTranslationBar() {
+            // Set hidden input for all forms to currentLang
+            function updateLangInputs(lang) {
+                document.querySelectorAll('input#selectedLangInput').forEach(inp => {
+                    inp.value = lang;
+                });
+            }
+            document.querySelectorAll('.language-link').forEach(link => {
+                link.addEventListener('click', async function() {
+                    document.querySelectorAll('.language-link').forEach(l => l.classList.remove('selected'));
+                    this.classList.add('selected');
+                    const lang = this.getAttribute('data-lang');
+                    currentLang = lang;
+                    localStorage.setItem('selectedLang', lang);
+                    updateLangInputs(lang);
+                    if (lang === 'en') {
+                        window.location.reload();
+                    } else {
+                        await translateAllUI(lang);
+                    }
+                });
+            });
+            // On form submit, set hidden input to currentLang
+            document.querySelectorAll('form').forEach(form => {
+                form.addEventListener('submit', function() {
+                    updateLangInputs(currentLang);
+                });
+            });
+        }
+
+        // Initialize translation bar on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            initTranslationBar();
+            // If not English, re-translate after reload
+            if (currentLang && currentLang !== 'en') {
+                // Mark the correct language as selected
+                document.querySelectorAll('.language-link').forEach(l => {
+                    if (l.getAttribute('data-lang') === currentLang) l.classList.add('selected');
+                    else l.classList.remove('selected');
+                });
+                translateAllUI(currentLang);
+            }
         });
     </script>
 </body>

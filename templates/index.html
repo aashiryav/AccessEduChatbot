@@ -226,11 +226,11 @@
             text-align: center;
         }
         .chat-content {
-            flex: 1;
-            min-height: 0;
-            display: flex;
-            flex-direction: column;
-            margin-top: 0;
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        margin-top: 20px;
         }
         .bot-greeting {
             display: flex;
@@ -262,6 +262,7 @@
             background: #DFE4E6;
             font-size: 27px;
             line-height: 1.4;
+            margin-top: -15px;
         }
         .sample-prompts {
             display: flex;
@@ -269,7 +270,7 @@
             justify-content: center;
             align-items: flex-start;
             gap: 16px;
-            margin-top: 15px;
+            margin-top: 20px;
             transition: margin-top 0.2s;
         }
         .sample-prompt {
@@ -426,8 +427,8 @@
                         </div>
                         <div class="sample-prompts">
                             <div class="sample-prompt">“Explain FAFSA to me like I’m a 10-year-old who’s never heard of it before.”</div>
-                            <div class="sample-prompt">“I’m the first in my family going to college — how do I start planning for costs and scholarships?”</div>
-                            <div class="sample-prompt">“I’m the first in my family going to college — how do I start planning for costs and scholarships?”</div>
+                            <div class="sample-prompt">“How can I avoid too much student debt while paying for college?”</div>
+                            <div class="sample-prompt">“My parents don’t speak English  — can you tell us what financial aid documents we’ll need for college?”</div>
                         </div>
                     </div>
                 </div>
@@ -441,143 +442,257 @@
         </div>
     </div>
     <script>
-        let firstMessageSent = false;
-        function addMessage(text, sender) {
-            const messagesDiv = document.getElementById('messages');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${sender}`;
-            if (sender === 'bot') {
-                const img = document.createElement('img');
-                img.src = "{{ url_for('static', filename='images/2683e09c-84df-4130-a2f7-9d4ade6fc386-removebg-preview.png') }}";
-                img.alt = "Bot Icon";
-                img.className = 'bot-icon';
-                messageDiv.appendChild(img);
+// --- Modular Language Translation Logic (Scholarship Finder/Learner Style) ---
+let currentLang = 'en';
+function getInitialLang() {
+    const stored = localStorage.getItem('selectedLang');
+    if (stored) return stored;
+    return 'en';
+}
+currentLang = getInitialLang();
+
+let firstMessageSent = false;
+function addMessage(text, sender) {
+    const messagesDiv = document.getElementById('messages');
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message ${sender}`;
+    if (sender === 'bot') {
+        const img = document.createElement('img');
+        img.src = "{{ url_for('static', filename='images/2683e09c-84df-4130-a2f7-9d4ade6fc386-removebg-preview.png') }}";
+        img.alt = "Bot Icon";
+        img.className = 'bot-icon';
+        messageDiv.appendChild(img);
+    }
+    // Support line breaks in text
+    const span = document.createElement('span');
+    span.innerHTML = text.replace(/\n/g, '<br>');
+    messageDiv.appendChild(span);
+    messagesDiv.appendChild(messageDiv);
+    // Scroll to the latest message
+    messageDiv.scrollIntoView({ behavior: "smooth" });
+}
+function showTyping() {
+    document.getElementById('typingIndicator').style.display = 'block';
+}
+function hideTyping() {
+    document.getElementById('typingIndicator').style.display = 'none';
+}
+async function translateText(text, to_lang = 'es') {
+    if (!text || !text.trim()) return text;
+    try {
+        const res = await fetch('/translate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text, to_lang })
+        });
+        const data = await res.json();
+        return data.translated || text;
+    } catch {
+        return text;
+    }
+}
+async function translateAllUI(to_lang) {
+    // Only skip language bar and logo text
+    const skipClasses = ['language-link', 'logo-text'];
+    function isSkippable(n) {
+        return skipClasses.some(cls => n.classList && n.classList.contains(cls));
+    }
+    // Always translate nav-link features (even if not direct text node)
+    async function translateNavLinks(lang) {
+        const navFeatures = [
+            'FAFSA Help',
+            'Scholarships',
+            'Budget Planner',
+            'Learner',
+            'FAQ'
+        ];
+        const navEls = document.querySelectorAll('.nav-link');
+        for (let el of navEls) {
+            let txt = el.textContent.trim();
+            if (navFeatures.includes(txt)) {
+                el.textContent = await translateText(txt, lang);
             }
-            // Support line breaks in text
-            const span = document.createElement('span');
-            span.innerHTML = text.replace(/\n/g, '<br>');
-            messageDiv.appendChild(span);
-            messagesDiv.appendChild(messageDiv);
-            // Scroll to the latest message
-            messageDiv.scrollIntoView({ behavior: "smooth" });
         }
-        function showTyping() {
-            document.getElementById('typingIndicator').style.display = 'block';
-        }
-        function hideTyping() {
-            document.getElementById('typingIndicator').style.display = 'none';
-        }
-        async function sendMessage() {
-            const input = document.getElementById('messageInput');
-            const text = input.value.trim();
-            if (!text) return;
-            if (!firstMessageSent) {
-                // Hide the greeting and avatar
-                document.getElementById('botGreeting').style.display = 'none';
-                // Add the greeting as the first bot message in the chat, translated
-                let greetingText = 'Hi! I’m here to help you with FAFSA, scholarships, or budgeting questions, ask me anything!';
-                if (currentLang !== 'en') {
-                    greetingText = await translateText(greetingText, currentLang);
-                }
-                addMessage(greetingText, 'bot');
-                firstMessageSent = true;
-            }
-            addMessage(text, 'user');
-            input.value = '';
-            showTyping();
-            fetch('/chat', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: text })
-            })
-            .then(res => res.json())
-            .then(data => {
-                hideTyping();
-                addMessage(data.response, 'bot');
-            })
-            .catch(() => {
-                hideTyping();
-                addMessage('Sorry, there was an error processing your request.', 'bot');
-            });
-        }
-        // Language bar click handler (UI only for now)
-        const staticText = {
-            en: {
-                header: 'FAFSA & Financial Aid Helper',
-                desc: 'Get clear answers about FAFSA, financial aid deadlines, and required documents, all in plain language.',
-                greeting: `Hi! I’m here to help you with FAFSA,<br>scholarships, or budgeting questions,<br>ask me anything!`,
-                input: 'Type away!',
-                typing: 'AccessEDU is typing...',
-                prompts: [
-                    '“Explain FAFSA to me like I’m a 10-year-old who’s never heard of it before.”',
-                    '“I’m the first in my family going to college — how do I start planning for costs and scholarships?”',
-                    '“I’m the first in my family going to college — how do I start planning for costs and scholarships?”'
-                ]
-            }
-        };
-        let currentLang = 'en';
-        async function translateText(text, to_lang) {
-            const res = await fetch('/translate', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ text, to_lang })
-            });
-            const data = await res.json();
-            return data.translated || text;
-        }
-        async function setLanguage(lang) {
-            currentLang = lang;
-            document.querySelectorAll('.language-link').forEach(l => l.classList.remove('selected'));
-            document.querySelector(`.language-link[data-lang="${lang}"]`).classList.add('selected');
-            // No per-language margin logic, just translation
-            if (lang === 'en') {
-                document.querySelector('.header-title').textContent = staticText.en.header;
-                document.querySelector('.header-desc').textContent = staticText.en.desc;
-                document.querySelector('.message.bot.greeting').innerHTML = staticText.en.greeting;
-                document.getElementById('messageInput').placeholder = staticText.en.input;
-                document.getElementById('typingIndicator').textContent = staticText.en.typing;
-                document.querySelectorAll('.sample-prompt').forEach((el, i) => {
-                    el.textContent = staticText.en.prompts[i];
-                });
+    }
+    // Helper: Recursively translate only text nodes
+    async function translateNode(node) {
+        if (isSkippable(node)) return;
+        if (node.nodeType === 3 && node.textContent.trim()) {
+            node.textContent = await translateText(node.textContent, to_lang);
+        } else if (node.nodeType === 1) {
+            // Translate button textContent (for nav buttons)
+            if (node.tagName === 'BUTTON' && node.childNodes.length === 1 && node.childNodes[0].nodeType === 3 && node.textContent.trim()) {
+                node.textContent = await translateText(node.textContent, to_lang);
                 return;
             }
-            // Translate all static text
-            const [header, desc, greeting, input, typing, prompt1, prompt2, prompt3] = await Promise.all([
-                translateText(staticText.en.header, lang),
-                translateText(staticText.en.desc, lang),
-                translateText('Hi! I’m here to help you with FAFSA, scholarships, or budgeting questions, ask me anything!', lang),
-                translateText(staticText.en.input, lang),
-                translateText(staticText.en.typing, lang),
-                translateText(staticText.en.prompts[0], lang),
-                translateText(staticText.en.prompts[1], lang),
-                translateText(staticText.en.prompts[2], lang)
-            ]);
-            document.querySelector('.header-title').textContent = header;
-            document.querySelector('.header-desc').textContent = desc;
-            document.querySelector('.message.bot.greeting').innerHTML = greeting.replace(/\n/g, '<br>');
-            document.getElementById('messageInput').placeholder = input;
-            document.getElementById('typingIndicator').textContent = typing;
-            document.querySelectorAll('.sample-prompt').forEach((el, i) => {
-                el.textContent = [prompt1, prompt2, prompt3][i];
-            });
+            // Don't translate input, textarea, select values here
+            if (["INPUT", "TEXTAREA", "SELECT"].includes(node.tagName)) {
+                if (node.placeholder) node.placeholder = await translateText(node.placeholder, to_lang);
+                if (node.value && node.type !== 'hidden') node.value = await translateText(node.value, to_lang);
+                return;
+            }
+            // Don't translate <option> in language bar
+            if (node.tagName === 'OPTION' && node.parentElement && node.parentElement.classList.contains('language-bar')) return;
+            for (let child of node.childNodes) {
+                await translateNode(child);
+            }
         }
-        document.querySelectorAll('.language-link').forEach(link => {
-            link.addEventListener('click', function() {
-                setLanguage(this.getAttribute('data-lang'));
-            });
+    }
+    // Traverse all elements in the document, not just body children
+    const allElements = document.querySelectorAll('body, body *');
+    for (let el of allElements) {
+        for (let node of el.childNodes) {
+            if (node.nodeType === 3 && node.textContent.trim()) {
+                if (!isSkippable(el)) {
+                    node.textContent = await translateText(node.textContent, to_lang);
+                }
+            } else if (node.nodeType === 1) {
+                await translateNode(node);
+            }
+        }
+    }
+    // Force translate nav-link features
+    await translateNavLinks(to_lang);
+    await translateDynamicContent(to_lang);
+}
+async function translateDynamicContent(to_lang) {
+    // Translate greeting, prompts, and chat messages
+    const greeting = document.querySelector('.message.bot.greeting');
+    if (greeting && greeting.innerText && greeting.innerText.trim()) {
+        greeting.innerHTML = (await translateText(greeting.innerText, to_lang)).replace(/\n/g, '<br>');
+    }
+    document.querySelectorAll('.sample-prompt').forEach(async el => {
+        if (el.innerText && el.innerText.trim()) {
+            el.textContent = await translateText(el.innerText, to_lang);
+        }
+    });
+    // Translate all chat messages (user and bot)
+    const messages = document.querySelectorAll('.message');
+    for (let msg of messages) {
+        let originalText = msg.innerText || msg.textContent;
+        if (to_lang !== 'en') {
+            msg.innerHTML = (await translateText(originalText, to_lang)).replace(/\n/g, '<br>');
+        } else {
+            msg.innerHTML = originalText.replace(/\n/g, '<br>');
+        }
+    }
+    // Translate header and subtitle
+    const header = document.querySelector('.scholarship-header-title');
+    if (header && header.innerText && header.innerText.trim()) {
+        header.textContent = await translateText(header.innerText, to_lang);
+    }
+    const subtitle = document.querySelector('.scholarship-header-subtitle');
+    if (subtitle && subtitle.innerText && subtitle.innerText.trim()) {
+        subtitle.textContent = await translateText(subtitle.innerText, to_lang);
+    }
+    // Input placeholder and typing indicator
+    const input = document.getElementById('messageInput');
+    if (input && input.placeholder) {
+        input.placeholder = await translateText('Type away!', to_lang);
+    }
+    const typing = document.getElementById('typingIndicator');
+    if (typing && typing.textContent) {
+        typing.textContent = await translateText('AccessEDU is typing...', to_lang);
+    }
+}
+function updateChatbotTitleWrap(lang) {
+    const title = document.querySelector('.scholarship-header-title');
+    if (!title) return;
+    if (lang === 'en') {
+        title.style.whiteSpace = 'nowrap';
+        title.style.wordBreak = '';
+        title.style.overflowWrap = '';
+        title.style.paddingTop = '';
+    } else {
+        title.style.whiteSpace = 'normal';
+        title.style.wordBreak = 'break-word';
+        title.style.overflowWrap = 'break-word';
+        title.style.paddingTop = '10px';
+    }
+}
+function initTranslationBar() {
+    let isTranslating = false;
+    document.querySelectorAll('.language-link').forEach(link => {
+        link.addEventListener('click', async function() {
+            if (isTranslating) return;
+            isTranslating = true;
+            // Disable all language links during translation
+            document.querySelectorAll('.language-link').forEach(l => l.style.pointerEvents = 'none');
+            document.querySelectorAll('.language-link').forEach(l => l.classList.remove('selected'));
+            this.classList.add('selected');
+            const lang = this.getAttribute('data-lang');
+            currentLang = lang;
+            localStorage.setItem('selectedLang', lang);
+            updateChatbotTitleWrap(lang);
+            if (lang === 'en') {
+                window.location.reload();
+            } else {
+                await translateAllUI(lang);
+            }
+            // Re-enable language links after translation
+            document.querySelectorAll('.language-link').forEach(l => l.style.pointerEvents = '');
+            isTranslating = false;
         });
-        // Sample prompt click handler
-        document.querySelectorAll('.sample-prompt').forEach(prompt => {
-            prompt.addEventListener('click', function() {
-                const text = this.textContent;
-                document.getElementById('messageInput').value = text;
-                sendMessage();
-            });
+    });
+}
+async function sendMessage() {
+    const input = document.getElementById('messageInput');
+    const text = input.value.trim();
+    if (!text) return;
+    if (!firstMessageSent) {
+        // Hide the greeting and avatar
+        document.getElementById('botGreeting').style.display = 'none';
+        // Add the greeting as the first bot message in the chat, translated
+        let greetingText = 'Hi! I’m here to help you with FAFSA, scholarships, or budgeting questions, ask me anything!';
+        if (currentLang !== 'en') {
+            greetingText = await translateText(greetingText, currentLang);
+        }
+        addMessage(greetingText, 'bot');
+        firstMessageSent = true;
+    }
+    addMessage(text, 'user');
+    input.value = '';
+    showTyping();
+    fetch('/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: text, lang: currentLang })
+    })
+    .then(res => res.json())
+    .then(async data => {
+        hideTyping();
+        let botResponse = data.response;
+        if (currentLang !== 'en') {
+            botResponse = await translateText(botResponse, currentLang);
+        }
+        addMessage(botResponse, 'bot');
+    })
+    .catch(() => {
+        hideTyping();
+        addMessage('Sorry, there was an error processing your request.', 'bot');
+    });
+}
+window.addEventListener('DOMContentLoaded', function() {
+    initTranslationBar();
+    updateChatbotTitleWrap(currentLang);
+    if (currentLang && currentLang !== 'en') {
+        document.querySelectorAll('.language-link').forEach(l => {
+            if (l.getAttribute('data-lang') === currentLang) l.classList.add('selected');
+            else l.classList.remove('selected');
         });
-        window.onload = function() {
-            document.getElementById('messageInput').focus();
-        };
+        translateAllUI(currentLang);
+    }
+    // Sample prompt click handler
+    document.querySelectorAll('.sample-prompt').forEach(prompt => {
+        prompt.addEventListener('click', function() {
+            const text = this.textContent;
+            document.getElementById('messageInput').value = text;
+            sendMessage();
+        });
+    });
+    document.getElementById('messageInput').focus();
+});
     </script>
 </body>
-</html> 
+</html>
 
