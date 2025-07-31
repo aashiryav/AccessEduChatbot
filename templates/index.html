@@ -625,7 +625,7 @@ function initTranslationBar() {
             localStorage.setItem('selectedLang', lang);
             updateChatbotTitleWrap(lang);
             if (lang === 'en') {
-                window.location.reload();
+                await translateAllUI('en');
             } else {
                 await translateAllUI(lang);
             }

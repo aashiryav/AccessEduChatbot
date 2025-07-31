@@ -768,40 +768,44 @@
                     <div class="badges-list-full">
 {# --- BADGE LOGIC --- #}
 {# BADGES: Define all badges here, and use only variables passed from backend for earned status #}
+<style>
+  .badge-faded { opacity: 0.3; }
+  .badge-full { opacity: 1.0; }
+</style>
 <div class="badge-item">
-    <div class="badge-header" style="opacity: {{ 1.0 if aid_apprentice_earned else 0.3 }}">
+    <div class="badge-header {{ 'badge-full' if aid_apprentice_earned else 'badge-faded' }}">
         <span class="badge-icon">🔰</span>
         <span class="badge-title">Aid Apprentice</span>
     </div>
-    <p class="badge-description" style="opacity: {{ 1.0 if aid_apprentice_earned else 0.3 }}">Completed your first learning module!</p>
+    <p class="badge-description {{ 'badge-full' if aid_apprentice_earned else 'badge-faded' }}">Completed your first learning module!</p>
 </div>
 <div class="badge-item">
-    <div class="badge-header" style="opacity: {{ 1.0 if knowledge_knight_earned else 0.3 }}">
+    <div class="badge-header {{ 'badge-full' if knowledge_knight_earned else 'badge-faded' }}">
         <span class="badge-icon">🧠</span>
         <span class="badge-title">Knowledge Knight</span>
     </div>
-    <p class="badge-description" style="opacity: {{ 1.0 if knowledge_knight_earned else 0.3 }}">Completed all learning modules!</p>
+    <p class="badge-description {{ 'badge-full' if knowledge_knight_earned else 'badge-faded' }}">Completed all learning modules!</p>
 </div>
 <div class="badge-item">
-    <div class="badge-header" style="opacity: {{ 1.0 if quiz_master_earned else 0.3 }}">
+    <div class="badge-header {{ 'badge-full' if quiz_master_earned else 'badge-faded' }}">
         <span class="badge-icon">🏅</span>
         <span class="badge-title">Quiz Master</span>
     </div>
-    <p class="badge-description" style="opacity: {{ 1.0 if quiz_master_earned else 0.3 }}">Answered all quiz questions correctly in a module!</p>
+    <p class="badge-description {{ 'badge-full' if quiz_master_earned else 'badge-faded' }}">Answered all quiz questions correctly in a module!</p>
 </div>
 <div class="badge-item">
-    <div class="badge-header" style="opacity: {{ 1.0 if flashcard_finisher_earned else 0.3 }}">
+    <div class="badge-header {{ 'badge-full' if flashcard_finisher_earned else 'badge-faded' }}">
         <span class="badge-icon">📚</span>
         <span class="badge-title">Flashcard Finisher</span>
     </div>
-    <p class="badge-description" style="opacity: {{ 1.0 if flashcard_finisher_earned else 0.3 }}">Viewed every flashcard in a module!</p>
+    <p class="badge-description {{ 'badge-full' if flashcard_finisher_earned else 'badge-faded' }}">Viewed every flashcard in a module!</p>
 </div>
 <div class="badge-item">
-    <div class="badge-header" style="opacity: {{ 1.0 if first_try_star_earned else 0.3 }}">
+    <div class="badge-header {{ 'badge-full' if first_try_star_earned else 'badge-faded' }}">
         <span class="badge-icon">⭐</span>
         <span class="badge-title">First Try Star</span>
     </div>
-    <p class="badge-description" style="opacity: {{ 1.0 if first_try_star_earned else 0.3 }}">Got a quiz question right on the first try!</p>
+    <p class="badge-description {{ 'badge-full' if first_try_star_earned else 'badge-faded' }}">Got a quiz question right on the first try!</p>
 </div>
                     </div>
                 </div>

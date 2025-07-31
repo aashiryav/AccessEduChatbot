@@ -382,6 +382,17 @@ AID_TYPES = [
 
 # --- Learner Route ---
 def register_learner_route(app):
+    @app.route('/reset_learner_progress', methods=['POST'])
+    def reset_learner_progress():
+        session['module_progress'] = {module: 0 for module in VOCAB.keys()}
+        session['badges'] = []
+        session['earned_badges'] = []
+        session['card_indices'] = {module: 0 for module in VOCAB.keys()}
+        session['learner_module'] = list(VOCAB.keys())[0]
+        session['learner_term_index'] = 0
+        session['learner_quiz_index'] = None
+        session['quiz_completed'] = {}
+        return redirect(url_for('learner'))
     @app.route('/learner', methods=['GET', 'POST'])
     def learner():
         init_session_state()
