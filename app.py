@@ -54,8 +54,6 @@ AZURE_OPENAI_DEPLOYMENT = os.getenv('AZURE_OPENAI_DEPLOYMENT', 'gpt-35-turbo')
 AZURE_OPENAI_ENDPOINT_BSMP24 = os.getenv('AZURE_OPENAI_ENDPOINT_BSMP24')
 AZURE_OPENAI_API_KEY_BSMP24 = os.getenv('AZURE_OPENAI_API_KEY_BSMP24')
 TRANSLATION_API_KEY = os.getenv('TRANSLATION_API_KEY')
-TRANSLATION_ENDPOINT = "https://api.cognitive.microsofttranslator.com"
-TRANSLATION_REGION = os.getenv("TRANSLATION_REGION", "eastus2")
 
 # Function to call Azure OpenAI API
 def azure_openai_response(prompt):
@@ -74,6 +72,10 @@ def azure_openai_response(prompt):
         return response.choices[0].message.content.strip()
     except Exception as e:
         return f"[Error calling Azure OpenAI API: {e}]"
+
+TRANSLATION_API_KEY = os.getenv("TRANSLATION_API_KEY") or "50xBq9y2s08yVpghkmopLEevF6FNsXksvmKOuayRxyhpUfbnAZyJJQQJ99BAACHYHv6XJ3w3AAAAACOG0O6p"
+TRANSLATION_ENDPOINT = "https://api.cognitive.microsofttranslator.com"
+TRANSLATION_REGION = "eastus2"
 
 @app.route('/translate', methods=['POST'])
 def translate_text():
@@ -169,11 +171,7 @@ def calculator():
             result += "</div>"
         except ValueError:
             result = '<p style="color:red;">Please enter valid numbers.</p>'
-
-    if request.method == 'POST':
-        return result
-
-    return redirect(url_for('budget_scanner'))
+# --- END LEARNER MODULE ---
 
 @app.route('/chatbot')
 def chatbot():
@@ -235,6 +233,7 @@ def load_scholarships():
     return data.get('scholarships', []) if isinstance(data, dict) else data
 
 @app.route('/find-scholarships', methods=['POST'])
+@app.route('/find-scholarships', methods=['POST'])
 def find_scholarships():
     data = request.get_json() or {}
     scholarships = load_scholarships()
@@ -258,6 +257,7 @@ def find_scholarships():
         major=data.get('major', ''),
         essay_preference=data.get('essay', '')
     )
+
 
     if not matches:
         return jsonify({'results': "I couldn't find a match in our scholarship list. "
