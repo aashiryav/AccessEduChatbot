@@ -238,6 +238,12 @@ def find_scholarships():
     scholarships = load_scholarships()
 
     matches = find_scholarships_with_ai(
+       def still_open(s):
+           try:
+               return datetime.strptime(s.get('deadline', ''), '%B %d, %Y') >= datetime.now()
+           except ValueError:
+               return True  # keep it if the date format is unusual
+    matches = [s for s in matches if still_open(s)]
         scholarships,
         grade_level=data.get('grade_level', ''),
         gpa=data.get('gpa', ''),
@@ -253,7 +259,7 @@ def find_scholarships():
     lines = []
     for s in matches:
         name = s.get('name', 'Scholarship')
-        url = s.get('url') or s.get('link')
+        url = s.get('website')
         title = f"[{name}]({url})" if url else name
         line = f"- **{title}**"
         if s.get('amount'):
