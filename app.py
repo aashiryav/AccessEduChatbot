@@ -224,26 +224,53 @@ def chat():
             answer = f"[Error translating: {e}]\n{answer}"
     return jsonify({'response': answer})
 
+import json
+from openai_service import find_scholarships_with_ai
+
+def load_scholarships():
+    path = os.path.join(os.path.dirname(__file__), 'scholarships.json')
+    with open(path) as f:
+        data = json.load(f)
+    # Works whether the file is a list or {"scholarships": [...]}
+    return data.get('scholarships', []) if isinstance(data, dict) else data
+
 @app.route('/find-scholarships', methods=['POST'])
 def find_scholarships():
-    data = request.get_json()
-    major = data.get('major', '')
-    gpa = data.get('gpa', '')
-    location = data.get('location', '')
-    grade_level = data.get('grade_level', '')
-    essay = data.get('essay', '')
-    today = datetime.now().strftime('%Y-%m-%d')
-    # Compose a prompt for the AI
-    prompt = (
-        f"List 5 scholarships (each as a Markdown-style bullet point) that a student could apply for given these details: "
-        f"Major: {major}, GPA: {gpa}, Location: {location}, Grade Level: {grade_level}, "
-        f"Essay Requirement: {essay}. "
-        f"For each, include: (1) the scholarship name as a clickable hyperlink to the application page, (2) a short description, and (3) the application deadline (must be after {today}). "
-        f"Use real or plausible links and deadlines. Only show scholarships with deadlines after {today}. "
-        f"Format as a Markdown-style list."
+    data = request.get_json() or {}
+    scholarships = load_scholarships()
+
+    matches = find_scholarships_with_ai(
+        scholarships,
+        grade_level=data.get('grade_level', ''),
+        gpa=data.get('gpa', ''),
+        gender=data.get('gender', ''),
+        major=data.get('major', ''),
+        essay_preference=data.get('essay', '')
     )
-    answer = azure_openai_response(prompt)
-    return jsonify({'results': answer})
+
+    if not matches:
+        return jsonify({'results': "I couldn't find a match in our scholarship list. "
+                                   "Try changing your answers, or ask your school counselor."})
+
+    lines = []
+    for s in matches:
+        name = s.get('name', 'Scholarship')
+        url = s.get('url') or s.get('link')
+        title = f"[{name}]({url})" if url else name
+        line = f"- **{title}**"
+        if s.get('amount'):
+            line += f" | Amount: {s['amount']}"
+        if s.get('deadline'):
+            line += f" | Deadline: {s['deadline']}"
+        if s.get('description'):
+            line += f"\n  {s['description']}"
+        reasons = s.get('match_reasons')
+        if reasons:
+            line += f"\n  Why it fits: {', '.join(reasons)}"
+        lines.append(line)
+
+    note = "\n\n*Always confirm details on the scholarship's official page before applying.*"
+    return jsonify({'results': "\n".join(lines) + note})
 
 @app.route('/api/mini-advisor', methods=['POST'])
 def mini_advisor():
