@@ -54,6 +54,8 @@ AZURE_OPENAI_DEPLOYMENT = os.getenv('AZURE_OPENAI_DEPLOYMENT', 'gpt-35-turbo')
 AZURE_OPENAI_ENDPOINT_BSMP24 = os.getenv('AZURE_OPENAI_ENDPOINT_BSMP24')
 AZURE_OPENAI_API_KEY_BSMP24 = os.getenv('AZURE_OPENAI_API_KEY_BSMP24')
 TRANSLATION_API_KEY = os.getenv('TRANSLATION_API_KEY')
+TRANSLATION_ENDPOINT = "https://api.cognitive.microsofttranslator.com"
+TRANSLATION_REGION = os.getenv("TRANSLATION_REGION", "eastus2")
 
 # Function to call Azure OpenAI API
 def azure_openai_response(prompt):
@@ -167,7 +169,11 @@ def calculator():
             result += "</div>"
         except ValueError:
             result = '<p style="color:red;">Please enter valid numbers.</p>'
-# --- END LEARNER MODULE ---
+
+    if request.method == 'POST':
+        return result
+
+    return redirect(url_for('budget_scanner'))
 
 @app.route('/chatbot')
 def chatbot():
@@ -233,14 +239,23 @@ def find_scholarships():
     data = request.get_json() or {}
     scholarships = load_scholarships()
 
+    def still_open(scholarship):
+        deadline = scholarship.get('deadline', '')
+        try:
+            deadline_date = datetime.strptime(deadline, '%B %d, %Y').date()
+        except (ValueError, TypeError):
+            return True
+
+        return deadline_date >= datetime.now().date()
+
+    available = [
+        scholarship
+        for scholarship in scholarships
+        if still_open(scholarship)
+    ]
+
     matches = find_scholarships_with_ai(
-       def still_open(s):
-           try:
-               return datetime.strptime(s.get('deadline', ''), '%B %d, %Y') >= datetime.now()
-           except ValueError:
-               return True  # keep it if the date format is unusual
-    matches = [s for s in matches if still_open(s)]
-        scholarships,
+        available,
         grade_level=data.get('grade_level', ''),
         gpa=data.get('gpa', ''),
         gender=data.get('gender', ''),
