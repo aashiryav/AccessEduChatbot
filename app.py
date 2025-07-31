@@ -239,20 +239,16 @@ def find_scholarships():
     data = request.get_json() or {}
     scholarships = load_scholarships()
 
-    def still_open(scholarship):
-        deadline = scholarship.get('deadline', '')
+    def still_open(s):
         try:
-            deadline_date = datetime.strptime(deadline, '%B %d, %Y').date()
+            deadline = datetime.strptime(
+                s.get('deadline', ''), '%B %d, %Y'
+            ).date()
         except (ValueError, TypeError):
             return True
+        return deadline >= datetime.now().date()
 
-        return deadline_date >= datetime.now().date()
-
-    available = [
-        scholarship
-        for scholarship in scholarships
-        if still_open(scholarship)
-    ]
+    available = [s for s in scholarships if still_open(s)]
 
     matches = find_scholarships_with_ai(
         available,
