@@ -322,11 +322,10 @@
         min-height: 120px;
     }
     .scholarship-header {
-        /* Removed background, padding, border-radius, box-shadow, and display styles to eliminate the white rectangle */
         text-align: center;
         width: 100%;
         box-sizing: border-box;
-        /* Only keep flex-direction and align-items if needed elsewhere */
+        
     }
     .scholarship-header-title {
         font-family: 'Montserrat', 'Inclusive Sans', 'Segoe UI', Arial, sans-serif;
@@ -583,7 +582,7 @@
         </div>
     </div>
 <script>
-// --- Title Wrapping Logic for Non-English ---
+
 function updateScholarshipTitleWrap(lang) {
     const title = document.getElementById('scholarship-title');
     if (!title) return;
@@ -599,7 +598,7 @@ function updateScholarshipTitleWrap(lang) {
         title.style.paddingTop = '10px';
     }
 }
-// --- Language Translation Logic (Reusable) ---
+
 let currentLang = 'en';
 function getInitialLang() {
     const stored = localStorage.getItem('selectedLang');
@@ -670,7 +669,7 @@ async function translateAllUI(to_lang) {
             }
         }
     }
-    // Traverse all elements in the document, not just body children
+   
     const allElements = document.querySelectorAll('body, body *');
     for (let el of allElements) {
         for (let node of el.childNodes) {
@@ -683,11 +682,11 @@ async function translateAllUI(to_lang) {
             }
         }
     }
-    // Force translate nav-link features
+   
     await translateNavLinks(to_lang);
     await translateDynamicContent(to_lang);
 
-    // --- Translate selected value of grade and gender dropdowns ---
+    
     const gradeSelect = document.getElementById('grade-level');
     if (gradeSelect) {
         const selectedOption = gradeSelect.options[gradeSelect.selectedIndex];
@@ -703,7 +702,7 @@ async function translateAllUI(to_lang) {
         }
     }
 
-    // --- Translate all 'yearly' and 'monthly' options in all selects ---
+   
     document.querySelectorAll('select').forEach(sel => {
         Array.from(sel.options).forEach(async opt => {
             if (opt.value && (opt.value.toLowerCase() === 'yearly' || opt.value.toLowerCase() === 'monthly')) {
