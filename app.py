@@ -1,7 +1,3 @@
-
-
-
-
 import os
 import json
 from openai_service import find_scholarships_with_ai
