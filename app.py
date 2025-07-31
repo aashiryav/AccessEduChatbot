@@ -3,6 +3,8 @@
 
 
 import os
+import json
+from openai_service import find_scholarships_with_ai
 import requests
 from flask import Flask, request, jsonify, render_template, url_for, session, redirect, render_template_string
 from flask_cors import CORS
