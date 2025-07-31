@@ -10,7 +10,6 @@ from authlib.integrations.flask_client import OAuth
 import random
 from openai_service import openai_client, AZURE_OPENAI_DEPLOYMENT
 
-# Create the Flask app
 app = Flask(__name__)
 # Session config
 app.secret_key = os.urandom(24)
@@ -33,7 +32,6 @@ oauth.register(
     }
 )
 
-# Enable CORS
 CORS(app)
 
 # System prompt that the chatbot will use
@@ -106,7 +104,6 @@ def translate_text():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-# Test route to check server is running
 @app.route('/')
 def home():
     user = session.get('user')
@@ -133,12 +130,9 @@ def logout():
 def login():
     return render_template('login.html')
 
-
-# --- Import and register Learner Module ---
 from learner_module import register_learner_route
 register_learner_route(app)
 
-# --- /calculator Route ---
 @app.route('/calculator', methods=['GET', 'POST'])
 def calculator():
     result = ''
@@ -171,7 +165,6 @@ def calculator():
             result += "</div>"
         except ValueError:
             result = '<p style="color:red;">Please enter valid numbers.</p>'
-# --- END LEARNER MODULE ---
 
 @app.route('/chatbot')
 def chatbot():
@@ -189,7 +182,6 @@ def scholarship_finder():
 def signup():
     return render_template('signup.html')
 
-# Chatbot route
 @app.route('/chat', methods=['POST'])
 def chat():
     data = request.get_json()
