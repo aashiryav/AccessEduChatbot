@@ -50,17 +50,12 @@ SYSTEM_PROMPT = (
     "Always keep your replies concise and to the point, unless the user asks for more detail."
 )
 
-# Your Azure OpenAI details
-AZURE_OPENAI_ENDPOINT = "https://bsmp2023.openai.azure.com/"  # Chat API
-AZURE_OPENAI_API_KEY = "7b7711c1bcd94b4899aaa1d796c4f7ae"  # Chat API
-AZURE_OPENAI_DEPLOYMENT = "gpt-35-turbo"
-
-# BSMP24 (alternate chat or translation API)
-AZURE_OPENAI_ENDPOINT_BSMP24 = "https://bsmp24.openai.azure.com/"
-AZURE_OPENAI_API_KEY_BSMP24 = "eae439b382754a94a30bb3db8f9ada07"
-
-# Translation API
-TRANSLATION_API_KEY = "50xBq9y2s08yVpghkmopLEevF6FNsXksvmKOuayRxyhpUfbnAZyJJQQJ99BAACHYHv6XJ3w3AAAAACOG0O6p"
+AZURE_OPENAI_ENDPOINT = os.getenv('AZURE_OPENAI_ENDPOINT')
+AZURE_OPENAI_API_KEY = os.getenv('AZURE_OPENAI_API_KEY')
+AZURE_OPENAI_DEPLOYMENT = os.getenv('AZURE_OPENAI_DEPLOYMENT', 'gpt-35-turbo')
+AZURE_OPENAI_ENDPOINT_BSMP24 = os.getenv('AZURE_OPENAI_ENDPOINT_BSMP24')
+AZURE_OPENAI_API_KEY_BSMP24 = os.getenv('AZURE_OPENAI_API_KEY_BSMP24')
+TRANSLATION_API_KEY = os.getenv('TRANSLATION_API_KEY')
 
 # Function to call Azure OpenAI API
 def azure_openai_response(prompt):
