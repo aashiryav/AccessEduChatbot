@@ -71,7 +71,7 @@ def azure_openai_response(prompt):
     except Exception as e:
         return f"[Error calling Azure OpenAI API: {e}]"
 
-TRANSLATION_API_KEY = os.getenv("TRANSLATION_API_KEY") or "50xBq9y2s08yVpghkmopLEevF6FNsXksvmKOuayRxyhpUfbnAZyJJQQJ99BAACHYHv6XJ3w3AAAAACOG0O6p"
+TRANSLATION_API_KEY = os.getenv("TRANSLATION_API_KEY")
 TRANSLATION_ENDPOINT = "https://api.cognitive.microsofttranslator.com"
 TRANSLATION_REGION = "eastus2"
 
