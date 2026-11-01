@@ -4,6 +4,9 @@ A comprehensive educational resource web application that helps students navigat
 
 ![AccessEDU Logo](static/images/a3e929fd-63d2-4f73-abba-98a2528d3efb-removebg-preview.png)
 
+Development History
+AccessEDU was developed locally during the Blacks at Microsoft Summer Mentorship Program in summer 2025 and uploaded to GitHub after the program's final hackathon presentation. Because of this, the commit history doesn't show the original thorough development process. 
+
 Features
 - FAFSA Chatbot: Get answers to your questions about FAFSA and financial aid
 - Scholarship Finder: Find personalized scholarship opportunities based on your profile
