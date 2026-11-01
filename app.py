@@ -46,11 +46,6 @@ SYSTEM_PROMPT = (
     "Always keep your replies concise and to the point, unless the user asks for more detail."
 )
 
-AZURE_OPENAI_ENDPOINT = os.getenv('AZURE_OPENAI_ENDPOINT')
-AZURE_OPENAI_API_KEY = os.getenv('AZURE_OPENAI_API_KEY')
-AZURE_OPENAI_DEPLOYMENT = os.getenv('AZURE_OPENAI_DEPLOYMENT', 'gpt-35-turbo')
-AZURE_OPENAI_ENDPOINT_BSMP24 = os.getenv('AZURE_OPENAI_ENDPOINT_BSMP24')
-AZURE_OPENAI_API_KEY_BSMP24 = os.getenv('AZURE_OPENAI_API_KEY_BSMP24')
 TRANSLATION_API_KEY = os.getenv('TRANSLATION_API_KEY')
 
 # Function to call Azure OpenAI API
@@ -133,39 +128,6 @@ def login():
 from learner_module import register_learner_route
 register_learner_route(app)
 
-@app.route('/calculator', methods=['GET', 'POST'])
-def calculator():
-    result = ''
-    if request.method == 'POST':
-        try:
-            coa = float(request.form['coa'])
-            sai = float(request.form['sai'])
-            grants = float(request.form['grants'])
-            scholarships = float(request.form['scholarships'])
-            gift_aid = grants + scholarships
-            net_price = coa - gift_aid
-            remaining_need = net_price - sai
-            monthly_payment = 0
-            if remaining_need > 0:
-                # Example loan calculation (10 years at 5.5%)
-                r = 0.055 / 12
-                n = 10 * 12
-                monthly_payment = (remaining_need * r * (1 + r) ** n) / ((1 + r) ** n - 1)
-            result = f"""
-            <div>
-                <h3>Results</h3>
-                <p>COA: ${coa:,.0f}</p>
-                <p>Gift Aid: ${gift_aid:,.0f}</p>
-                <p>Net Price: ${net_price:,.0f}</p>
-                <p>SAI: ${sai:,.0f}</p>
-                <p>Remaining Need: ${remaining_need:,.0f}</p>
-            """
-            if remaining_need > 0:
-                result += f"<p>Estimated Monthly Loan Payment (10 yrs @ 5.5%): ${monthly_payment:,.2f}</p>"
-            result += "</div>"
-        except ValueError:
-            result = '<p style="color:red;">Please enter valid numbers.</p>'
-
 @app.route('/chatbot')
 def chatbot():
     return render_template('index.html')
@@ -214,9 +176,6 @@ def chat():
             answer = f"[Error translating: {e}]\n{answer}"
     return jsonify({'response': answer})
 
-import json
-from openai_service import find_scholarships_with_ai
-
 def load_scholarships():
     path = os.path.join(os.path.dirname(__file__), 'scholarships.json')
     with open(path) as f:
@@ -224,7 +183,6 @@ def load_scholarships():
     # Works whether the file is a list or {"scholarships": [...]}
     return data.get('scholarships', []) if isinstance(data, dict) else data
 
-@app.route('/find-scholarships', methods=['POST'])
 @app.route('/find-scholarships', methods=['POST'])
 def find_scholarships():
     data = request.get_json() or {}
